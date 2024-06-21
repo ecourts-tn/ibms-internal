@@ -18,17 +18,18 @@ const CaseScrutiny = () => {
     const[petitioner, setPetitioner]    = useState([])
     const[respondent, setRespondent]    = useState([])
     const[grounds, setGrounds] = useState([])
+    const[advocates, setAdvocates] = useState([])
     const[verify, setVerify] = useState('')
 
     useEffect(() => {
         async function fetchData(){
             try{
                 const response = await api.get(`api/bail/petition/${state.cino}/detail/`)
-                console.log(response.data)
-                const { petition, petitioner, grounds, respondent} = response.data
+                const { petition, petitioner, grounds, respondent,advocate} = response.data
                 setPetition(petition)
                 setPetitioner(petitioner)
                 setRespondent(respondent)
+                setAdvocates(advocate)
                 setGrounds(grounds)
             }catch(err){
                 console.log(err)
@@ -36,6 +37,7 @@ const CaseScrutiny = () => {
         }
         fetchData();
     }, [state.cino])
+
 
     useEffect(() => {
         if(!state){
@@ -56,8 +58,6 @@ const CaseScrutiny = () => {
             </div>
         )
     }
-
-
 
     return (
         <>
@@ -418,7 +418,18 @@ const CaseScrutiny = () => {
                                     </div>
                                     <div id="collapseFour" className="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                                         <div className="card-body">
-                                            
+                                            { Object.keys(advocates).length > 0 && (
+                                            <table className="table table-striped table-bordered table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Advocate Name</th>
+                                                        <th>Enrolment Number</th>
+                                                        <th>Mobile Number</th>
+                                                        <th>Email Address</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
