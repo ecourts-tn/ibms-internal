@@ -1,0 +1,33 @@
+body {
+    background: #1f618d;
+}
+
+.login-container .row {
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container .card-header {
+    display: flex;
+    padding: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box-msg {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.asteriskField {
+    margin-left: 5px;
+    color: red;
+}
+#help-link {
+    text-align: center;
+}
+
+#help-link p {
+    font-size: 16px;
+    line-height: 1rem;
+}
