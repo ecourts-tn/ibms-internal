@@ -47,15 +47,15 @@ const TodayCases = () => {
                                                 <tr key={index}>
                                                     <td>{ index + 1 }</td>
                                                     <td>
-                                                        { c.petition.court_type.code === 2 && (
+                                                        { c.petition.court_type.id === 2 && (
                                                         <span>{ c.petition.court.court_name }<br/>{ c.petition.establishment.establishment_name }<br/>{ c.petition.district.district_name }</span>
                                                         )}
-                                                        { c.petition.court_type.code === 1 && (
+                                                        { c.petition.court_type.id === 1 && (
                                                         <span>{ c.petition.court_type.name }<br/>{ c.petition.bench_type.name }</span> 
                                                         )}
                                                     </td>
-                                                    <td>{ c.petition.case_type.name }</td>
-                                                    <td>{ c.petition.bail_type.name }</td>
+                                                    <td>{ c.petition.case_type.type_name }</td>
+                                                    <td>{ c.petition.bail_type.type_name }</td>
                                                     <td>
                                                         { c.petition.crime_number } / { c.petition.crime_year }<br/>
                                                         { c.petition.police_station && (
@@ -73,17 +73,17 @@ const TodayCases = () => {
                                                     <td>
                                                         { !c.petition.filing_type && !c.petition.filing_number && (
                                                             <span className="badge bg-info">
-                                                                <Link to="/court/case-scrutiny" state={{ id: 'TN20240607000001' }}>Scrutiny</Link>
+                                                                <Link to="/court/case/scrutiny" state={{ id: 'TN20240607000001' }}>Scrutiny</Link>
                                                             </span>
                                                         )}
                                                         { c.petition.filing_type && c.petition.filing_number && !c.petition.reg_type && !c.petition.reg_number && (
                                                             <span className="badge bg-warning">
-                                                                <Link to="/court/case-registration" state={{ id: 'TN20240607000001' }}>Registration</Link>
+                                                                <Link to="/court/case/registration" state={{ id: 'TN20240607000001' }}>Registration</Link>
                                                             </span>
                                                         )}
                                                         { c.petition.filing_type && c.petition.filing_number && c.petition.reg_type && c.petition.reg_number && (
                                                             <span className="badge bg-primary">
-                                                                <Link to="/court/case-registration" state={{ id: 'TN20240607000001' }}>Post to Cause List</Link>
+                                                                <Link to="/court/case/registration" state={{ id: 'TN20240607000001' }}>Post to Cause List</Link>
                                                             </span>
                                                         )}
                                                         {/* { c.petition.filing_type && c.petition.filing_number && c.petition.reg_type && c.petition.reg_number && (

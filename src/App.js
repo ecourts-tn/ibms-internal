@@ -15,6 +15,7 @@ import PrisonDashboard from "./components/prison/Dashboard"
 import ProsecutorDashboard from "./components/prosecutor/Dashboard"
 import Registration from "./components/Registration"
 import Dashboard from "./components/court/scrutiny/Dashboard"
+import ResponseCreate from './components/police/ResponseCreate'
 
 const appendScript = (scriptToAppend) => {
   const script = document.createElement("script");
@@ -46,6 +47,7 @@ function App() {
             <Route path="police">
               <Route path="dashboard" element={<PoliceDashboard />} />
               <Route path="response"  element={<Response />} />
+              <Route path="response/create" element={<ResponseCreate />} />
             </Route>
             <Route path="prison">
               <Route path="dashboard" element={<PrisonDashboard />} />

@@ -83,7 +83,7 @@ export default function MenuBar() {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link to="/daily-proceedings" className="nav-link">
+                      <Link to="/court/daily-proceedings" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Daily Proceedings</p>
                       </Link>

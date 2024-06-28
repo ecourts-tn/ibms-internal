@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import api from '../../../api'
 import '../style.css'
 import Button from '@mui/material/Button'
@@ -16,16 +16,15 @@ import { toast, ToastContainer } from 'react-toastify'
 const CaseScrutiny = () => {
 
     const {state} = useLocation();
-    const navigate = useNavigate()
 
-    const[petition, setPetition]        = useState({
+    const[petition, setPetition] = useState({
         court_type: '',
         case_type: '',
         bail_type: '',
         complaint_type: ''
     })
-    const[petitioner, setPetitioner]    = useState([])
-    const[respondent, setRespondent]    = useState([])
+    const[petitioner, setPetitioner] = useState([])
+    const[respondent, setRespondent] = useState([])
     const[grounds, setGrounds] = useState([])
     const[advocates, setAdvocates] = useState([])
     const[fees, setFees] = useState([])
@@ -41,7 +40,7 @@ const CaseScrutiny = () => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await api.get(`api/bail/petition/${state.cino}/detail/`)
+                const response = await api.get(`api/bail/petition/detail`, {params: { cino:state.cion}})
                 const { petition, petitioner, grounds, respondent, advocate, fees} = response.data
                 setPetition(petition)
                 setPetitioner(petitioner)
@@ -54,7 +53,7 @@ const CaseScrutiny = () => {
             }
         }
         fetchData();
-    }, [state.cino])
+    })
 
     const handleSubmit = async () => {
         if(form.status === 1){
@@ -127,7 +126,9 @@ const CaseScrutiny = () => {
                             <div id="accordion">
                                 <div className="card m-1">
                                     <div className="card-header" id="headingOne">
-                                        <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Basic Details</a>
+                                        <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">
+                                            Basic Details
+                                        </a>
                                     </div>
                                     <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                                         <div className="card-body">
@@ -137,7 +138,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingTwo">
-                                        <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="/#">
                                             Litigant Details
                                         </a>
                                     </div>
@@ -164,7 +165,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingThree">
-                                        <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" href="/#">
                                             Grounds & Previous Case Details
                                         </a>
                                     </div>
@@ -176,7 +177,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingFour">
-                                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" href="/#">
                                             Advocate Details & Documents
                                         </a>
                                     </div>
@@ -191,7 +192,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingFive">
-                                        <a data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                        <a data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" href="/#">
                                             Court Fee Details
                                         </a>
                                     </div>

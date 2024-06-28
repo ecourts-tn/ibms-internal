@@ -28,7 +28,7 @@ const Response = () => {
             console.log(err)
         }
     }
-
+    console.log(petitions)
 
     return (
         <>
@@ -47,7 +47,7 @@ const Response = () => {
                                             <th>CNR Number</th>
                                             <th>Date of Occurrence</th>
                                             <th>Crime Number/Year</th>
-                                            <th>Complaintant Name</th>
+                                            <th>Complainant Name</th>
                                             <th>Investigation Officer</th>
                                             <th>Action</th>
                                         </tr>
@@ -59,10 +59,10 @@ const Response = () => {
                                             <td>{ petition.cino }</td>
                                             <td>{ petition.date_of_occurrence }</td>
                                             <td>{ petition.crime_number }/{ petition.crime_year }</td>
-                                            <td>{ petition.complaintant_name }</td>
+                                            <td>{ petition.complainant_guardian }</td>
                                             <td>{ petition.investigation_officer }</td>
                                             <td>
-                                                <Link to='/police-response/create/' onClick={() => getPetition(petition.cino)}>Process</Link>
+                                                <Link to='/police/response/create/' state={{ cino: petition.cino }}>Process</Link>
                                             </td>
                                         </tr>
                                     ))}

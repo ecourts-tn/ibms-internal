@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import api from '../../api'
 import './style.css'
@@ -24,7 +24,7 @@ const CaseScrutiny = () => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await api.get(`api/bail/petition/${state.cino}/detail/`)
+                const response = await api.get(`api/bail/petition/detail/`, {params: {cino:state.cino}})
                 const { petition, petitioner, grounds, respondent,advocate} = response.data
                 setPetition(petition)
                 setPetitioner(petitioner)
@@ -43,9 +43,11 @@ const CaseScrutiny = () => {
         if(!state){
             navigate("/not-found")
         }
-    }, [])
+    })
+
 
     const doNothing = () => {}
+
 
     if(!state){
         return (
@@ -71,7 +73,7 @@ const CaseScrutiny = () => {
                             <div id="accordion">
                                 <div className="card m-1">
                                     <div className="card-header" id="headingOne">
-                                        <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Basic Details</a>
+                                        <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">Basic Details</a>
                                     </div>
                                     <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                                         <div className="card-body">
@@ -90,7 +92,7 @@ const CaseScrutiny = () => {
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-12">
-                                                    { petition.court_type.code == 1 && (
+                                                    { petition.court_type.code === 1 && (
                                                     <div className="form-group row">
                                                         <label htmlFor="bench_type" className="col-sm-3">High Court Bench</label>
                                                         <div className="col-sm-9">
@@ -103,7 +105,7 @@ const CaseScrutiny = () => {
                                                     )}
                                                 </div>
                                             </div>  
-                                            { petition.court_type.code == 2 && (
+                                            { petition.court_type.code === 2 && (
                                             <div className="row mb-0">
                                                 <div className="col-md-6">
                                                     <div className="form-group">
@@ -175,15 +177,15 @@ const CaseScrutiny = () => {
                                                     <div className="form-group clearfix">
                                                     <label htmlFor="" className="mr-2">Crime Registered?</label>
                                                     <div className="icheck-success d-inline mx-2">
-                                                        <input type="radio" id="radioPrimary1" name="crime_registered" checked={petition.crime_registered == 1 ? true : false} onChange={doNothing}/>
+                                                        <input type="radio" id="radioPrimary1" name="crime_registered" checked={petition.crime_registered === 1 ? true : false} onChange={doNothing}/>
                                                         <label htmlFor="radioPrimary1">Yes</label>
                                                     </div>
                                                     <div className="icheck-danger d-inline mx-2">
-                                                        <input type="radio" id="radioPrimary2" name="crime_registered" checked={petition.crime_registered == 2 ? true : false} onChange={doNothing}/>
+                                                        <input type="radio" id="radioPrimary2" name="crime_registered" checked={petition.crime_registered === 2 ? true : false} onChange={doNothing}/>
                                                         <label htmlFor="radioPrimary2">No</label>
                                                     </div>
                                                     <div className="icheck-primary d-inline mx-2">
-                                                        <input type="radio" id="radioPrimary3" name="crime_registered" checked={petition.crime_registered == 3 ? true : false} onChange={doNothing}/>
+                                                        <input type="radio" id="radioPrimary3" name="crime_registered" checked={petition.crime_registered === 3 ? true : false} onChange={doNothing}/>
                                                         <label htmlFor="radioPrimary3">Not Known</label>
                                                     </div>
                                                     </div>
@@ -315,7 +317,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingTwo">
-                                        <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="/#">
                                             Litigant Details
                                         </a>
                                     </div>
@@ -394,7 +396,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingThree">
-                                        <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" href="/#">
                                             Grounds & Previous Case Details
                                         </a>
                                     </div>
@@ -412,7 +414,7 @@ const CaseScrutiny = () => {
                                 </div>
                                 <div className="card m-1">
                                     <div className="card-header" id="headingFour">
-                                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" href="/#">
                                             Advocate Details & Documents
                                         </a>
                                     </div>

@@ -10,30 +10,49 @@ import api from '../../api'
 
 
 const ResponseCreate = () => {
-    
-    const { state } = useLocation();
-    const { petition } = state || {};
+    const {state} = useLocation()
+    const[petition, setPetition] = useState({})
     const initialState = {
+        petition_number: '',
         crime_number        : null,
         crime_year          : null,
         gist_of_fir         : null,
+        gist_in_local       : null,
         fir_date_time       : null,
-        date_of_occurrence  : null
+        date_of_occurrence  : null,
+        date_of_arrest: null,
+        police_station: {},
+        petitioners:[],
+        complainant_name: null,
     }
+    
     const[response, setResponse] = useState(initialState)
 
     useEffect(() => {
-        setResponse({
-            ...response,
-            crime_number        : petition.crime_number,
-            crime_year          : petition.crime_year,
-            gist_of_fir         : petition.gist_in_local,
-            fir_date_time       : petition.fir_date_time,
-            date_of_occurrence  : petition.date_of_occurrence
-        })
-    },[])
+        async function fetchData(){
+            const res = await api.get(`api/bail/petition/${state.cino}/detail/`)
+            if(res.status === 200){
+                const {data} = res
+                console.log(data.petition.complainant_name)
+                setResponse({
+                    ...response,
+                    petition_number: `${data.petition.filing_type.type_name}/${data.petition.filing_number}/${data.petition.filing_year}`,
+                    crime_number: data.petition.crime_number,
+                    crime_year: data.petition.crime_year,
+                    fir_date_time: data.petition.fir_date_time,
+                    police_station: data.petition.police_station,
+                    petitioners: data.petitioner,
+                    gist_of_fir: data.petition.gist_of_fir,
+                    gist_in_local: data.petition.gist_in_local,
+                    date_of_occurrence: data.petition.date_of_occurrence,
+                    complainant_name: data.petition.complainant_name
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
-
+    console.log(response)
 
     return (
     <>
@@ -48,7 +67,10 @@ const ResponseCreate = () => {
                         <div className="col-md-2">
                             <FormGroup>
                                 <FormLabel>Petition Number</FormLabel>
-                                <FormControl></FormControl>
+                                <FormControl
+                                    name="petition_number"
+                                    defaultValue={response.petition_number}
+                                ></FormControl>
                             </FormGroup>
                         </div>
                         <div className="col-md-2">
@@ -56,7 +78,7 @@ const ResponseCreate = () => {
                                 <FormLabel>Crime Number</FormLabel>
                                 <FormControl
                                     name="crime_number"
-                                    value={ response.crime_number }
+                                    defaultValue={ response.crime_number }
                                 ></FormControl>
                             </FormGroup>
                         </div>
@@ -65,7 +87,7 @@ const ResponseCreate = () => {
                                 <FormLabel>Year</FormLabel>
                                 <FormControl
                                     name="crime_year"
-                                    value={ response.crime_year }
+                                    defaultValue={ response.crime_year }
                                 ></FormControl>
                             </FormGroup>
                         </div>
@@ -74,20 +96,26 @@ const ResponseCreate = () => {
                                 <FormLabel>Date of FIR</FormLabel>
                                 <FormControl
                                     name="fir_date_time"
-                                    value={ response.fir_date_time }
+                                    defaultValue={ response.fir_date_time }
                                 ></FormControl>
                             </FormGroup>
                         </div>
                         <div className="col-md-3">
                             <FormGroup className='mb-3'>
                                 <FormLabel>Name of the Police Station</FormLabel>
-                                <FormControl></FormControl>
+                                <select name="police_station" className='form-control'>
+                                    <option value={response.police_station.station_code}>{ response.police_station.station_name}</option>
+                                </select>
                             </FormGroup>
                         </div>
                         <div className="col-md-3">
                             <FormGroup className='mb-3'>
                                 <FormLabel>Petitioner Name</FormLabel>
-                                <FormControl></FormControl>
+                                <select name="petitioner_name" id="" className="form-control">
+                                    { response.petitioners.map((petitioner, index) => (                             
+                                        <option key={index} value={petitioner.petitioner_id}>{petitioner.petitioner_name}</option>
+                                    ))}
+                                </select>
                             </FormGroup>
                         </div>
                         <div className="col-md-2">
@@ -133,7 +161,10 @@ const ResponseCreate = () => {
                         <div className="col-md-5">
                             <FormGroup className='mb-3'>
                                 <FormLabel>Name of the Defacto Complainant</FormLabel>
-                                <FormControl type="text"></FormControl>
+                                <FormControl 
+                                    type="text"
+                                    value={response.complainant_name}
+                                ></FormControl>
                             </FormGroup>
                         </div>
                         <div className="col-md-5">
@@ -149,8 +180,8 @@ const ResponseCreate = () => {
                                     as="textarea" 
                                     rows={4}
                                     name="gist_of_fir"
-                                    value={ response.gist_of_fir }
-                                    readonly = "readonly"
+                                    value={ response.gist_in_local }
+                                    readOnly={true}
                                 ></FormControl>
                             </FormGroup>
                         </div>
@@ -173,7 +204,7 @@ const ResponseCreate = () => {
                         <div className="col-md-4">
                             <FormGroup className='mb-3'>
                                 <FormLabel>Specific Allegations /Overt Acts against the Petitioner(s)</FormLabel>
-                                <FormControl as="textarea" rows={2}></FormControl>
+                                <FormControl rows={2}></FormControl>
                             </FormGroup>
                         </div>
                         <div className="col-md-4">
