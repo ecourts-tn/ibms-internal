@@ -40,7 +40,7 @@ const CaseScrutiny = () => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await api.get(`api/bail/petition/detail`, {params: { cino:state.cion}})
+                const response = await api.get(`api/bail/petition/detail/`, { params: { cino:state.cino }})
                 const { petition, petitioner, grounds, respondent, advocate, fees} = response.data
                 setPetition(petition)
                 setPetitioner(petitioner)
@@ -53,7 +53,7 @@ const CaseScrutiny = () => {
             }
         }
         fetchData();
-    })
+    },[])
 
     const handleSubmit = async () => {
         if(form.status === 1){

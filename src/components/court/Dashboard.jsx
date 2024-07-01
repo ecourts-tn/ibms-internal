@@ -30,6 +30,7 @@ const Dashboard = () => {
             if(response.status === 200){
                 setCases(response.data)
             }
+            console.log(response)
         }
         fecthCases();
     },[])
