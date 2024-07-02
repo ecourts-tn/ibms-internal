@@ -33,25 +33,25 @@ export default function MenuBar() {
             <nav className="mt-2">
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li className="nav-item menu-open">
-                  <Link to="filing" className="nav-link active">
+                  <Link to="/court/dashboard" className="nav-link active">
                     <i className="nav-icon fas fa-tachometer-alt" />
                     <p>Dashboard</p>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <a href="/#" className="nav-link">
                     <i className="nav-icon fas fa-table"></i>
                     <p>Registration <i className="fas fa-angle-left right"></i></p>
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <Link to="/" className="nav-link">
+                      <Link to="#/" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Post Cases to Causelist</p>
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link to="/" className="nav-link">
+                      <Link to="/court/case/scrutiny" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Scrutiny Cases</p>
                       </Link>
@@ -59,13 +59,13 @@ export default function MenuBar() {
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <Link to="/court/daily-proceedings" className="nav-link">
                     <i className="nav-icon fas fa-table" />
                     <p> Court Proceedings <i className="fas fa-angle-left right" /></p>
-                  </a>
+                  </Link>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <Link to="/today-cases" className="nav-link">
+                      <Link to="/court/today-cases" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Today's Cases</p>
                       </Link>

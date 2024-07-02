@@ -30,7 +30,7 @@ const ResponseCreate = () => {
 
     useEffect(() => {
         async function fetchData(){
-            const res = await api.get(`api/bail/petition/${state.cino}/detail/`)
+            const res = await api.get(`api/bail/petition/detail/`, {params:{cino:state.cino}})
             if(res.status === 200){
                 const {data} = res
                 console.log(data.petition.complainant_name)

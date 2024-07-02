@@ -1,7 +1,7 @@
 import React from 'react'
 import api from '../../api'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import Button from '@mui/material/Button'
 
 const TodayCases = () => {
 
@@ -31,12 +31,14 @@ const TodayCases = () => {
                             <table className="table table-bordered table-striped">
                                 <thead className="bg-secondary">
                                     <tr>
+                                        <th>#</th>
                                         <th>S. No.</th>
                                         <th>Court</th>
                                         <th>Case Type</th>
                                         <th>Bail Type</th>
                                         <th>Crime Number/Year</th>
                                         <th>Petitioners</th>
+                                        <th>Next Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -45,6 +47,7 @@ const TodayCases = () => {
                                         <>
                                             { cases.map((c, index) => (
                                                 <tr key={index}>
+                                                    <td><input type="checkbox" className="mr-2" name="checkbox[]"/></td>
                                                     <td>{ index + 1 }</td>
                                                     <td>
                                                         { c.petition.court_type.id === 2 && (
@@ -70,27 +73,14 @@ const TodayCases = () => {
                                                             }
                                                     </ol>
                                                     </td>
-                                                    <td>
-                                                        { !c.petition.filing_type && !c.petition.filing_number && (
-                                                            <span className="badge bg-info">
-                                                                <Link to="/court/case/scrutiny" state={{ id: 'TN20240607000001' }}>Scrutiny</Link>
-                                                            </span>
-                                                        )}
-                                                        { c.petition.filing_type && c.petition.filing_number && !c.petition.reg_type && !c.petition.reg_number && (
-                                                            <span className="badge bg-warning">
-                                                                <Link to="/court/case/registration" state={{ id: 'TN20240607000001' }}>Registration</Link>
-                                                            </span>
-                                                        )}
-                                                        { c.petition.filing_type && c.petition.filing_number && c.petition.reg_type && c.petition.reg_number && (
-                                                            <span className="badge bg-primary">
-                                                                <Link to="/court/case/registration" state={{ id: 'TN20240607000001' }}>Post to Cause List</Link>
-                                                            </span>
-                                                        )}
-                                                        {/* { c.petition.filing_type && c.petition.filing_number && c.petition.reg_type && c.petition.reg_number && (
-                                                            <span className="badge bg-primary">
-                                                                <Link to="/court/case-registration" state={{ id: 'TN20240606000003' }}>Post to Cause List</Link>
-                                                            </span>
-                                                        )} */}
+                                                    <td width="100">
+                                                        <input type="date" className="form-control" />
+                                                    </td>
+                                                    <td width="80">
+                                                        <Button
+                                                            variant='contained'
+                                                            color='success'
+                                                        >Submit</Button>
                                                     </td>
                                                 </tr>
                                                 ))

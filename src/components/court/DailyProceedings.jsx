@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Proceeding from './Proceeding'
 import api from '../../api'
 import './style.css'
+import PPRemarks from './PPRemarks'
 
 
 const DailyProceedings = () => {
@@ -10,10 +11,10 @@ const DailyProceedings = () => {
     const[numbers, setNumbers] = useState([])
 
     const[petition, setPetition]        = useState({
-        // court_type: '',
-        // case_type: '',
-        // bail_type: '',
-        // complaint_type: ''
+        court_type: '',
+        case_type: '',
+        bail_type: '',
+        complaint_type: ''
     })
     const[petitioner, setPetitioner]    = useState([])
     const[respondent, setRespondent]    = useState([])
@@ -22,16 +23,18 @@ const DailyProceedings = () => {
 
     useEffect(() => {
         async function fetchData(){
-            try{
-                const response = await api.get(`api/bail/petition/detail?cino=${regNumber}`)
-                const { petition, petitioner, grounds, respondent,advocate} = response.data
-                setPetition(petition)
-                setPetitioner(petitioner)
-                setRespondent(respondent)
-                setAdvocates(advocate)
-                setGrounds(grounds)
-            }catch(err){
-                console.log(err)
+            if(regNumber !== ''){
+                try{
+                    const response = await api.get(`api/bail/petition/detail/`, {params:{cino:regNumber}})
+                    const { petition, petitioner, grounds, respondent,advocate} = response.data
+                    setPetition(petition)
+                    setPetitioner(petitioner)
+                    setRespondent(respondent)
+                    setAdvocates(advocate)
+                    setGrounds(grounds)
+                }catch(err){
+                    console.log(err)
+                }
             }
         }
         fetchData();
@@ -49,7 +52,6 @@ const DailyProceedings = () => {
         }
         fetchData()
     }, [])
-
 
     return (
         <>
@@ -94,38 +96,42 @@ const DailyProceedings = () => {
                                                     { Object.keys(petition).length > 0 && (
                                                         <table className="table table-bordered table-striped table-sm">
                                                             { petition && (
-                                                            <>
+                                                            <tbody>
                                                                 <tr>
                                                                     <td>Court Type</td>
-                                                                    <td>{ petition.court_type.name }</td>
+                                                                    <td>{ petition.court_type.court_type }</td>
                                                                     <td>Bench Type</td>
-                                                                    <td></td>
+                                                                    <td>{ petition.bench_type ? petition.bench_type.bench_type : null}</td>
                                                                 </tr>
+                                                                { parseInt(petition.court_type.id) === 2 && (
+                                                                <>
                                                                 <tr>
                                                                     <td>State</td>
-                                                                    <td>{ petition.state.state_name }</td>
+                                                                    <td>{ petition.state ? petition.state.state_name : null }</td>
                                                                     <td>District</td>
-                                                                    <td>{ petition.district.district_name }</td>
+                                                                    <td>{ petition.district ? petition.district.district_name : null }</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Establishment</td>
-                                                                    <td>{ petition.establishment.establishment_name }</td>
+                                                                    <td>{ petition.establishment ? petition.establishment.establishment_name : null }</td>
                                                                     <td>Court</td>
-                                                                    <td>{ petition.court.court_name }</td>
-                                                                </tr>
+                                                                    <td>{ petition.court ? petition.court.court_name : null }</td>
+                                                                </tr>    
+                                                                </>
+                                                                )}
                                                                 <tr>
                                                                     <td>Case Type</td>
-                                                                    <td>{ petition.case_type.name }</td>
+                                                                    <td>{ petition.case_type.type_name }</td>
                                                                     <td>Bail Type</td>
-                                                                    <td>{ petition.bail_type.name }</td>
+                                                                    <td>{ petition.bail_type.type_name }</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Crime Registered</td>
-                                                                    <td>{ petition.crime_registered === 1 ? 'Yes' : 'No' }</td>
+                                                                    <td>{ parseInt(petition.crime_registered) === 1 ? 'Yes' : null}</td>
                                                                     <td>Compliant Type</td>
-                                                                    <td>{ petition.complaint_type.name }</td>
+                                                                    <td>{ petition.complaint_type.type_name }</td>
                                                                 </tr>
-                                                            </>
+                                                            </tbody>
                                                             )}
                                                         </table>
                                                     )}
@@ -254,7 +260,11 @@ const DailyProceedings = () => {
                                     </div>
                                     <div id="collapseSix" className="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                                         <div className="card-body">
-
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <PPRemarks />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

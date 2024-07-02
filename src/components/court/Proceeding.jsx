@@ -9,17 +9,22 @@ const Proceeding = ({cino}) => {
         petition: '',
         case_number: '',
         proceeding: '',
+        vakalath_filed: false,
+        accused: '',
         condition: false,
-        surety_required: false,
+        bond_type: 1,
+        bond_amount:'',
         appear_location: '',
+        state:'',
         district: '',
         establishment: '',
         court_no:'',
         condition_time:'',
         condition_duration:'',
         is_bond:false,
-        is_surity:false,
+        is_surety:false,
         no_of_surety: 2,
+        surety_amount:'',
         other_condition: '',
         todays_date: '',
         next_date:null,
@@ -28,11 +33,14 @@ const Proceeding = ({cino}) => {
     }
     const[form, setForm] = useState(initialState)
 
+    console.log(cino)
+
     useEffect(() => {
         async function fetchData(){
-            if(cino && cino!== ''){
+            if(cino){
                 try{
                     const response = await api.get(`api/bail/petition/detail/`, { data: {cino:cino}})
+                    console.log(response.data)
                     if(response.status === 200){
                         setPetition(response.data)
                         setForm({
@@ -50,11 +58,12 @@ const Proceeding = ({cino}) => {
             }
         }
         fetchData();
-    },[form, cino])
+    },[])
 
     // console.log(petition)
 
     const handleSubmit = async () => {
+        console.log(form)
         try{
             const response = await api.post("api/bail/daily-proceeding/create/", form)
             if(response.status === 201){
@@ -107,6 +116,32 @@ const Proceeding = ({cino}) => {
                     )}
                     <div className="row">
                         <div className="col-md-12">
+                            <div className="form-group row">
+                                <label className="col-sm-4">Vakalath Filed?</label>
+                                <div className="col-sm-8">
+                                    <div className="icheck-success d-inline mx-2">
+                                        <input 
+                                            type="radio" 
+                                            id="radioVakalathFiled1" 
+                                            name="vakalath_filed" 
+                                            onChange={(e) => setForm({...form, [e.target.name] : true})} 
+                                            checked={form.vakalath_filed ? true : false}
+                                        />
+                                        <label htmlFor="radioVakalathFiled1">Yes</label>
+                                    </div>
+                                    <div className="icheck-danger d-inline mx-2">
+                                        <input 
+                                            type="radio" 
+                                            id="radioVakalathFiled2" 
+                                            name="vakalath_filed" 
+                                            onChange={(e) => setForm({...form, [e.target.name] : false})} 
+                                            checked={!form.vakalath_filed ? true : false}/>
+                                        <label htmlFor="radioVakalathFiled2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12">
                             <div className="form-group">
                                 <label htmlFor="proceeding">Proceeding</label>
                                 <select 
@@ -123,25 +158,82 @@ const Proceeding = ({cino}) => {
                                 </select>
                             </div>
                         </div>
-                        <div className="col-md-12">
+                        <div className="col-md-12 mb-3">
                             <div className="form-group">
-                                <label htmlFor="proceeding">Select Accused</label>
+                                <label htmlFor="accused">Select Accused</label>
                                 <select 
-                                    name="proceeding" 
-                                    value={form.proceeding} 
+                                    name="accused" 
+                                    value={form.accused} 
                                     className="form-control" 
                                     onChange={(e) => setForm({...form, [e.target.name]:e.target.value})}
                                 >
-                                    <option value="">Select Proceeding</option>
+                                    <option value="">Select Accused</option>
                                     <option value="1">Test 1</option>
                                     <option value="2">Test 2</option>
                                 </select>
                             </div>
                         </div>
+                        { parseInt(form.proceeding) !== 2 && (
+                        <>
                         <div className="col-md-12">
                             <div className="form-group row">
-                                <label className="col-sm-3">Condition</label>
-                                <div className="col-sm-9">
+                                <label className="col-sm-4">Bond Type</label>
+                                <div className="col-sm-8">
+                                    <div className="icheck-info d-inline mx-2">
+                                        <input 
+                                            type="radio" 
+                                            id="radioBondType1" 
+                                            name="bond_type" 
+                                            onChange={(e) => setForm({...form, [e.target.name] : 1})} 
+                                            checked={parseInt(form.bond_type) === 1 ? true : false}
+                                        />
+                                        <label htmlFor="radioBondType1">Own Bond</label>
+                                    </div>
+                                    <div className="icheck-info d-inline mx-2">
+                                        <input 
+                                            type="radio" 
+                                            id="radioBondType2" 
+                                            name="bond_type" 
+                                            onChange={(e) => setForm({...form, [e.target.name] : 2})} 
+                                            checked={parseInt(form.bond_type) === 2 ? true : false}/>
+                                        <label htmlFor="radioBondType2">Surety Bond</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        { form.bond_type === 2 && (
+                        <div className="col-md-12">
+                            <div className="form-group row">
+                                <label htmlFor="" className="col-sm-4">No of Surety</label>
+                                <div className="col-sm-2">
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        name="no_of_surety"
+                                        value={form.no_of_surety} 
+                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        )}
+                        <div className="col-md-12">
+                            <div className="form-group row">
+                                <label htmlFor="" className="col-sm-4">{ form.bond_type === 1 ? ('Own Bond of Rs.') : ('Surity Bond of Rs.')}</label>
+                                <div className="col-sm-4">
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        value={form.bond_amount}
+                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="form-group row">
+                                <label className="col-sm-4">Condition</label>
+                                <div className="col-sm-8">
                                     <div className="icheck-success d-inline mx-2">
                                         <input 
                                             type="radio" 
@@ -164,73 +256,7 @@ const Proceeding = ({cino}) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-12">
-                            <div className="form-group row">
-                                <label className="col-sm-3">Surety Required</label>
-                                <div className="col-sm-9">
-                                    <div className="icheck-success d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            id="radioSurety1" 
-                                            name="surety_required" 
-                                            onChange={(e) => setForm({...form, [e.target.name] : true})} 
-                                            checked={form.surety_required ? true : false}
-                                        />
-                                        <label htmlFor="radioSurety1">Yes</label>
-                                    </div>
-                                    <div className="icheck-danger d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            id="radioSurety2" 
-                                            name="surety_required" 
-                                            onChange={(e) => setForm({...form, [e.target.name] : false})} 
-                                            checked={!form.surety_required ? true : false}/>
-                                        <label htmlFor="radioSurety2">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-group row">
-                                <label htmlFor="" className="col-sm-3"></label>
-                                <div className="col-sm-2">
-                                    <div className="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" id="checkboxPrimary1" defaultChecked />
-                                        <label htmlFor="checkboxPrimary1">Own</label>
-                                    </div>
-                                </div>
-                                <label htmlFor="" className="col-sm-3">No of Surety</label>
-                                <div className="col-sm-2">
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        name="no_of_surety"
-                                        value={form.no_of_surety} 
-                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-group row">
-                                <label htmlFor="" className="col-sm-4">Surety Bond of Rs.</label>
-                                <div className="col-sm-3">
-                                    <input type="text" className="form-control" />
-                                </div>
-                                {/* <div className="col-sm-2">
-                                    <div className="icheck-secondary d-inline ml-2">
-                                        <input type="checkbox" id="checkboxPrimary1"/>
-                                        <label htmlFor="checkboxPrimary1">Cash</label>
-                                    </div>
-                                </div>
-                                <div className="col-sm-2">
-                                    <div className="icheck-secondary d-inline ml-2">
-                                        <input type="checkbox" id="checkboxPrimary1"/>
-                                        <label htmlFor="checkboxPrimary1">Bond</label>
-                                    </div>
-                                </div> */}
-                            </div>
-                        </div>
+                        { form.condition && (
                         <div className="col-md-12">
                             <div className="form-group row">
                                 <label className="col-sm-4">Condition Place</label>
@@ -247,33 +273,25 @@ const Proceeding = ({cino}) => {
                                         <option value="3">Other</option>
                                     </select>
                                 </div>
-                                {/* <div className="col-sm-8">
-                                    <div className="icheck-primary d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            name="appear_location" 
-                                            id="appearLocation1"
-                                            onClick={(e) => setForm({...form, [e.target.name]: 1})} 
-                                            checked={form.appear_location === 1 ? true : false}
-                                        /> 
-                                        <label htmlFor="appearLocation1">Court</label>
-                                    </div>
-                                    <div className="icheck-primary d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            className="ml-2" 
-                                            name="appear_location" 
-                                            id="appearLocation2"
-                                            onClick={(e) => setForm({...form, [e.target.name]: 2})} 
-                                            checked={form.appear_location === 2 ? true : false}/> 
-                                        <label htmlFor="appearLocation2">Police Station</label>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
-                        { form.condition === 1 && (
+                        )}
+                        { form.condition && form.appear_location !== '' && (
                         <>
-                            <div className="col-md-12">
+                            <div className="col-md-6">
+                                <div className="form-group">
+                                    <label htmlFor="">State</label>
+                                    <select 
+                                        name="state"
+                                        className="form-control"
+                                        value={form.state}
+                                        onChange={(e) => setForm({...form, [e.target.name] : e.target.value})}
+                                    >
+                                        <option value="">Select State</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
                                 <div className="form-group">
                                     <label htmlFor="">District</label>
                                     <select 
@@ -363,56 +381,6 @@ const Proceeding = ({cino}) => {
                         </>
                         )}
                         <div className="col-md-12">
-                            <div className="form-group row">
-                                <label className="col-sm-2">Bond</label>
-                                <div className="col-sm-4">
-                                    <div className="icheck-success d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            name="is_bond"                                   
-                                            className="ml-2" 
-                                            id="isBondYes"
-                                            onChange={(e) => setForm({...form, [e.target.name] : true})} 
-                                            checked={form.is_bond ? true : false}/> 
-                                        <label htmlFor="isBondYes">Yes</label>
-                                    </div>
-                                    <div className="icheck-danger d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            name="is_bond"                                   
-                                            className="ml-2" 
-                                            id="isBondNo"
-                                            onChange={(e) => setForm({...form, [e.target.name] : false})} 
-                                            checked={!form.is_bond ? true : false}/> 
-                                        <label htmlFor="isBondNo">No</label>
-                                    </div>
-                                </div>
-                                <label className="col-sm-2">Surety</label>
-                                <div className="col-sm-4">
-                                    <div className="icheck-success d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            name="is_surity"                                   
-                                            className="ml-2" 
-                                            id="isSurityYes"
-                                            onChange={(e) => setForm({...form, [e.target.name] : true})} 
-                                            checked={form.is_surity ? true : false}/> 
-                                        <label htmlFor="isSurityYes">Yes</label>
-                                    </div>
-                                    <div className="icheck-danger d-inline mx-2">
-                                        <input 
-                                            type="radio" 
-                                            name="is_surity"                                   
-                                            className="ml-2" 
-                                            id="isSurityNo"
-                                            onChange={(e) => setForm({...form, [e.target.name] : false})} 
-                                            checked={!form.is_surity ? true : false}/> 
-                                        <label htmlFor="isSurityNo">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
                             <div className="form-group">
                                 <label htmlFor="">Other Condition (if any)</label>
                                 <input 
@@ -442,6 +410,9 @@ const Proceeding = ({cino}) => {
                             </div>
                         </>    
                         )}
+                        </>
+                        )}
+
                         <div className="col-md-12">
                             <div className="form-group">
                                 <label htmlFor="">Remarks</label>
@@ -455,6 +426,7 @@ const Proceeding = ({cino}) => {
                                 ></textarea>                
                             </div>
                         </div>
+                        { cino && (
                         <div className="col-md-12">
                             <div className="form-group text-center">
                                 <button 
@@ -467,6 +439,7 @@ const Proceeding = ({cino}) => {
                                 >Reset</button>
                             </div>
                         </div>
+                        )}
                     </div>
                 </div>
             </div>
