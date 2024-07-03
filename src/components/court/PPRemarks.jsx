@@ -101,12 +101,12 @@ const PPRemarks = () => {
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="" className="col-sm-3">Status</label>
+                    <label htmlFor="" className="col-sm-3">Condition of Victim</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" />
                     </div>
                 </div>
-                    </>
+            </>
                 )}
                 <div className="form-group row">
                     <label htmlFor="" className="col-sm-3">Remarks</label>

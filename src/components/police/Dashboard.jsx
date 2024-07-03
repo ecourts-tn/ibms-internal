@@ -141,24 +141,15 @@ const Dashboard = () => {
                             <div className="col-md-9">
                                 <div className="card">
                                     <div className="card-header">
-                                    <h3 className="card-title">
-                                        <i className="ion ion-clipboard mr-1" />
-                                        <strong>Pending Scrutiny</strong>
-                                    </h3>
-                                    <div className="card-tools">
-                                        <ul className="pagination pagination-sm">
-                                        <li className="page-item"><a href="#" className="page-link">«</a></li>
-                                        <li className="page-item"><a href="#" className="page-link">1</a></li>
-                                        <li className="page-item"><a href="#" className="page-link">2</a></li>
-                                        <li className="page-item"><a href="#" className="page-link">3</a></li>
-                                        <li className="page-item"><a href="#" className="page-link">»</a></li>
-                                        </ul>
+                                        <h3 className="card-title">
+                                            <i className="ion ion-clipboard mr-1" />
+                                            <strong>Pending Response</strong>
+                                        </h3>
                                     </div>
-                                    </div>
-                                    <div className="card-body">
+                                    <div className="card-body p-0">
                                     <ul className="todo-list" data-widget="todo-list">
                                         { cases.map((c, index) => (
-                                            <li key={index}>
+                                            <li key={index} style={{}}>
                                                 <span className="handle">
                                                     <i className="fas fa-ellipsis-v" />
                                                     <i className="fas fa-ellipsis-v" />
@@ -169,7 +160,7 @@ const Dashboard = () => {
                                                 </div>
                                                 
                                                 <span className="text mr-3">
-                                                    <Link to={`/court/case/scrutiny/`} state={{cino: c.petition.cino}}>{ c.petition.cino }</Link>
+                                                    <Link to={`/police/response/create/`} state={{cino: c.petition.cino}}>{ c.petition.cino }</Link>
                                                 </span>
                                                 { c.petitioner.map((p, index) => (
                                                     <span className="text ml-2">{index+1}. {p.petitioner_name}</span>

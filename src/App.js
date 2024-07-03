@@ -13,6 +13,7 @@ import PoliceDashboard from "./components/police/Dashboard"
 import Response from "./components/police/Response"
 import PrisonDashboard from "./components/prison/Dashboard"
 import ProsecutorDashboard from "./components/prosecutor/Dashboard"
+import ProsecutionResponse from "./components/prosecutor/ResponseCreate"
 import Registration from "./components/Registration"
 import Dashboard from "./components/court/scrutiny/Dashboard"
 import ResponseCreate from './components/police/ResponseCreate'
@@ -56,6 +57,7 @@ function App() {
             </Route>
             <Route path="prosecution">
               <Route path="dashboard" element={<ProsecutorDashboard />} />
+              <Route path="response/create/" element={<ProsecutionResponse />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Route>
