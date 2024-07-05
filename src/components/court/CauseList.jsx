@@ -33,10 +33,10 @@ const CauseList = () => {
                                         <thead className="bg-secondary">
                                             <tr>
                                                 <th>S. NO</th>
-                                                <th>Court</th>
+                                                <th>Crime Number/Year</th>
                                                 <th>Case Type</th>
                                                 <th>Bail Type</th>
-                                                <th>Crime Number/Year</th>
+                                                <th>Court</th>
                                                 <th>Petitioners</th>
                                                 <th>Item No.</th>
                                             </tr>
@@ -48,6 +48,12 @@ const CauseList = () => {
                                                         <tr key={index}>
                                                             <td>{ index+1 }</td>
                                                             <td>
+                                                                { c.petition.crime_number } / { c.petition.crime_year }<br/>
+                                                                { c.petition.police_station && (
+                                                                    <span>{ c.petition.police_station.station_name}, {c.petition.crime_district.district_name}</span>
+                                                                )}   
+                                                            </td>
+                                                            <td>
                                                                 { c.petition.court_type.id === 2 && (
                                                                 <span>{ c.petition.court.court_name }<br/>{ c.petition.establishment.establishment_name }<br/>{ c.petition.district.district_name }</span>
                                                                 )}
@@ -57,12 +63,6 @@ const CauseList = () => {
                                                             </td>
                                                             <td>{ c.petition.case_type.type_name }</td>
                                                             <td>{ c.petition.bail_type.type_name }</td>
-                                                            <td>
-                                                                { c.petition.crime_number } / { c.petition.crime_year }<br/>
-                                                                { c.petition.police_station && (
-                                                                    <span>{ c.petition.police_station.station_name}, {c.petition.crime_district.district_name}</span>
-                                                                )}   
-                                                            </td>
                                                             <td>
                                                                 <ol style={{ paddingBottom:1}}>
                                                                     { c.petitioner.map((p, index) => (
