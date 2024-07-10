@@ -18,6 +18,8 @@ import Registration from "./components/Registration"
 import Dashboard from "./components/court/scrutiny/Dashboard"
 import ResponseCreate from './components/police/ResponseCreate'
 import CauseList from './components/court/CauseList'
+import SuretyPendingList from './components/court/SuretyPendingList'
+import SuretyVerify from './components/court/SuretyVerify'
 
 const appendScript = (scriptToAppend) => {
   const script = document.createElement("script");
@@ -46,6 +48,8 @@ function App() {
               <Route path="cause-list" element={<CauseList />} />
               <Route path="case/scrutiny" element={<Dashboard />} />
               <Route path="case/registration" element={<CaseRegistration />} />
+              <Route path="surety/pending/list/" element={<SuretyPendingList />} />
+              <Route path="surety/verify/" element={<SuretyVerify />} />
             </Route>
             <Route path="police">
               <Route path="dashboard" element={<PoliceDashboard />} />

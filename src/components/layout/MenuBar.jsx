@@ -123,7 +123,7 @@ export default function MenuBar() {
                   </Link>
                 </li>  
                 <li className="nav-item">
-                  <Link to="police-response" className="nav-link">
+                  <Link to="/court/surety/pending/list/" className="nav-link">
                     <i className="nav-icon far fa-circle text-info" />
                     <p>Surety</p>
                   </Link>
