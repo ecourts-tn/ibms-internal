@@ -60,8 +60,16 @@ const Login = () => {
       localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
       await login(response.data)
     }catch(error){
-      
-      if(!error.response){
+      if(error.inner){
+        setLoading(false)
+        const newErrors = {};
+        error.inner.forEach((err) => {
+            newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
+        return
+    }
+    if(!error.response){
         toast.error("Unable to reach the server. Please try later!",{
             theme:"colored"
         })
@@ -75,14 +83,6 @@ const Login = () => {
         setLoading(false)
         return
     }
-    if(error.response.status === 500){
-      toast.error("Invalid username or password", {
-        theme: "colored"
-      })
-      setLoading(false)
-      return
-    }
-
     }
 }
 

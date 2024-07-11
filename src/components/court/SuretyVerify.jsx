@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 import CheckIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/CancelRounded'
 import { toast, ToastContainer } from 'react-toastify'
-import { Document, Page } from 'react-pdf';
+// import { Document, Page } from 'react-pdf';
 import api from '../../api'
 import ViewDocument from './ViewDocument'
 
