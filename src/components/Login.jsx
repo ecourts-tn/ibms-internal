@@ -1,6 +1,5 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch} from 'react-redux'
 import './login.css'
 import highcourtlogo from './highcourtlogo.png'
@@ -14,11 +13,11 @@ import TextField  from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import LoginIcon from '@mui/icons-material/Login';
 import * as Yup from 'yup'
+import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const usertypes = useSelector((state) => state.usertypes.usertypes)
 
   const usertypeStatus = useSelector(getUserTypeStatus)
@@ -29,7 +28,7 @@ const Login = () => {
       username:'',
       password:''
   })
-
+  const { login } = useAuth();
   const[errors, setErrors] = useState({})
 
   const validationSchema = Yup.object({
@@ -51,88 +50,40 @@ const Login = () => {
     try{
       await validationSchema.validate(form, {abortEarly:false})
       const {username, password, usertype} = form
-      const res = await api.post('api/login/department/', { usertype, username, password })
-      if(res.status === 500){
+      const response = await api.post('api/login/department/', { usertype, username, password })
+      if(response.status === 500){
         toast.error("Invalid username or password", {
           theme: "colored"
         })
-      }else{
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        if(parseInt(usertype) === 4){
-          navigate("/prison/dashboard")
-        }else if(parseInt(usertype) === 5){
-          navigate("police/dashboard")
-        }
-        else if(parseInt(usertype) === 8){
-          navigate("/court/dashboard")
-        }
       }
-      //   if(usertype === 8){
-      //     navigate("/court/dashboard")
-      //   }
-      // }catch(error){
-      //   if(error.response.status === 401){
-      //       toast.error("Invalid username or password", {
-      //           theme: "colored"
-      //       });
-      //       setLoading(false)
-      //       navigate("/")
-      //   }
-      //   if(error.response.status === 403){
-      //       toast.error( error.response.data.message , {
-      //           theme: "colored"
-      //       });
-      //       setLoading(false)
-      //       navigate("/")
-      //   }
-      //   if(error.response.status === 500){
-      //     console.log(error.response)
-      //     toast.error(error.response.statusText,{
-      //       theme: "colored"
-      //     })
-      //     setLoading(false)
-      //     navigate("/")
-      //   }
-      // }
+      localStorage.setItem(ACCESS_TOKEN, response.data.access);
+      localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+      await login(response.data)
     }catch(error){
-      setLoading(false)
-      const newErrors = {};
-      error.inner.forEach((err) => {
-          newErrors[err.path] = err.message;
-      });
-      setErrors(newErrors);
+      
+      if(!error.response){
+        toast.error("Unable to reach the server. Please try later!",{
+            theme:"colored"
+        })
+        setLoading(false)
+        return
     }
-    // try {
-    //     const {username, password, usertype} = form
-    //     const res = await api.post('api/login/department/', { usertype, username, password })
-    //     localStorage.setItem(ACCESS_TOKEN, res.data.access);
-    //     localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-    //     navigate("/dashboard")
-    // } catch (error) {
-    //     if(error.response.status === 401){
-    //         toast.error("Invalid username or password", {
-    //             theme: "colored"
-    //         });
-    //         setLoading(false)
-    //         navigate("/")
-    //     }
-    //     if(error.response.status === 403){
-    //         toast.error( error.response.data.message , {
-    //             theme: "colored"
-    //         });
-    //         setLoading(false)
-    //         navigate("/")
-    //     }
-    //     if(error.response.status === 500){
-    //       console.log(error.response)
-    //       toast.error(error.response.statusText,{
-    //         theme: "colored"
-    //       })
-    //       setLoading(false)
-    //       navigate("/")
-    //     }
-    // } 
+    if(error.response.status === 400 || error.response.status === 401){
+        toast.error("Invalid username or password", {
+            theme: "colored"
+        });
+        setLoading(false)
+        return
+    }
+    if(error.response.status === 500){
+      toast.error("Invalid username or password", {
+        theme: "colored"
+      })
+      setLoading(false)
+      return
+    }
+
+    }
 }
 
   return (

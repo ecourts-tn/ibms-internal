@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from 'react-router-dom'
+import Button from '@mui/material/Button'
 import api from '../../api'
 
 
 
-const Response = () => {
+const ResponseSubmitted = () => {
 
     const navigate = useNavigate()
 
@@ -13,11 +14,11 @@ const Response = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-          const response = await api.get("api/bail/filing/");
-          setPetitions(response.data)
+            const response = await api.get("api/bail/filing/");
+            setPetitions(response.data)
         }
         fetchPetitions();
-      }, []); 
+        }, []); 
 
 
     const getPetition = async (cino) => {
@@ -36,7 +37,7 @@ const Response = () => {
                 <div className="container-fluid mt-3">
                     <div className="card card-outline card-primary">
                         <div className="card-header">
-                            <h3 className="card-title"><i className="fas fa-edit mr-2"></i><strong>Police Response</strong></h3>
+                            <h3 className="card-title"><i className="fas fa-edit mr-2"></i><strong>Submitted Response</strong></h3>
                         </div>
                         <div className="card-body">
                             <div className="row">
@@ -62,7 +63,12 @@ const Response = () => {
                                             <td>{ petition.complainant_guardian }</td>
                                             <td>{ petition.investigation_officer }</td>
                                             <td>
-                                                <Link to='/police/response/create/' state={{ cino: petition.cino }}>Process</Link>
+                                                <Link to='#/' state={{ cino: petition.cino }}>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='primary'
+                                                    >Details</Button>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
@@ -74,7 +80,7 @@ const Response = () => {
                 </div>  
             </div>          
         </>
-  )
+    )
 }
 
-export default Response
+export default ResponseSubmitted

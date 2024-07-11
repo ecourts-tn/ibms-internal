@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from "react"
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import FormControl from 'react-bootstrap/FormControl'
 import FormGroup from 'react-bootstrap/FormGroup'
 import FormLabel from 'react-bootstrap/FormLabel'
@@ -8,14 +8,14 @@ import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
 
-const ResponseCreate = () => {
+const ResponseDetails = () => {
     const {state} = useLocation()
-    const navigate = useNavigate()
     const[arrestModify, setArrestModify] = useState(true)
     const[petition, setPetition] = useState({
         filing_type: {}
     })
     const[accused, setAccused] = useState([])
+    const[response, setResponse] = useState([])
     const initialState = {
         cino                : '',
         offences            : '',
@@ -38,14 +38,14 @@ const ResponseCreate = () => {
         other_accused_status: '',
         reason_not_given    : '',
         other_information   : '',
-        court_details       : '',
+        court_details       : ''
     }
     
     const[form, setForm] = useState(initialState)
 
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/bail/petition/detail/`, {params:{cino:state.cino}})
+            const response = await api.get(`api/bail/police/response/detail/`, {params:{cino:state.cino}})
             if(response.status === 200){
                 setForm({
                     ...form,
@@ -53,6 +53,7 @@ const ResponseCreate = () => {
                 })
                 setPetition(response.data.petition)
                 setAccused(response.data.petitioner)
+                setResponse(response.data.response)
             }
         }
         fetchData()
@@ -67,7 +68,6 @@ const ResponseCreate = () => {
                     theme: "colored"
                 })
                 setForm(initialState)
-                navigate("/police/dashboard")
             }
         }catch(error){
             console.log(error)
@@ -161,184 +161,68 @@ const ResponseCreate = () => {
                             <strong>Response</strong>
                         </div>
                         <div className="card-body">
+                            { response.map((r, index) => (
+                            <table className="table table-bordered table-striped table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td>Offences</td>
+                                        <td>{r.offences}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Arrest</td>
+                                        <td>{ r.date_of_arrest }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name of the accused/suspected person(s)</td>
+                                        <td>{r.accused_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Specific Allegations /Overt Acts against the Petitioner(s)</td>
+                                        <td>{ r.specific_allegations}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Materials & Circumstances against the Petitioner</td>
+                                        <td>{ r.materials_used}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Injured discharged</td>
+                                        <td>{r.discharged}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hospital Name</td>
+                                        <td>{r.hospital_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Condition of Victim</td>
+                                        <td>{r.victim_condition}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Particulars of Injury</td>
+                                        <td>{r.injury_particulars}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stage of Investigation / Trial</td>
+                                        <td>{r.investigation_stage}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CNR Number</td>
+                                        <td>{r.cnr_number}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Court</td>
+                                        <td>{r.court}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stage of the Case</td>
+                                        <td>{r.case_stage}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            ))}
                             <form onSubmit={handleSubmit}>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <FormGroup className='mb-3'>
-                                            <FormLabel>Offences</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={1}
-                                                name="offences"
-                                                value={form.offences}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <label htmlFor="">Date of Arrest</label>
-                                        <div className="input-group mb-3">
-                                            <input 
-                                                type="date" 
-                                                className="form-control" 
-                                                name="date_of_arrest"
-                                                value={form.date_of_arrest}
-                                                readOnly={arrestModify}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            />
-                                            <div className="input-group-append">
-                                                <button 
-                                                    className="btn btn-outline-primary" 
-                                                    type="button"
-                                                    onClick={(e) => setArrestModify(!arrestModify)}
-                                                >Modify</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <FormGroup className='mb-3'>
-                                            <FormLabel>Name of the accused/suspected person(s)</FormLabel>
-                                            <FormControl 
-                                                type="text"
-                                                name="accused_name"
-                                                value={form.accused_name}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <FormGroup className='mb-3'>
-                                            <FormLabel>Specific Allegations /Overt Acts against the Petitioner(s)</FormLabel>
-                                            <FormControl 
-                                                as="textarea"
-                                                rows={1}
-                                                name="specific_allegations"
-                                                value={form.specific_allegations}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <FormGroup className='mb-3'>
-                                            <FormLabel>Materials & Circumstances against the Petitioner</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={2}
-                                                name="materials_used"
-                                                value={form.materials_used}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="form-group row">
-                                            <label className="col-sm-3">Injured discharged</label>
-                                            <div className="col-sm-8">
-                                                <div className="icheck-success d-inline mx-2">
-                                                    <input 
-                                                        type="radio" 
-                                                        id="radioDischarged1" 
-                                                        name="discharged" 
-                                                        onChange={(e) => setForm({...form, [e.target.name] : true})} 
-                                                        checked={form.discharged ? true : false}
-                                                    />
-                                                    <label htmlFor="radioDischarged1">Yes</label>
-                                                </div>
-                                                <div className="icheck-danger d-inline mx-2">
-                                                    <input 
-                                                        type="radio" 
-                                                        id="radioDischarged2" 
-                                                        name="discharged" 
-                                                        onChange={(e) => setForm({...form, [e.target.name] : false})} 
-                                                        checked={!form.discharged ? true : false}/>
-                                                    <label htmlFor="radioDischarged2">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        { !form.discharged && (
-                                        <>
-                                            <div className="form-group row">
-                                                <label htmlFor="" className="col-sm-3">Hospital Name</label>
-                                                <div className="col-sm-9">
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control" 
-                                                        name="hospital_name"
-                                                        value={form.hospital_name}
-                                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="form-group row">
-                                                <label htmlFor="" className="col-sm-3">Condition of Victim</label>
-                                                <div className="col-sm-9">
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control"
-                                                        name="victim_condition" 
-                                                        value={form.victim_condition}
-                                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="form-group row">
-                                                <label htmlFor="" className="col-sm-3">Particulars of Injury</label>
-                                                <div className="col-sm-9">
-                                                    <FormControl 
-                                                        as="textarea" 
-                                                        rows={2}
-                                                        name="injury_particulars"
-                                                        value={form.injury_particulars}
-                                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                    ></FormControl>
-                                                </div>
-                                            </div>
-                                        </>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <p><strong>Stage of Investigation / Trial</strong></p>
-                                    </div>
-                                    <div className="col-md-3 mb-3">
-                                        <select 
-                                            name="investigation_stage"
-                                            value={form.investigation_stage}
-                                            className='form-control'
-                                            onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                        >
-                                            <option value="">Select</option>
-                                            <option value="1">Pending Investigation</option>
-                                            <option value="2">Chargesheet filed</option>
-                                        </select>
-                                    </div>
-                                </div>
+
                                 { parseInt(form.investigation_stage) === 2 && (
                                 <div className="row mt-3">    
-                                    <div className="col-md-2">
-                                        <FormGroup className="mb-3">
-                                            <label htmlFor="">CNR Number</label>
-                                            <FormControl
-                                                name="cnr_number"
-                                                value={form.cnr_number}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-3">
-                                        <FormGroup className="mb-3">
-                                            <label htmlFor="">Court</label>
-                                            <select 
-                                                name="court" 
-                                                className="form-control"
-                                                value={form.court}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            >
-                                                <option value="">Select Court</option>
-                                            </select>
-                                        </FormGroup>
-                                    </div>
                                     <div className="col-md-2">
                                         <FormGroup className="mb-3">
                                             <label htmlFor="">Stage of the Case</label>
@@ -464,4 +348,4 @@ const ResponseCreate = () => {
   )
 }
 
-export default ResponseCreate
+export default ResponseDetails
