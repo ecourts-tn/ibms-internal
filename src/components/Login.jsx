@@ -52,14 +52,23 @@ const Login = () => {
       const {username, password, usertype} = form
       const response = await api.post('api/login/department/', { usertype, username, password })
       if(response.status === 500){
-        toast.error("Invalid username or password", {
+        toast.error("Invalid username or password1", {
           theme: "colored"
         })
       }
-      localStorage.setItem(ACCESS_TOKEN, response.data.access);
-      localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+      if(response.status === 400 || response.status === 401){
+        toast.error("Invalid username or password2", {
+            theme: "colored"
+        });
+        setLoading(false)
+        return
+      }
+      // localStorage.setItem(ACCESS_TOKEN, response.data.access);
+      // localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+      // console.log(response.data)
       await login(response.data)
     }catch(error){
+      console.log(error)
       if(error.inner){
         setLoading(false)
         const newErrors = {};
@@ -68,21 +77,14 @@ const Login = () => {
         });
         setErrors(newErrors);
         return
-    }
-    if(!error.response){
-        toast.error("Unable to reach the server. Please try later!",{
-            theme:"colored"
-        })
-        setLoading(false)
-        return
-    }
-    if(error.response.status === 400 || error.response.status === 401){
-        toast.error("Invalid username or password", {
-            theme: "colored"
-        });
-        setLoading(false)
-        return
-    }
+      }
+      if(error){
+          toast.error("Invalid username or password3", {
+              theme: "colored"
+          });
+          setLoading(false)
+          return
+      }
     }
 }
 

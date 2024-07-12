@@ -37,6 +37,8 @@ import SuretyVerify from './components/court/SuretyVerify'
 
 import { PrivateRoute } from "./hooks/PrivateRoute";
 import { AuthProvider } from "./hooks/useAuth";
+import PendingList from './components/court/scrutiny/PendingList'
+import BailCancellation from './components/police/BailCancellation'
 
 
 const appendScript = (scriptToAppend) => {
@@ -106,6 +108,14 @@ function App() {
                   path="petition/scrutiny" 
                   element={
                     <PrivateRoute>
+                      <PendingList />
+                    </PrivateRoute>
+                  } 
+                />
+                <Route 
+                  path="petition/scrutiny/details" 
+                  element={
+                    <PrivateRoute>
                       <Dashboard />
                     </PrivateRoute>
                   } 
@@ -113,9 +123,9 @@ function App() {
                 <Route 
                   path="petition/registration" 
                   element={
-                    <PrivateRoute>
+                    // <PrivateRoute>
                       <CaseRegistration />
-                    </PrivateRoute>
+                    // </PrivateRoute>
                   } 
                 />
                 <Route 
@@ -189,6 +199,14 @@ function App() {
                   element={
                     <PrivateRoute>
                       <ConditionForm />
+                    </PrivateRoute>
+                  } 
+                />
+                <Route 
+                  path="bail/cancellation" 
+                  element={
+                    <PrivateRoute>
+                      <BailCancellation />
                     </PrivateRoute>
                   } 
                 />

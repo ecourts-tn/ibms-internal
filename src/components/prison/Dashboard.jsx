@@ -160,7 +160,7 @@ const Dashboard = () => {
                                                 </div>
                                                 
                                                 <span className="text mr-3">
-                                                    <Link to={`/police/response/create/`} state={{cino: c.petition.cino}}>{ c.petition.cino }</Link>
+                                                    <Link to={`/prison/response/create/`} state={{cino: c.petition.cino}}>{ c.petition.cino }</Link>
                                                 </span>
                                                 { c.petitioner.map((p, index) => (
                                                     <span className="text ml-2">{index+1}. {p.petitioner_name}</span>
@@ -171,11 +171,6 @@ const Dashboard = () => {
                                                 ))} 
                                                 <div className="float-right">
                                                     <small className="badge badge-success"><i className="far fa-clock" /><ReactTimeAgo date={c.petition.created_at} locale="en-US"/></small>
-                                                    {/* <div className="tools">
-                                                        <i className="fas fa-edit" />
-                                                        <i className="fas fa-trash-o" />
-                                                    </div> */}
-
                                                 </div>
                                             </li>
                                         ))}

@@ -13,6 +13,7 @@ import AdvocateDetails from './AdvocateDetails'
 import FeesDetails from './FeesDetails'
 import { toast, ToastContainer } from 'react-toastify'
 
+
 const CaseScrutiny = () => {
 
     const {state} = useLocation();

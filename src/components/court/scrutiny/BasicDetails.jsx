@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Form from 'react-bootstrap/Form'
+import { CreateMarkup } from '../../../utils'
 
 const BasicDetails = ({petition}) => {
 
@@ -217,30 +218,24 @@ const BasicDetails = ({petition}) => {
                         <Form.Label>Complaintant Name</Form.Label>
                         <Form.Control 
                             name="compliantantName"
-                            readOnly={ petition.complaintant_name ? 'readOnly' : ''}
-                            value={ petition.complaintant_name }></Form.Control>
+                            readOnly={ petition.complainant_name ? 'readOnly' : ''}
+                            value={ petition.complainant_name }></Form.Control>
                     </Form.Group>
                 </div>
                 <div className="col-md-6">
                     <Form.Group className="mb-3">
                         <Form.Label>Gist of FIR / Allegations</Form.Label>
-                        <Form.Control 
-                            as="textarea" 
-                            rows="5" 
-                            readOnly={ petition.gist_of_fir ? 'readOnly' : ''}
-                            value={ petition.gist_of_fir }
-                            ></Form.Control>
+                        <div style={{ border:'1px solid gray', height:'250px', padding:'10px', overflowY:'scroll'}}>
+                            <p dangerouslySetInnerHTML={CreateMarkup(petition.gist_of_fir)}></p>
+                        </div>
                     </Form.Group>
                 </div>
                 <div className="col-md-6">
                     <Form.Group className="mb-3">
                         <Form.Label>Gist of FIR / Allegations (In Local Language)</Form.Label>
-                        <Form.Control 
-                            as="textarea" 
-                            rows="5"
-                            readOnly={ petition.gist_in_local ? 'readOnly' : ''}
-                            value={ petition.gist_in_local }
-                            ></Form.Control>
+                        <div style={{ border:'1px solid gray', height:'250px', padding:'10px', overflowY:'scroll'}}>
+                            <p dangerouslySetInnerHTML={CreateMarkup(petition.gist_in_local)}></p>
+                        </div>
                     </Form.Group>
                 </div>
             </div>   

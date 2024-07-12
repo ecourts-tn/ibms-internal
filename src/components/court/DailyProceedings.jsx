@@ -20,18 +20,22 @@ const DailyProceedings = () => {
     const[respondent, setRespondent]    = useState([])
     const[grounds, setGrounds] = useState([])
     const[advocates, setAdvocates] = useState([])
+    const[policeResponse, setPoliceResponse] = useState([])
+    const[prosecutionRemarks, setProsecutionRemarks] = useState({})
 
     useEffect(() => {
         async function fetchData(){
             if(regNumber !== ''){
                 try{
                     const response = await api.get(`api/bail/petition/detail/`, {params:{cino:regNumber}})
-                    const { petition, petitioner, grounds, respondent,advocate} = response.data
+                    const { petition, petitioner, grounds, respondent,advocate, police_response, ppremarks } = response.data
                     setPetition(petition)
                     setPetitioner(petitioner)
                     setRespondent(respondent)
                     setAdvocates(advocate)
                     setGrounds(grounds)
+                    setPoliceResponse(police_response)
+                    setProsecutionRemarks(ppremarks)
                 }catch(err){
                     console.log(err)
                 }
@@ -39,7 +43,6 @@ const DailyProceedings = () => {
         }
         fetchData();
     }, [regNumber])
-
 
     useEffect(() => {
         async function fetchData(){
@@ -135,6 +138,47 @@ const DailyProceedings = () => {
                                                             )}
                                                         </table>
                                                     )}
+                                                   
+                                                    <table className="table table-bordered table-striped table-sm">
+                                                        <thead className="bg-secondary">
+                                                            <tr>
+                                                                <th colSpan={5} style={{ textAlign:'center'}}>Advocates</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>S. No.</th>
+                                                                <th>Advocate&nbsp;Name</th>
+                                                                <th>Enrolment Number</th>
+                                                                <th>Mobile Number</th>
+                                                                <th>e-Mail Address</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            { advocates.map((radvocate, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{ index+1 }</td>
+                                                                    <td>{ radvocate.radvocate_name }</td>
+                                                                    <td>{ radvocate.entrolment_number }</td>
+                                                                    <td>{ radvocate.advocate_mobile }</td>
+                                                                    <td>{ radvocate.advocate_email }</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card m-1">
+                                    <div className="card-header" id="headingTwo">
+                                        <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="/#">
+                                            Litigants
+                                        </a>
+                                    </div>
+                                    <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                        <div className="card-body p-2">
+                                            <div className="row">
+                                                <div className="col-md-12">
                                                     <table className="table table-bordered table-striped table-sm">
                                                         <thead className="bg-secondary">
                                                             <tr>
@@ -189,52 +233,28 @@ const DailyProceedings = () => {
                                                             ))}
                                                         </tbody>
                                                     </table>
-                                                    <table className="table table-bordered table-sm">
-                                                        <thead className='bg-secondary'>
-                                                            <tr>
-                                                                <th style={{textAlign:'center'}}>Grounds</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td className='p-3'>
-                                                                    { grounds.map((ground, index) => (
-                                                                     <div className="card" key={index}>
-                                                                        <div className="card-body">
-                                                                            { ground.description}
-                                                                        </div>
-                                                                     </div>
-                                                                    ))}
-
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <table className="table table-bordered table-striped table-sm">
-                                                        <thead className="bg-secondary">
-                                                            <tr>
-                                                                <th colSpan={5} style={{ textAlign:'center'}}>Advocates</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>S. No.</th>
-                                                                <th>Advocate&nbsp;Name</th>
-                                                                <th>Enrolment Number</th>
-                                                                <th>Mobile Number</th>
-                                                                <th>e-Mail Address</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            { advocates.map((radvocate, index) => (
-                                                                <tr key={index}>
-                                                                    <td>{ index+1 }</td>
-                                                                    <td>{ radvocate.radvocate_name }</td>
-                                                                    <td>{ radvocate.entrolment_number }</td>
-                                                                    <td>{ radvocate.advocate_mobile }</td>
-                                                                    <td>{ radvocate.advocate_email }</td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card m-1">
+                                    <div className="card-header" id="headingThree">
+                                        <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" href="/#">
+                                            Grounds
+                                        </a>
+                                    </div>
+                                    <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                        <div className="card-body p-2">
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    { grounds.map((ground, index) => (
+                                                        <div className="card" key={index}>
+                                                        <div className="card-body">
+                                                            { ground.description}
+                                                        </div>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
@@ -247,8 +267,65 @@ const DailyProceedings = () => {
                                         </a>
                                     </div>
                                     <div id="collapseFive" className="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                                        <div className="card-body">
-                                            
+                                        <div className="card-body p-2">
+                                        { policeResponse.map((r, index) => (
+                                        <table className="table table-bordered table-striped table-sm mt-2" key={index}>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Offences</td>
+                                                    <td>{r.offences}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Date of Arrest</td>
+                                                    <td>{ r.date_of_arrest }</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Name of the accused/suspected person(s)</td>
+                                                    <td>{r.accused_name}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Specific Allegations /Overt Acts against the Petitioner(s)</td>
+                                                    <td>{ r.specific_allegations}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Materials & Circumstances against the Petitioner</td>
+                                                    <td>{ r.materials_used}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Injured discharged</td>
+                                                    <td>{r.discharged}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Hospital Name</td>
+                                                    <td>{r.hospital_name}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Condition of Victim</td>
+                                                    <td>{r.victim_condition}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Particulars of Injury</td>
+                                                    <td>{r.injury_particulars}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Stage of Investigation / Trial</td>
+                                                    <td>{r.investigation_stage}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CNR Number</td>
+                                                    <td>{r.cnr_number}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Court</td>
+                                                    <td>{r.court}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Stage of the Case</td>
+                                                    <td>{r.case_stage}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        ))}
                                         </div>
                                     </div>
                                 </div>
@@ -259,10 +336,49 @@ const DailyProceedings = () => {
                                         </a>
                                     </div>
                                     <div id="collapseSix" className="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-                                        <div className="card-body">
+                                        <div className="card-body p-3">
                                             <div className="row">
                                                 <div className="col-md-12">
-                                                    <PPRemarks />
+                                                    {prosecutionRemarks.length < 1 ?(
+                                                        <PPRemarks accused={petitioner}/>
+                                                    ): (
+                                                        <>
+                                                            { prosecutionRemarks.map((p, index) => (
+                                                                <table className="table table-bordered table-striped table-sm mt-2" key={index}>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>Accused Name</td>
+                                                                            <td>{ p.accused_name }</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Accused Type</td>
+                                                                            <td>{ p.accused_type }</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Response Type</td>
+                                                                            <td>{ p.response_type === 'c' ? 'Contested' : 'Uncontested' }</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Discharged</td>
+                                                                            <td>{ p.discharged ? 'Yes' : 'No'}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Hospital Name</td>
+                                                                            <td>{ p.hospital_name }</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Victim Condition</td>
+                                                                            <td>{ p.victim_condition }</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Remarks</td>
+                                                                            <td>{p.remarks}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            ))}
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>

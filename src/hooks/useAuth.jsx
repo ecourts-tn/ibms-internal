@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 const AuthContext = createContext();
@@ -10,16 +10,26 @@ export const AuthProvider = ({ children }) => {
   // call this function when you want to authenticate the user
   const login = async (data) => {
     setUser(data);
-    if(parseInt(user.user.user_type) === 8){
-      navigate("/court/dashboard")
-    }else if(parseInt(user.user.user_type) === 4){
-      navigate("/prison/dashboard")
-    }else if(parseInt(user.user.user_type) === 5){
-      navigate("/police/dashboard")
-    }else if(parseInt(user.user.user_type) === 3){
-      navigate("/prosecution/dashboard")
-    }
   };
+
+  const redirectDashboard = (type) => {
+    const usertype = parseInt(type)
+      if(usertype === 8){
+        navigate("/court/dashboard")
+      }else if(usertype === 4){
+        navigate("/prison/dashboard")
+      }else if(usertype === 5){
+        navigate("/police/dashboard")
+      }else if(usertype === 3){
+        navigate("/prosecution/dashboard")
+      }
+  }
+
+  useEffect(() => {
+    if(user){
+      redirectDashboard(user.user_type)
+    }
+  },[user])
 
   // call this function to sign out logged in user
   const logout = () => {

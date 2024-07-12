@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import highcourtlogo from '../../components/highcourtlogo.png'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -8,9 +8,14 @@ export default function MenuBar() {
 
   const {user, logout} = useAuth()
 
+
   const handleLogout = () => {
     logout();
   };
+
+  if (!user) {
+    return <Navigate to="/auth/login" />;
+  }
 
   return (
       <>
@@ -24,7 +29,7 @@ export default function MenuBar() {
                 <img src={highcourtlogo} className="img-circle elevation-2" alt="User Image" />
               </div>
               <div className="info">
-                <a href="#" className="d-block">{ user.user.username }</a>
+                <a href="#" className="d-block">{ user.username }</a>
               </div>
             </div>
             <div className="form-inline">
@@ -40,7 +45,7 @@ export default function MenuBar() {
             <nav className="mt-2">
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 {/* Start - Court user menu */}
-                { parseInt(user.user.user_type) === 8 && (
+                { parseInt(user.user_type) === 8 && (
                 <>
                   <li className="nav-item menu-open">
                     <Link to="/court/dashboard" className="nav-link active">
@@ -55,26 +60,32 @@ export default function MenuBar() {
                     </a>
                     <ul className="nav nav-treeview">
                       <li className="nav-item">
-                        <Link to="#/" className="nav-link">
+                        <Link to="/court/petition/listed-today" className="nav-link">
                           <i className="far fa-circle nav-icon" />
                           <p>Post Cases to Causelist</p>
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link to="/court/case/scrutiny" className="nav-link">
+                        <Link to="/court/petition/scrutiny" className="nav-link">
                           <i className="far fa-circle nav-icon" />
-                          <p>Scrutiny Cases</p>
+                          <p>Case Scrutiny</p>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/court/petition/registration" className="nav-link">
+                          <i className="far fa-circle nav-icon" />
+                          <p>Case Registration</p>
                         </Link>
                       </li>
                     </ul>
                   </li>
                   <li className="nav-item">
-                    <Link to="/court/daily-proceedings" className="nav-link">
+                    <Link to="#/" className="nav-link">
                       <i className="nav-icon fas fa-table" />
                       <p> Court Proceedings <i className="fas fa-angle-left right" /></p>
                     </Link>
                     <ul className="nav nav-treeview">
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <Link to="/court/today-cases" className="nav-link">
                           <i className="far fa-circle nav-icon" />
                           <p>Today's Cases</p>
@@ -91,9 +102,9 @@ export default function MenuBar() {
                           <i className="far fa-circle nav-icon" />
                           <p>Disposed Cases</p>
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="nav-item">
-                        <Link to="/court/daily-proceedings" className="nav-link">
+                        <Link to="/court/petition/proceedings" className="nav-link">
                           <i className="far fa-circle nav-icon" />
                           <p>Daily Proceedings</p>
                         </Link>
@@ -154,7 +165,7 @@ export default function MenuBar() {
                 )}
                 { /* End - Court user menu */} 
                 { /* Start - Police user menu */}
-                { parseInt(user.user.user_type) === 5 && (
+                { parseInt(user.user_type) === 5 && (
                 <>
                   <li className="nav-item menu-open">
                     <Link to="/police/dashboard" className="nav-link active">
@@ -179,12 +190,18 @@ export default function MenuBar() {
                       <i className="nav-icon far fa-circle text-info" />
                       <p>Condition</p>
                     </Link>
-                  </li>         
+                  </li>    
+                  <li className="nav-item">
+                    <Link to="/police/bail/cancellation" className="nav-link">
+                      <i className="nav-icon far fa-circle text-info" />
+                      <p>Bail Cancellation</p>
+                    </Link>
+                  </li>       
                 </>
                 )}
                 { /* End - Police user menu */}
                 { /* Start - Prison user menu */}
-                { parseInt(user.user.user_type) === 4 && (
+                { parseInt(user.user_type) === 4 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prison/dashboard" className="nav-link active">
@@ -206,7 +223,7 @@ export default function MenuBar() {
                   </>
                 )}
                 {/** End - Prison user menu */}
-                { parseInt(user.user.user_type) === 3 && (
+                { parseInt(user.user_type) === 3 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prosecution/dashboard" className="nav-link active">

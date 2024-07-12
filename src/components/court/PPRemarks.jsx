@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
 
-const PPRemarks = () => {
+const PPRemarks = ({accused}) => {
 
+    console.log(accused)
     const initialState = {
         response_type: '',
         accused_name: '',
@@ -41,32 +42,28 @@ const PPRemarks = () => {
                         </div>
                     </div>
                 </div>
-                <div className="form-group row">
-                    <label className="col-sm-3"></label>
-                    <div className="col-sm-5">
-                        <label htmlFor="">Accused Name</label>
-                        <input type="text" className="form-control mb-3" />
-                        <input type="text" className="form-control mb-3" />
-                        <input type="text" className="form-control mb-3" />
-                    </div>
-                    <div className="col-sm-3">
-                        <label htmlFor="">Accused Type</label>
-                        <select name="petitioner_name" id="" className="form-control mb-3">
-                            <option value="">Select type</option>
-                            <option value="">First time offender</option>
-                            <option value="">Habitual offender</option>
-                        </select>
-                        <select name="petitioner_name" id="" className="form-control mb-3">
-                            <option value="">Select type</option>
-                            <option value="">First time offender</option>
-                            <option value="">Habitual offender</option>
-                        </select>
-                        <select name="petitioner_name" id="" className="form-control mb-3">
-                            <option value="">Select type</option>
-                            <option value="">First time offender</option>
-                            <option value="">Habitual offender</option>
-                        </select>
-                    </div>
+                <div className="row">
+                    { accused.map((a, index) => (
+                        <>  
+                            <div className="col-sm-5 offset-md-3">
+                                <label htmlFor="">Accused Name</label>
+                                <input 
+                                    type="text" 
+                                    value={a.petitioner_name}
+                                    className="form-control mb-3" 
+                                    readOnly={true}
+                                />
+                            </div>
+                            <div className="col-sm-4">
+                                <label htmlFor="">Accused Type</label>
+                                <select name="petitioner_name" id="" className="form-control mb-3">
+                                    <option value="">Select type</option>
+                                    <option value="">First time offender</option>
+                                    <option value="">Habitual offender</option>
+                                </select>
+                        </div>
+                        </>
+                    ))}  
                 </div>
                 <div className="form-group row">
                     <label className="col-sm-3">Injured discharged</label>

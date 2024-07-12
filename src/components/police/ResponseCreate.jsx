@@ -7,6 +7,7 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
+import { CreateMarkup } from '../../utils';
 
 const ResponseCreate = () => {
     const {state} = useLocation()
@@ -57,6 +58,8 @@ const ResponseCreate = () => {
         }
         fetchData()
     }, [])
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -111,11 +114,11 @@ const ResponseCreate = () => {
                                     </tr>
                                     <tr>
                                         <td>Gist of FIR</td>
-                                        <td colSpan={5}>{ petition.gist_of_fir }</td>
+                                        <td colSpan={5} dangerouslySetInnerHTML={CreateMarkup(petition.gist_of_fir)}></td>
                                     </tr>
                                     <tr>
                                         <td>Gist&nbsp;in&nbsp;Local&nbsp;Language</td>
-                                        <td colSpan={5}>{ petition.gist_in_local }</td>
+                                        <td colSpan={5} dangerouslySetInnerHTML={CreateMarkup(petition.gist_in_local)}></td>
                                     </tr>
                                 </tbody>
                             </table>
