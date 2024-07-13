@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/ibms-internal/static/css/main.6e672d63.css",
+    "main.js": "/ibms-internal/static/js/main.35df2792.js",
+    "static/media/highcourtlogo.png": "/ibms-internal/static/media/highcourtlogo.b6e7dd4b8e534d18e257.png",
+    "index.html": "/ibms-internal/index.html",
+    "main.6e672d63.css.map": "/ibms-internal/static/css/main.6e672d63.css.map",
+    "main.35df2792.js.map": "/ibms-internal/static/js/main.35df2792.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6e672d63.css",
+    "static/js/main.35df2792.js"
+  ]
+}
