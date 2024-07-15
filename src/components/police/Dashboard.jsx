@@ -51,12 +51,12 @@ const Dashboard = () => {
                                 <div className="col-lg-3 col-6">
                                     <div className="small-box bg-info">
                                         <div className="inner">
-                                            <h3>{ count.total }</h3>
-                                            <p>Total Response</p>
+                                            <h3>{ count.pending }</h3>
+                                            <p><strong>Pending Response</strong></p>
                                         </div>
-                                        <div className="icon">
+                                        {/* <div className="icon">
                                             <i className="ion ion-bag" />
-                                        </div>
+                                        </div> */}
                                         <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                     </div>
                                 </div>
@@ -64,11 +64,11 @@ const Dashboard = () => {
                                     <div className="small-box bg-success">
                                         <div className="inner">
                                             <h3>{ count.submitted }</h3>
-                                            <p>Submitted Responses</p>
+                                            <p><strong>Submitted Response</strong></p>
                                         </div>
-                                        <div className="icon">
-                                        <i className="ion ion-stats-bars" />
-                                        </div>
+                                        {/* <div className="icon">
+                                            <i className="ion ion-stats-bars" />
+                                        </div> */}
                                         <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                     </div>
                                 </div>
@@ -76,11 +76,11 @@ const Dashboard = () => {
                                     <div className="small-box bg-warning">
                                         <div className="inner">
                                             <h3>{ count.pending }</h3>
-                                            <p>Pending Responses</p>
+                                            <p><strong>Pending Cases</strong></p>
                                         </div>
-                                        <div className="icon">
+                                        {/* <div className="icon">
                                             <i className="ion ion-person-add" />
-                                        </div>
+                                        </div> */}
                                         <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                     </div>
                                 </div>
@@ -88,11 +88,11 @@ const Dashboard = () => {
                                     <div className="small-box bg-danger">
                                         <div className="inner">
                                             <h3>{ count.returned }</h3>
-                                            <p>Returned Petitions</p>
+                                            <p><strong>Disposed Cases</strong></p>
                                         </div>
-                                        <div className="icon">
+                                        {/* <div className="icon">
                                             <i className="ion ion-pie-graph" />
-                                        </div>
+                                        </div> */}
                                         <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                     </div>
                                 </div>

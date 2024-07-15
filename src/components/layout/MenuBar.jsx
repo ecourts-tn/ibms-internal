@@ -192,10 +192,24 @@ export default function MenuBar() {
                     </Link>
                   </li>    
                   <li className="nav-item">
-                    <Link to="/police/bail/cancellation" className="nav-link">
-                      <i className="nav-icon far fa-circle text-info" />
-                      <p>Bail Cancellation</p>
-                    </Link>
+                    <a href="#" className="nav-link">
+                      <i className="nav-icon fas fa-file" />
+                      <p>File Petition<i className="fas fa-angle-left right" /></p>
+                    </a>
+                    <ul className="nav nav-treeview">
+                      <li className="nav-item">
+                        <Link to="/police/bail/cancellation" className="nav-link">
+                          <i className="nav-icon far fa-circle text-info" />
+                          <p>Bail Cancellation</p>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/police/request/custody" className="nav-link">
+                          <i className="nav-icon far fa-circle text-info" />
+                          <p>Request Custody</p>
+                        </Link>
+                      </li>
+                    </ul>
                   </li>       
                 </>
                 )}

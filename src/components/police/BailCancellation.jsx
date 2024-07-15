@@ -8,6 +8,7 @@ import { getDistrictByStateCode } from '../../redux/features/DistrictSlice'
 import { getTalukByDistrictCode } from '../../redux/features/TalukSlice'
 import { nanoid } from '@reduxjs/toolkit';
 import { getRelations } from '../../redux/features/RelationSlice';
+import Select from 'react-select'
 
 
 const BailCancellation = () => {
@@ -62,6 +63,17 @@ const BailCancellation = () => {
     const handleSubmit = () => {
 
     }
+
+    const accusedOptions =  [
+        {
+            value : "1",
+            label : "Accused One"
+        },
+        {
+            value : "2",
+            label : "Accused Two"
+        }
+    ]
 
     return (
         <>
@@ -223,9 +235,16 @@ const BailCancellation = () => {
                                             <div className="form-group row">
                                                 <label htmlFor="" className="col-sm-1">Select Accused</label>
                                                 <div className="col-sm-4">
-                                                    <select name="accused_name" id="" className="form-control">
-                                                        <option value="">Select accuesed</option>
-                                                    </select>
+                                                    <Select 
+                                                        isMulti={true}
+                                                        name="district"
+                                                        options={accusedOptions}
+                                                        className={`${errors.district ? 'is-invalid' : null}`}
+                                                        onChange={(e) => {}}
+                                                    />
+                                                    <div className="invalid-feedback">
+                                                        { errors.district }
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -426,7 +445,7 @@ const BailCancellation = () => {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="">Remarks</label>
+                                                <label htmlFor="">Grounds</label>
                                                 <textarea name="" id="" cols="30" rows="5" className="form-control"></textarea>
                                             </div>
                                         </div>

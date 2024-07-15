@@ -39,6 +39,7 @@ import { PrivateRoute } from "./hooks/PrivateRoute";
 import { AuthProvider } from "./hooks/useAuth";
 import PendingList from './components/court/scrutiny/PendingList'
 import BailCancellation from './components/police/BailCancellation'
+import RequestCustody from './components/police/RequestCustody'
 
 
 const appendScript = (scriptToAppend) => {
@@ -207,6 +208,14 @@ function App() {
                   element={
                     <PrivateRoute>
                       <BailCancellation />
+                    </PrivateRoute>
+                  } 
+                />
+                <Route 
+                  path="request/custody" 
+                  element={
+                    <PrivateRoute>
+                      <RequestCustody />
                     </PrivateRoute>
                   } 
                 />

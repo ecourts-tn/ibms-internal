@@ -1,4 +1,5 @@
 import React from 'react'
+import { CreateMarkup } from '../../../utils'
 
 const Grounds = ({grounds}) => {
   return (
@@ -6,7 +7,7 @@ const Grounds = ({grounds}) => {
             { grounds.map((ground, index) => (
             <div className="card" key={index}>
                 <div className="card-body mt-0">
-                    { ground.description}
+                    <p dangerouslySetInnerHTML={CreateMarkup(ground.description)}></p>
                 </div>
             </div>
             ))}
