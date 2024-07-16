@@ -12,6 +12,8 @@ import Grounds from './Grounds'
 import AdvocateDetails from './AdvocateDetails'
 import FeesDetails from './FeesDetails'
 import { toast, ToastContainer } from 'react-toastify'
+import { fetchCaseBycino, fetchCases } from '../../../service/petitionService'
+import { fetchStates } from '../../../service/stateService'
 
 
 const CaseScrutiny = () => {
@@ -38,11 +40,26 @@ const CaseScrutiny = () => {
     }
     const[form, setForm] = useState(initialState)
 
+    const[states, setStates] = useState([])
+    useEffect(() => {
+        const fetchState = async () =>{
+            try{
+                const data = await fetchCases()
+                setStates(data)
+            }catch(error){
+                console.log(error)
+            }
+        }
+        fetchState()
+    },[])
+
+    console.log(states)
+
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await api.get(`api/bail/petition/detail/`, { params: { cino:state.cino }})
-                const { petition, petitioner, grounds, respondent, advocate, fees} = response.data
+                const data = await fetchCaseBycino(state.cino)
+                const { petition, petitioner, grounds, respondent, advocate, fees} = data
                 setPetition(petition)
                 setPetitioner(petitioner)
                 setRespondent(respondent)

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { useLocation } from 'react-router-dom';
+import { CreateMarkup } from '../../utils';
 
 import Button from '@mui/material/Button'
 import api from '../../api'
@@ -96,7 +97,7 @@ const ResponseCreate = () => {
                                         </tr>
                                         <tr>
                                             <td>Gist&nbsp;in&nbsp;Local&nbsp;Language</td>
-                                            <td colSpan={5}>{ petition.gist_in_local }</td>
+                                            <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(petition.gist_in_local)}></span></td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -25,7 +25,7 @@ const PendingList = () => {
                                 <li className="breadcrumb-item"><a href="#">Home</a></li>
                                 <li className="breadcrumb-item active">Dashboard</li>
                             </ol>
-                            <div className="card card-outline card-primary">
+                            <div className="card card-outline card-primary" style={{minHeight:'600px'}}>
                                 <div className="card-header"><strong>Scrutiny List</strong></div>
                                 <div className="card-body">
                                     <ul className="todo-list" data-widget="todo-list">

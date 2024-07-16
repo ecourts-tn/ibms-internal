@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Proceeding from './Proceeding'
+import { CreateMarkup } from '../../utils'
 import api from '../../api'
 import './style.css'
 import PPRemarks from './PPRemarks'
 
 
 const DailyProceedings = () => {
+
+    const {state} = useLocation();
 
     const[regNumber, setRegNumber] = useState('')
     const[numbers, setNumbers] = useState([])
@@ -25,9 +29,9 @@ const DailyProceedings = () => {
 
     useEffect(() => {
         async function fetchData(){
-            if(regNumber !== ''){
+            // if(regNumber !== ''){
                 try{
-                    const response = await api.get(`api/bail/petition/detail/`, {params:{cino:regNumber}})
+                    const response = await api.get(`api/bail/petition/detail/`, {params:{cino:state.cino}})
                     const { petition, petitioner, grounds, respondent,advocate, police_response, ppremarks } = response.data
                     setPetition(petition)
                     setPetitioner(petitioner)
@@ -39,22 +43,10 @@ const DailyProceedings = () => {
                 }catch(err){
                     console.log(err)
                 }
-            }
+            // }
         }
         fetchData();
-    }, [regNumber])
-
-    useEffect(() => {
-        async function fetchData(){
-            try{
-                const response = await api.get(`api/bail/register-number/list/`)
-                setNumbers(response.data)
-            }catch(error){
-                console.log(error)
-            }
-        }
-        fetchData()
-    }, [])
+    }, [state.cino])
 
     return (
         <>
@@ -65,26 +57,6 @@ const DailyProceedings = () => {
                             <h3 className="card-title"><i className="fas fa-edit mr-2"></i><strong>Daily Proceedings</strong></h3>
                         </div>
                         <div className="card-body">
-                            <div className="row">
-                                <div className="col-md-4 offset-4">
-                                    <div className="form-group row">
-                                        <label htmlFor="" className="col-sm-3">Case Number</label>
-                                        <div className="col-sm-6">
-                                            <select 
-                                                name="regNumber"
-                                                className="form-control"
-                                                value={regNumber}
-                                                onChange={(e) => setRegNumber(e.target.value)}
-                                            >
-                                                <option value="">Select case</option>
-                                                { numbers.map((number, index) => (
-                                                    <option value={number.cino} key={index}>{ number.reg_type.type_name}/{number.reg_number}/{number.reg_year}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="row">
                                 <div className="col-md-7 h-100">
                                 <div id="accordion">
@@ -134,6 +106,12 @@ const DailyProceedings = () => {
                                                                     <td>Compliant Type</td>
                                                                     <td>{ petition.complaint_type.type_name }</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td>Registration Number</td>
+                                                                    <td>{ petition.reg_number }</td>
+                                                                    <td>Registration Year</td>
+                                                                    <td>{ petition.reg_year }</td>
+                                                                </tr>
                                                             </tbody>
                                                             )}
                                                         </table>
@@ -153,13 +131,13 @@ const DailyProceedings = () => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            { advocates.map((radvocate, index) => (
+                                                            { advocates.map((a, index) => (
                                                                 <tr key={index}>
                                                                     <td>{ index+1 }</td>
-                                                                    <td>{ radvocate.radvocate_name }</td>
-                                                                    <td>{ radvocate.entrolment_number }</td>
-                                                                    <td>{ radvocate.advocate_mobile }</td>
-                                                                    <td>{ radvocate.advocate_email }</td>
+                                                                    <td>{ a.advocate_name }</td>
+                                                                    <td>{ a.enrolment_number }</td>
+                                                                    <td>{ a.advocate_mobile }</td>
+                                                                    <td>{ a.advocate_email }</td>
                                                                 </tr>
                                                             ))}
                                                         </tbody>
@@ -250,9 +228,9 @@ const DailyProceedings = () => {
                                                 <div className="col-md-12">
                                                     { grounds.map((ground, index) => (
                                                         <div className="card" key={index}>
-                                                        <div className="card-body">
-                                                            { ground.description}
-                                                        </div>
+                                                            <div className="card-body">
+                                                                 <p dangerouslySetInnerHTML={CreateMarkup(ground.description)}></p>
+                                                            </div>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -343,7 +321,7 @@ const DailyProceedings = () => {
                                                         <PPRemarks accused={petitioner}/>
                                                     ): (
                                                         <>
-                                                            { prosecutionRemarks.map((p, index) => (
+                                                            {/* { prosecutionRemarks.map((p, index) => (
                                                                 <table className="table table-bordered table-striped table-sm mt-2" key={index}>
                                                                     <tbody>
                                                                         <tr>
@@ -376,7 +354,7 @@ const DailyProceedings = () => {
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
-                                                            ))}
+                                                            ))} */}
                                                         </>
                                                     )}
                                                 </div>

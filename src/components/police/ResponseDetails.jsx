@@ -216,128 +216,41 @@ const ResponseDetails = () => {
                                         <td>Stage of the Case</td>
                                         <td>{r.case_stage}</td>
                                     </tr>
+                                    <tr>
+                                        <td>Next Hearing Date</td>
+                                        <td>{ r.next_hearing }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. Of. Witness</td>
+                                        <td>{ r.no_of_witness }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Antecedents/Previous Cases against the Petitioner(s)</td>
+                                        <td>{ r.previous_case }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Details of Previous Bail Applications</td>
+                                        <td>{ r.previous_bail}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status of other accused</td>
+                                        <td>{ r.other_accused_status }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Why Bail/AB Should Not be Granted</td>
+                                        <td>{ r.reason_not_given }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Any other Information</td>
+                                        <td>{ r.other_information }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Court Details: FIR/ Committal/Trial/ Appellate</td>
+                                        <td>{ r.court_details }</td>
+                                    </tr>
                                 </tbody>
                             </table>
                             ))}
-                            <form onSubmit={handleSubmit}>
-
-                                { parseInt(form.investigation_stage) === 2 && (
-                                <div className="row mt-3">    
-                                    <div className="col-md-2">
-                                        <FormGroup className="mb-3">
-                                            <label htmlFor="">Stage of the Case</label>
-                                            <FormControl
-                                                name="case_stage"
-                                                value={form.case_stage}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <FormGroup className="mb-3">
-                                            <label htmlFor="">Next Hearing Date</label>
-                                            <FormControl 
-                                                type="date"
-                                                name="next_hearing"
-                                                value={form.next_hearing}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <FormGroup className="mb-3">
-                                            <label htmlFor="">No. Of. Witness</label>
-                                            <FormControl
-                                                name="no_of_witness"
-                                                value={form.no_of_witness}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                </div>
-                                )}
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <FormGroup className="mb-3">
-                                            <FormLabel>Antecedents/Previous Cases against the Petitioner(s)</FormLabel>
-                                            <FormControl
-                                                name="previous_case"
-                                                value={form.previous_case}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <FormGroup className="mb-3">
-                                            <FormLabel>Details of Previous Bail Applications</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={2}
-                                                name="previous_bail"
-                                                value={form.previous_bail}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <FormGroup className="mb-3">
-                                            <FormLabel>Status of other accused</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={2}
-                                                name="other_accused_status"
-                                                value={form.other_accused_status}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <FormGroup className="mb-3">
-                                            <FormLabel>Why Bail/AB Should Not be Granted</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={2}
-                                                name="reason_not_given"
-                                                value={form.reason_not_given}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <FormGroup className="mb-3">
-                                            <FormLabel>Any other Information</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={2}
-                                                name="other_information"
-                                                value={form.other_information}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <FormGroup className="mb-3">
-                                            <FormLabel>Court Details: FIR/ Committal/Trial/ Appellate</FormLabel>
-                                            <FormControl 
-                                                as="textarea" 
-                                                rows={2}
-                                                name="court_details"
-                                                value={form.court_details}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            ></FormControl>
-                                        </FormGroup>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <Button 
-                                            variant='contained' 
-                                            color="success"
-                                            type='submit'
-                                        >Submit</Button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>

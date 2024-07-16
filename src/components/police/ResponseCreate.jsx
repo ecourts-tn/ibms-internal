@@ -8,6 +8,7 @@ import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
 import { CreateMarkup } from '../../utils';
+import * as Yup from 'yup'
 
 const ResponseCreate = () => {
     const {state} = useLocation()
@@ -41,8 +42,25 @@ const ResponseCreate = () => {
         other_information   : '',
         court_details       : '',
     }
+
+    const validationSchema = Yup.object({
+        offences: Yup.string().required(),
+        date_of_arrest: Yup.string().required(),
+        accused_name: Yup.string().required(),
+        specific_allegations: Yup.string().required(),
+        materials_used: Yup.string().required(),
+        discharged: Yup.string().required(),
+        investigation_stage: Yup.string().required(),
+        previous_case: Yup.string().required(),
+        previous_bail: Yup.string().required(),
+        other_accused_status: Yup.string().required(),
+        reason_not_given: Yup.string().required(),
+        other_information: Yup.string().required(),
+        court_details: Yup.string().required(),
+    })
     
     const[form, setForm] = useState(initialState)
+    const[errors, setErrors] = useState({})
 
     useEffect(() => {
         async function fetchData(){
@@ -64,6 +82,7 @@ const ResponseCreate = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
+            await validationSchema.validate(form, {abortEarly:false})
             const response = await api.post("api/bail/police/response/create/", form)
             if(response.status === 201){
                 toast.success("Response added successfully", {
@@ -73,7 +92,13 @@ const ResponseCreate = () => {
                 navigate("/police/dashboard")
             }
         }catch(error){
-            console.log(error)
+            if(error.inner){
+                const newErrors = {};
+                error.inner.forEach((err) => {
+                    newErrors[err.path] = err.message;
+                });
+                setErrors(newErrors);
+            }
         }
     }
 
@@ -174,8 +199,12 @@ const ResponseCreate = () => {
                                                 rows={1}
                                                 name="offences"
                                                 value={form.offences}
+                                                className={`form-control ${errors.offences ? 'is-invalid' : null }`}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.offences}
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-2">
@@ -183,19 +212,21 @@ const ResponseCreate = () => {
                                         <div className="input-group mb-3">
                                             <input 
                                                 type="date" 
-                                                className="form-control" 
+                                                className={`form-control ${errors.date_of_arrest ? 'is-invalid' : ''}`} 
                                                 name="date_of_arrest"
                                                 value={form.date_of_arrest}
-                                                readOnly={arrestModify}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             />
-                                            <div className="input-group-append">
+                                            <div className="invalid-feedback">
+                                                { errors.date_of_arrest }
+                                            </div>
+                                            {/* <div className="input-group-append">
                                                 <button 
                                                     className="btn btn-outline-primary" 
                                                     type="button"
                                                     onClick={(e) => setArrestModify(!arrestModify)}
                                                 >Modify</button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -205,8 +236,12 @@ const ResponseCreate = () => {
                                                 type="text"
                                                 name="accused_name"
                                                 value={form.accused_name}
+                                                className={`form-control ${errors.accused_name ? 'is-invalid' : null }`}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.accused_name }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-6">
@@ -216,9 +251,13 @@ const ResponseCreate = () => {
                                                 as="textarea"
                                                 rows={1}
                                                 name="specific_allegations"
+                                                className={`form-control ${errors.specific_allegations ? 'is-invalid' : null }`}
                                                 value={form.specific_allegations}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.specific_allegations }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-12">
@@ -228,9 +267,13 @@ const ResponseCreate = () => {
                                                 as="textarea" 
                                                 rows={2}
                                                 name="materials_used"
+                                                className={`form-control ${errors.materials_used ? 'is-invalid' : null }`}
                                                 value={form.materials_used}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.materials_used }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-12">
@@ -308,13 +351,16 @@ const ResponseCreate = () => {
                                         <select 
                                             name="investigation_stage"
                                             value={form.investigation_stage}
-                                            className='form-control'
+                                            className={`form-control ${errors.investigation_stage ? 'is-invalid' : null}`}
                                             onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                         >
                                             <option value="">Select</option>
                                             <option value="1">Pending Investigation</option>
                                             <option value="2">Chargesheet filed</option>
                                         </select>
+                                        <div className="invalid-feedback">
+                                            { errors.investigation_stage }
+                                        </div>
                                     </div>
                                 </div>
                                 { parseInt(form.investigation_stage) === 2 && (
@@ -382,8 +428,12 @@ const ResponseCreate = () => {
                                             <FormControl
                                                 name="previous_case"
                                                 value={form.previous_case}
+                                                className={`form-control ${errors.previous_case ? 'is-invalid' : null}`}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.previous_case}
+                                            </div>
                                         </FormGroup>
                                     </div>
                                 </div>
@@ -395,9 +445,13 @@ const ResponseCreate = () => {
                                                 as="textarea" 
                                                 rows={2}
                                                 name="previous_bail"
+                                                className={`form-control ${errors.previous_bail ? 'is-invalid' : null}`}
                                                 value={form.previous_bail}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.previous_bail }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-6">
@@ -408,8 +462,12 @@ const ResponseCreate = () => {
                                                 rows={2}
                                                 name="other_accused_status"
                                                 value={form.other_accused_status}
+                                                className={`form-control ${errors.other_accused_status ? 'is-invalid' : null}`}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                                 ></FormControl>
+                                                <div className="invalid-feedback">
+                                                    { errors.other_accused_status }
+                                                </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-6">
@@ -419,9 +477,13 @@ const ResponseCreate = () => {
                                                 as="textarea" 
                                                 rows={2}
                                                 name="reason_not_given"
+                                                className={`form-control ${errors.reason_not_given ? 'is-invalid' : null}`}
                                                 value={form.reason_not_given}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.reason_not_given }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-6">
@@ -431,9 +493,13 @@ const ResponseCreate = () => {
                                                 as="textarea" 
                                                 rows={2}
                                                 name="other_information"
+                                                className={`form-control ${errors.other_information ? 'is-invalid' : null}`}
                                                 value={form.other_information}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.other_information }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-12">
@@ -444,8 +510,12 @@ const ResponseCreate = () => {
                                                 rows={2}
                                                 name="court_details"
                                                 value={form.court_details}
+                                                className={`form-control ${errors.court_details ? 'is-invalid' : null}`}
                                                 onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                             ></FormControl>
+                                            <div className="invalid-feedback">
+                                                { errors.court_details }
+                                            </div>
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-12">

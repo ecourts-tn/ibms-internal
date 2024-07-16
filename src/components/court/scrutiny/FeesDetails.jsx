@@ -11,7 +11,8 @@ const FeesDetails = ({fees}) => {
                             <th>Mobile Number</th>
                             <th>Transcation Date</th>
                             <th>Reference Number</th>
-                            <th>Email Address</th>
+                            <th>Amount Paid</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,6 +23,7 @@ const FeesDetails = ({fees}) => {
                             <td>{ fee.transcation_date }</td>
                             <td></td>
                             <td>{ fee.amount }</td>
+                            <td></td>
                         </tr>
                         ))}
                     </tbody>

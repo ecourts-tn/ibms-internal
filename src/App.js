@@ -40,6 +40,10 @@ import { AuthProvider } from "./hooks/useAuth";
 import PendingList from './components/court/scrutiny/PendingList'
 import BailCancellation from './components/police/BailCancellation'
 import RequestCustody from './components/police/RequestCustody'
+import DailyProceedingsList from './components/court/DailyProceedingsList'
+import BailOrder from './components/court/BailOrder'
+import GenerateOrders from './components/court/GenerateOrders'
+import BailBondForm from './components/court/BailBondForm'
 
 
 const appendScript = (scriptToAppend) => {
@@ -93,6 +97,14 @@ function App() {
                   path="petition/proceedings" 
                   element={
                     <PrivateRoute>
+                      <DailyProceedingsList />
+                    </PrivateRoute>
+                  } 
+                />
+                <Route 
+                  path="petition/case/proceedings" 
+                  element={
+                    <PrivateRoute>
                       <DailyProceedings />
                     </PrivateRoute>
                   } 
@@ -142,6 +154,22 @@ function App() {
                   element={
                     <PrivateRoute>
                       <SuretyVerify />
+                    </PrivateRoute>
+                  } 
+                />
+                <Route 
+                  path="orders/generate/" 
+                  element={
+                    <PrivateRoute>
+                      <BailBondForm />
+                    </PrivateRoute>
+                  } 
+                />
+                <Route 
+                  path="orders/bail/" 
+                  element={
+                    <PrivateRoute>
+                      <BailOrder />
                     </PrivateRoute>
                   } 
                 />

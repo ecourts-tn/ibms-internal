@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from "react"
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import api from '../../api'
 
@@ -8,28 +8,15 @@ import api from '../../api'
 
 const ResponsePending = () => {
 
-    const navigate = useNavigate()
-
     const[petitions, setPetitions] = useState([])
 
     useEffect(() => {
         async function fetchPetitions() {
-          const response = await api.get("api/bail/filing/");
+          const response = await api.get("api/bail/prison/response/pending/list/");
           setPetitions(response.data)
         }
         fetchPetitions();
       }, []); 
-
-
-    const getPetition = async (cino) => {
-        try{
-            const response = await api.get(`api/bail/${cino}/filing/`)
-            navigate("/police-response/create/", { state: { petition: response.data } });
-        }catch(err){
-            console.log(err)
-        }
-    }
-    console.log(petitions)
 
     return (
         <>

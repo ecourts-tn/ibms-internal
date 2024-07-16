@@ -60,12 +60,6 @@ export default function MenuBar() {
                     </a>
                     <ul className="nav nav-treeview">
                       <li className="nav-item">
-                        <Link to="/court/petition/listed-today" className="nav-link">
-                          <i className="far fa-circle nav-icon" />
-                          <p>Post Cases to Causelist</p>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
                         <Link to="/court/petition/scrutiny" className="nav-link">
                           <i className="far fa-circle nav-icon" />
                           <p>Case Scrutiny</p>
@@ -75,6 +69,12 @@ export default function MenuBar() {
                         <Link to="/court/petition/registration" className="nav-link">
                           <i className="far fa-circle nav-icon" />
                           <p>Case Registration</p>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/court/petition/listed-today" className="nav-link">
+                          <i className="far fa-circle nav-icon" />
+                          <p>Post Cases to Causelist</p>
                         </Link>
                       </li>
                     </ul>
@@ -118,7 +118,7 @@ export default function MenuBar() {
                     </a>
                     <ul className="nav nav-treeview">
                       <li className="nav-item">
-                        <Link to="police-response" className="nav-link">
+                        <Link to="/court/orders/generate/" className="nav-link">
                           <i className="nav-icon far fa-circle text-info" />
                           <p>Generate Orders</p>
                         </Link>
