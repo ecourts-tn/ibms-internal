@@ -2,7 +2,7 @@ import api from "./api";
 
 export const fetchCases = async () => {
     try {
-        const response = await api.get('bail/petition/list/');
+        const response = await api.get('api/bail/petition/list/');
         return response.data;
     } catch (error) {
         console.error('Error fetching cases:', error);
@@ -12,7 +12,7 @@ export const fetchCases = async () => {
 
 export const fetchCaseBycino = async (cino) => {
     try{
-        const response = await api.get('bail/petition/detail/', {
+        const response = await api.get('api/bail/petition/detail/', {
             params:{
                 cino: cino
             }

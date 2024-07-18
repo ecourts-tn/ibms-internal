@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import highcourtlogo from '../../components/highcourtlogo.png'
 import { useAuth } from '../../hooks/useAuth'
+import { Javascript } from '@mui/icons-material';
 
 
 export default function MenuBar() {
@@ -80,10 +81,10 @@ export default function MenuBar() {
                     </ul>
                   </li>
                   <li className="nav-item">
-                    <Link to="#/" className="nav-link">
+                    <a href={void(0)} className="nav-link">
                       <i className="nav-icon fas fa-table" />
                       <p> Court Proceedings <i className="fas fa-angle-left right" /></p>
-                    </Link>
+                    </a>
                     <ul className="nav nav-treeview">
                       {/* <li className="nav-item">
                         <Link to="/court/today-cases" className="nav-link">

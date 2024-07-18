@@ -16,12 +16,7 @@ import * as Yup from 'yup'
 import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
-
-  const dispatch = useDispatch()
-  const usertypes = useSelector((state) => state.usertypes.usertypes)
-
-  const usertypeStatus = useSelector(getUserTypeStatus)
-
+  const[usertypes, setUserTypes] = useState([])
   const [loading, setLoading]   = useState(false);
   const[form, setForm] =  useState({
       usertype: '',
@@ -38,10 +33,14 @@ const Login = () => {
   })
 
   useEffect(() => {
-    if(usertypeStatus === 'idle'){
-      dispatch(getUserTypes())
+    const fetchData = async() => {
+      const response = await api.get("api/base/user-type/")
+      if(response.status === 200){
+        setUserTypes(response.data)
+      }
     }
-  },[usertypeStatus, dispatch])
+    fetchData()
+  },[])
 
   const handleSubmit = async (e) => {
     setLoading(true);

@@ -7,6 +7,7 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
+import { CreateMarkup } from '../../utils';
 
 const ResponseDetails = () => {
     const {state} = useLocation()
@@ -111,11 +112,11 @@ const ResponseDetails = () => {
                                     </tr>
                                     <tr>
                                         <td>Gist of FIR</td>
-                                        <td colSpan={5}>{ petition.gist_of_fir }</td>
+                                        <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(petition.gist_of_fir)}></span></td>
                                     </tr>
                                     <tr>
                                         <td>Gist&nbsp;in&nbsp;Local&nbsp;Language</td>
-                                        <td colSpan={5}>{ petition.gist_in_local }</td>
+                                        <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(petition.gist_in_local)}></span></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -20,6 +20,8 @@ const ResponseCreate = () => {
     const[accused, setAccused] = useState([])
     const initialState = {
         cino                : '',
+        crime_number        : '',
+        crime_year          : '',
         offences            : '',
         date_of_arrest      : '',
         accused_name        : '',
@@ -68,7 +70,9 @@ const ResponseCreate = () => {
             if(response.status === 200){
                 setForm({
                     ...form,
-                    cino: response.data.petition.cino
+                    cino: response.data.petition.cino,
+                    crime_number: response.data.petition.crime_number,
+                    crime_year: response.data.petition.crime_year
                 })
                 setPetition(response.data.petition)
                 setAccused(response.data.petitioner)
@@ -191,6 +195,54 @@ const ResponseCreate = () => {
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
+                                    <div className="col-md-2">
+                                        <div className="form-group">
+                                            <label htmlFor="">Crime Number</label>
+                                            <input 
+                                                type="text" 
+                                                className="form-control"
+                                                name="crime_number"
+                                                value={form.crime_number}
+                                                readOnly={ form.crime_number !== '' ? true : false }
+                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <div className="form-group">
+                                            <label htmlFor="">Crime Year</label>
+                                            <input 
+                                                type="text" 
+                                                className="form-control"
+                                                name="crime_year"
+                                                value={form.crime_year}
+                                                readOnly={ form.crime_year !== '' ? true : false }
+                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <label htmlFor="">Date of Arrest</label>
+                                        <div className="input-group mb-3">
+                                            <input 
+                                                type="date" 
+                                                className={`form-control ${errors.date_of_arrest ? 'is-invalid' : ''}`} 
+                                                name="date_of_arrest"
+                                                value={form.date_of_arrest}
+                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                            />
+                                            <div className="invalid-feedback">
+                                                { errors.date_of_arrest }
+                                            </div>
+                                            <div className="input-group-append">
+                                                <button 
+                                                    className="btn btn-outline-primary" 
+                                                    type="button"
+                                                    onClick={(e) => setArrestModify(!arrestModify)}
+                                                >Modify</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="col-md-6">
                                         <FormGroup className='mb-3'>
                                             <FormLabel>Offences</FormLabel>
@@ -206,28 +258,6 @@ const ResponseCreate = () => {
                                                 { errors.offences}
                                             </div>
                                         </FormGroup>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <label htmlFor="">Date of Arrest</label>
-                                        <div className="input-group mb-3">
-                                            <input 
-                                                type="date" 
-                                                className={`form-control ${errors.date_of_arrest ? 'is-invalid' : ''}`} 
-                                                name="date_of_arrest"
-                                                value={form.date_of_arrest}
-                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                            />
-                                            <div className="invalid-feedback">
-                                                { errors.date_of_arrest }
-                                            </div>
-                                            {/* <div className="input-group-append">
-                                                <button 
-                                                    className="btn btn-outline-primary" 
-                                                    type="button"
-                                                    onClick={(e) => setArrestModify(!arrestModify)}
-                                                >Modify</button>
-                                            </div> */}
-                                        </div>
                                     </div>
                                     <div className="col-md-6">
                                         <FormGroup className='mb-3'>
