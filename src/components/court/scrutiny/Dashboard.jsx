@@ -45,6 +45,7 @@ const CaseScrutiny = () => {
         const fetchState = async () =>{
             try{
                 const data = await fetchCases()
+                console.log(fetchStates)
                 setStates(data)
             }catch(error){
                 console.log(error)
