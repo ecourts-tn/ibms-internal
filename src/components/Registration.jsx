@@ -41,7 +41,7 @@ const Registration = () => {
 
     const handleSubmit = async() => {
         try{
-            const response = await api.post("/api/auth/register/", form)
+            const response = await api.post("/api/auth/user/register/", form)
             if(response.status === 201){
                 toast.success("User registered successfully", {
                     theme:"colored"
@@ -59,8 +59,8 @@ const Registration = () => {
 
         }
     }
-
-    const usertypes = useSelector((state) => state.usertypes.usertypes)
+    const[usertypes, setUserTypes] = useState([])
+    // const usertypes = useSelector((state) => state.usertypes.usertypes)
     const states    = useSelector((state) => state.states.states)
     const districts = useSelector((state) => state.districts.districts)
     const establishments = useSelector((state) => state.establishments.establishments)
@@ -101,6 +101,17 @@ const Registration = () => {
             dispatch(getCourtsByEstablishmentCode(form.establishment))
         }
     },[form.establishment, dispatch])
+
+    useEffect(() => {
+        const fetchData = async() => {
+          const response = await api.get("api/base/user-type/")
+          if(response.status === 200){
+            setUserTypes(response.data)
+          }
+        }
+        fetchData()
+      },[])
+    
 
     return (
         <>

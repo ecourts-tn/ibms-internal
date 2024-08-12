@@ -14,7 +14,7 @@ const ResponsePending = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-          const response = await api.get("api/bail/police/response/pending/list/");
+          const response = await api.get("api/police/response/pending/list/");
           setPetitions(response.data)
         }
         fetchPetitions();
@@ -57,13 +57,13 @@ const ResponsePending = () => {
                                     { petitions.map((petition, index) => (
                                         <tr key={index}>
                                             <td>{ index + 1 }</td>
-                                            <td>{ petition.cino }</td>
-                                            <td>{ petition.date_of_occurrence }</td>
-                                            <td>{ petition.crime_number }/{ petition.crime_year }</td>
-                                            <td>{ petition.complainant_guardian }</td>
-                                            <td>{ petition.investigation_officer }</td>
+                                            <td>{ petition.petition.efile_number }</td>
+                                            <td>{ petition.crime.date_of_occurrence }</td>
+                                            <td>{ petition.crime.fir_number }/{ petition.crime.fir_year }</td>
+                                            <td>{ petition.crime.complainant_guardian }</td>
+                                            <td>{ petition.crime.investigation_officer }</td>
                                             <td>
-                                                <Link to='/police/response/create/' state={{ cino: petition.cino }}>
+                                                <Link to='/police/response/create/' state={{ efile_no: petition.petition.efile_number }}>
                                                     <Button
                                                         variant='contained'
                                                         color='success'

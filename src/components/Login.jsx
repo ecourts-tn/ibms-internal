@@ -14,6 +14,7 @@ import Button from '@mui/material/Button'
 import LoginIcon from '@mui/icons-material/Login';
 import * as Yup from 'yup'
 import { useAuth } from '../hooks/useAuth'
+import axios from 'axios'
 
 const Login = () => {
   const[usertypes, setUserTypes] = useState([])
@@ -39,7 +40,7 @@ const Login = () => {
         setUserTypes(response.data)
       }
     }
-    fetchData()
+    // fetchData()
   },[])
 
   const handleSubmit = async (e) => {
@@ -49,23 +50,17 @@ const Login = () => {
     try{
       await validationSchema.validate(form, {abortEarly:false})
       const {username, password, usertype} = form
-      const response = await api.post('api/login/department/', { usertype, username, password })
-      if(response.status === 500){
-        toast.error("Invalid username or password1", {
-          theme: "colored"
-        })
-      }
-      if(response.status === 400 || response.status === 401){
-        toast.error("Invalid username or password2", {
-            theme: "colored"
-        });
-        setLoading(false)
-        return
-      }
-      // localStorage.setItem(ACCESS_TOKEN, response.data.access);
-      // localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
-      // console.log(response.data)
-      await login(response.data)
+      const response = await api.post('api/auth/department/login/', { usertype, username, password }, {
+        skipInterceptor: true // Custom configuration to skip the interceptor
+      })
+      localStorage.clear()
+            localStorage.setItem(ACCESS_TOKEN, response.data.access);
+            localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+            await login(response.data)
+            toast.success('logged in successfully', {
+                theme: "colored"
+            })
     }catch(error){
       console.log(error)
       if(error.inner){
@@ -112,12 +107,19 @@ const Login = () => {
                               onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                             >
                               <option value="">Select user type</option>
-                              { usertypes.filter((usertype) => {
+                              {/* { usertypes.filter((usertype) => {
                                   return usertype.department_user
                                 }).map((type, index) => (
                                   <option value={type.id} key={index}>{type.user_type}</option>
                                 ))
-                              }
+                              } */}
+                              <option value="6">Judicial Officer</option>
+                              <option value="3">Public Prosecutor/APP</option>
+                              <option value="4">Prison Department</option>
+                              <option value="5">Police Department</option>
+                              <option value="7">Administrator</option>
+                              <option value="8">Court User</option>
+                              <option value="9">Legal Aid</option>
                             </select>
                             <div className="invalid-feedback">
                               { errors.usertype }

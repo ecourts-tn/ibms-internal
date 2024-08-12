@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if(user){
-      redirectDashboard(user.user_type)
+      redirectDashboard(user.user.user_type)
     }
   },[user])
 

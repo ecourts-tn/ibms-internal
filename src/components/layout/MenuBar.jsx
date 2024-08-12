@@ -46,7 +46,7 @@ export default function MenuBar() {
             <nav className="mt-2">
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 {/* Start - Court user menu */}
-                { parseInt(user.user_type) === 8 && (
+                { parseInt(user.user.user_type) === 8 && (
                 <>
                   <li className="nav-item menu-open">
                     <Link to="/court/dashboard" className="nav-link active">
@@ -166,7 +166,7 @@ export default function MenuBar() {
                 )}
                 { /* End - Court user menu */} 
                 { /* Start - Police user menu */}
-                { parseInt(user.user_type) === 5 && (
+                { parseInt(user.user.user_type) === 5 && (
                 <>
                   <li className="nav-item menu-open">
                     <Link to="/police/dashboard" className="nav-link active">
@@ -216,7 +216,7 @@ export default function MenuBar() {
                 )}
                 { /* End - Police user menu */}
                 { /* Start - Prison user menu */}
-                { parseInt(user.user_type) === 4 && (
+                { parseInt(user.user.user_type) === 4 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prison/dashboard" className="nav-link active">
@@ -238,7 +238,7 @@ export default function MenuBar() {
                   </>
                 )}
                 {/** End - Prison user menu */}
-                { parseInt(user.user_type) === 3 && (
+                { parseInt(user.user.user_type) === 3 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prosecution/dashboard" className="nav-link active">
@@ -259,6 +259,12 @@ export default function MenuBar() {
                     </li>       
                   </>
                 )}
+                <li className="nav-item">
+                  <Link to="/auth/user/registration/" className="nav-link">
+                    <i className="nav-icon far fa-circle text-info" />
+                    <p>User Registration</p>
+                  </Link>
+                </li> 
                 <li className="nav-item">
                   <Link onClick={handleLogout} className="nav-link">
                     <i className="nav-icon far fa-circle text-info" />

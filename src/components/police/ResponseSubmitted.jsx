@@ -14,12 +14,11 @@ const ResponseSubmitted = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-            const response = await api.get("api/bail/police/response/submitted/list/");
+            const response = await api.get("api/police/response/submitted/list/");
             setPetitions(response.data)
         }
         fetchPetitions();
         }, []); 
-
 
     const getPetition = async (cino) => {
         try{
@@ -29,7 +28,6 @@ const ResponseSubmitted = () => {
             console.log(err)
         }
     }
-    console.log(petitions)
 
     return (
         <>
@@ -45,7 +43,7 @@ const ResponseSubmitted = () => {
                                     <thead className="bg-secondary">
                                         <tr>
                                             <th>S.No</th>
-                                            <th>CNR Number</th>
+                                            <th>eFile Number</th>
                                             <th>Date of Occurrence</th>
                                             <th>Crime Number/Year</th>
                                             <th>Complainant Name</th>
@@ -57,13 +55,13 @@ const ResponseSubmitted = () => {
                                     { petitions.map((petition, index) => (
                                         <tr key={index}>
                                             <td>{ index + 1 }</td>
-                                            <td>{ petition.cino }</td>
-                                            <td>{ petition.date_of_occurrence }</td>
-                                            <td>{ petition.crime_number }/{ petition.crime_year }</td>
-                                            <td>{ petition.complainant_guardian }</td>
-                                            <td>{ petition.investigation_officer }</td>
+                                            <td>{ petition.petition.efile_number }</td>
+                                            <td>{ petition.crime.date_of_occurrence }</td>
+                                            <td>{ petition.crime.fir_number }/{ petition.crime.fir_year }</td>
+                                            <td>{ petition.crime.complainant_name }</td>
+                                            <td>{ petition.crime.investigation_officer }</td>
                                             <td>
-                                                <Link to='/police/response/details/' state={{ cino: petition.cino }}>
+                                                <Link to='/police/response/details/' state={{ efile_no: petition.petition.efile_number }}>
                                                     <Button
                                                         variant='contained'
                                                         color='primary'

@@ -6,9 +6,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getStates, getStatesStatus } from '../../redux/features/StateSlice'
 import { getDistrictByStateCode } from '../../redux/features/DistrictSlice'
 import { getTalukByDistrictCode } from '../../redux/features/TalukSlice'
+import { getPoliceSationByDistrict } from '../../redux/features/PoliceStationSlice'
+import { getEstablishmentByDistrict } from '../../redux/features/EstablishmentSlice';
 import { nanoid } from '@reduxjs/toolkit';
 import { getRelations } from '../../redux/features/RelationSlice';
 import Select from 'react-select'
+import api from '../../api';
 
 const BailCancellation = () => {
 
@@ -18,15 +21,35 @@ const BailCancellation = () => {
     const districts = useSelector((state) => state.districts.districts)
     const taluks = useSelector((state) => state.taluks.taluks)
     const relations = useSelector(state => state.relations.relations)
-    const accused = useSelector((state) => state.accused.accused)
+    const policeStations = useSelector((state) => state.police_stations.police_stations)
+    const establishments    = useSelector((state) => state.establishments.establishments)
+
 
     const stateStatus = useSelector(getStatesStatus)
 
-    const[searchForm, setSearchForm] = useState([])
+    const[searchForm, setSearchForm] = useState({
+        state:'',
+        district:'',
+        police_station:'',
+        crime_number:'',
+        crime_year:'',
+        establishment:'',
+        case_type:'',
+        case_number:'',
+        case_year:''
+    })
     const[search, setSearch] = useState(1)
     const[searchErrors, setSearchErrors] = useState([])
     const[form, setForm] = useState({
-        section: ''
+        state:'',
+        district:'',
+        police_station:'',
+        crime_number:'',
+        crime_year:'',
+        establishment:'',
+        case_type:'',
+        case_number:'',
+        case_year:''
     })
     const[errors, setErrors] = useState([])
 
@@ -37,26 +60,51 @@ const BailCancellation = () => {
       },[stateStatus, dispatch])
       
       useEffect(() => {
-        if(form.state !== ''){
-          dispatch(getDistrictByStateCode(form.state))
+        if(searchForm.state !== ''){
+          dispatch(getDistrictByStateCode(searchForm.state))
         }
-      },[form.state, dispatch])
+      },[searchForm.state, dispatch])
     
       useEffect(() => {
-        if(form.district !== ''){
-          dispatch(getTalukByDistrictCode(form.district))
+        if(searchForm.district !== ''){
+          dispatch(getTalukByDistrictCode(searchForm.district))
         }
       },[form.district, dispatch])
-    
+
+      useEffect(() => {
+        if( searchForm.district !== ''){
+            dispatch(getEstablishmentByDistrict(searchForm.district))
+        }
+    },[searchForm.district, dispatch])
      
       useEffect(() => {
         dispatch(getRelations())
       }, [dispatch])
     
+      useEffect(() => {
+        if(searchForm.district){
+            dispatch(getPoliceSationByDistrict(searchForm.district))
+        }
+    }, [searchForm.district, dispatch])
+    const[accused, setAccused] = useState([])
     
-
-    const handleSearch = (e) => {
+    const handleSearch = async(e) => {
         e.preventDefault()
+        if(search === 1){
+            // crime number search
+            const response = await api.post('api/police/search/crime/', searchForm)
+            if(response.status === 200){
+                setAccused(response.data)
+            }
+        }else{
+            //case number search
+            const response = await api.post('api/police/search/case/', searchForm)
+            if(response.status === 200){
+                setAccused(response.data)
+            }
+        }
+        
+
     }
 
     const handleSubmit = () => {
@@ -94,7 +142,7 @@ const BailCancellation = () => {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="col-md-8 offset-md-2">
+                                        <div className="col-md-10 offset-md-1">
                                             <div className="row">
                                                 <div className="col-md-12 text-center">
                                                     <div className="form-group">
@@ -126,11 +174,67 @@ const BailCancellation = () => {
                                                 </div>
                                             </div>
                                             <div className="row">
-                                                <div className="col-md-8 offset-2">
+                                                <div className="col-md-10 offset-1">
                                                     <form action="">
                                                         { parseInt(search) === 1 && (
                                                         <div className="row">
-                                                            <div className="col-md-4 offset-md-2">
+                                                            <div className="col-md-3">
+                                                                <label htmlFor="state">State</label>
+                                                                <select 
+                                                                    name="state" 
+                                                                    id="state" 
+                                                                    className={ `form-control ${errors.state ? 'is-invalid': ''}`}
+                                                                    value={searchForm.state}
+                                                                    onChange={(e) => setSearchForm({...searchForm, [e.target.name]: e.target.value })}    
+                                                                >
+                                                                <option value="">Select state</option>
+                                                                { states.map((item, index) => (
+                                                                    <option key={index} value={item.state_code }>{ item.state_name }</option>
+                                                                ))}
+                                                                </select>
+                                                                <div className="invalid-feedback">
+                                                                    { errors.state }
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="district">District</label><br />
+                                                                    <select 
+                                                                        name="district" 
+                                                                        id="district" 
+                                                                        className={`form-control ${errors.district ? 'is-invalid' : ''}`}
+                                                                        value={searchForm.district} 
+                                                                        onChange={(e) => setSearchForm({...searchForm, [e.target.name]: e.target.value })}
+                                                                    >
+                                                                        <option value="">Select district</option>
+                                                                        { districts.map((item, index) => (
+                                                                        <option key={index} value={item.district_code }>{ item.district_name }</option>
+                                                                        ))}
+                                                                    </select>
+                                                                    <div className="invalid-feedback">
+                                                                        { errors.district }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-5">
+                                                            <div className="form-group">
+                                                                <label htmlFor="police_station">Police Station Name</label><br />
+                                                                <select 
+                                                                    name="police_station" 
+                                                                    id="police_station" 
+                                                                    className={`form-control ${errors.police_station ? 'is-invalid' : ''}`}
+                                                                    value={searchForm.police_station}
+                                                                    onChange={(e)=> setSearchForm({...searchForm, [e.target.name]: e.target.value })}
+                                                                >
+                                                                    <option value="">Select station</option>
+                                                                    { policeStations.map((item, index) => (
+                                                                        <option key={index} value={item.id}>{ item.station_name}</option>
+                                                                    ))}
+                                                                </select>
+                                                                <div className="invalid-feedback">{ errors.police_station }</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-2 offset-md-4">
                                                                 <div className="form-group">
                                                                     <label htmlFor="case_number">Crime Number</label>
                                                                     <input 
@@ -145,7 +249,7 @@ const BailCancellation = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-4">
+                                                            <div className="col-md-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="crime_year">Crime Year</label>
                                                                     <input 
@@ -164,7 +268,70 @@ const BailCancellation = () => {
                                                         )}
                                                         { parseInt(search) === 2 && (
                                                         <div className="row">
-                                                            <div className="col-md-6">
+                                                            <div className="col-md-3">
+                                                                <label htmlFor="state">State</label>
+                                                                <select 
+                                                                    name="state" 
+                                                                    id="state" 
+                                                                    className={ `form-control ${errors.state ? 'is-invalid': ''}`}
+                                                                    value={searchForm.state}
+                                                                    onChange={(e) => setSearchForm({...searchForm, [e.target.name]: e.target.value })}    
+                                                                >
+                                                                <option value="">Select state</option>
+                                                                { states.map((item, index) => (
+                                                                    <option key={index} value={item.state_code }>{ item.state_name }</option>
+                                                                ))}
+                                                                </select>
+                                                                <div className="invalid-feedback">
+                                                                    { errors.state }
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="district">District</label><br />
+                                                                    <select 
+                                                                        name="district" 
+                                                                        id="district" 
+                                                                        className={`form-control ${errors.district ? 'is-invalid' : ''}`}
+                                                                        value={searchForm.district} 
+                                                                        onChange={(e) => setSearchForm({...searchForm, [e.target.name]: e.target.value })}
+                                                                    >
+                                                                        <option value="">Select district</option>
+                                                                        { districts.map((item, index) => (
+                                                                        <option key={index} value={item.district_code }>{ item.district_name }</option>
+                                                                        ))}
+                                                                    </select>
+                                                                    <div className="invalid-feedback">
+                                                                        { errors.district }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-5">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="establishment">Establishment Name</label>
+                                                                    <select 
+                                                                        name="establishment" 
+                                                                        id="establishment" 
+                                                                        className={`form-control ${errors.establishment ? 'is-invalid' : null}`}
+                                                                        value={searchForm.establishment}
+                                                                        onChange={(e) => setSearchForm({...searchForm, [e.target.name]:e.target.value})}
+                                                                    >
+                                                                        <option value="">Select Establishment</option>
+                                                                        {
+                                                                            establishments.filter((establishment) => {
+                                                                                return establishment.bail_filing && establishment.display
+                                                                            })
+                                                                            .map((item, index) => (
+                                                                                <option value={item.establishment_code} key={index}>{item.establishment_name}</option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                    <div className="invalid-feedback">
+                                                                        { errors.establishment }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-3 offset-md-3">
                                                                 <div className="form-group">
                                                                     <label htmlFor="case_type">Case Type</label>
                                                                     <select 
@@ -181,7 +348,7 @@ const BailCancellation = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="case_number">Case Number</label>
                                                                     <input 
@@ -196,7 +363,7 @@ const BailCancellation = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="case_year">Year</label>
                                                                     <input 
@@ -251,14 +418,14 @@ const BailCancellation = () => {
                                     <div className="row">  
                                         <div className="col-md-3">
                                             <Form.Group className="mb-3">
-                                                <Form.Label>Name of the Petitioner</Form.Label>
+                                                <Form.Label>Name of the searchFormer</Form.Label>
                                                 <Form.Control
-                                                    name="petitioner_name" 
-                                                    className={`${errors.petitioner_name ? 'is-invalid' : ''}`}
-                                                    value={form.petitioner_name} 
+                                                    name="searchFormer_name" 
+                                                    className={`${errors.searchFormer_name ? 'is-invalid' : ''}`}
+                                                    value={form.searchFormer_name} 
                                                     onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                                 ></Form.Control>
-                                                <div className="invalid-feedback">{ errors.petitioner_name }</div>
+                                                <div className="invalid-feedback">{ errors.searchFormer_name }</div>
                                             </Form.Group>
                                         </div>
                                         <div className="col-md-3">

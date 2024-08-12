@@ -1,20 +1,16 @@
 import React from 'react'
 import { useState, useEffect } from "react"
 import { useLocation } from 'react-router-dom';
-import FormControl from 'react-bootstrap/FormControl'
-import FormGroup from 'react-bootstrap/FormGroup'
-import FormLabel from 'react-bootstrap/FormLabel'
-import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
 import { CreateMarkup } from '../../utils';
 
 const ResponseDetails = () => {
     const {state} = useLocation()
-    const[arrestModify, setArrestModify] = useState(true)
     const[petition, setPetition] = useState({
         filing_type: {}
     })
+    const[crime, setCrime] = useState({})
     const[accused, setAccused] = useState([])
     const[response, setResponse] = useState([])
     const initialState = {
@@ -46,15 +42,16 @@ const ResponseDetails = () => {
 
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/bail/police/response/detail/`, {params:{cino:state.cino}})
+            const response = await api.get(`api/police/response/detail/`, {params:{efile_no:state.efile_no}})
             if(response.status === 200){
                 setForm({
                     ...form,
-                    cino: response.data.petition.cino
+                    efile_no: response.data.petition.efile_no
                 })
                 setPetition(response.data.petition)
-                setAccused(response.data.petitioner)
+                setAccused(response.data.litigant)
                 setResponse(response.data.response)
+                setCrime(response.data.crime)
             }
         }
         fetchData()
@@ -98,25 +95,25 @@ const ResponseDetails = () => {
                                             {`${petition.filing_type.type_name}/${petition.filing_number}/${petition.filing_year}`}
                                         </td>
                                         <td>Crime&nbsp;Number</td>
-                                        <td>{`${petition.crime_number }/${ petition.crime_year }`}</td>
+                                        <td>{`${crime.fir_number }/${ crime.fir_year }`}</td>
                                         <td>Date of FIR</td>
-                                        <td>{ petition.fir_date_time }</td>
+                                        <td>{ crime.fir_date_time }</td>
                                     </tr>
                                     <tr>
                                         <td>Police&nbsp;Station</td>
-                                        <td>{ petition.police_station ? petition.police_station.station_name : null }</td>
+                                        <td>{ crime.police_station ? crime.police_station : null }</td>
                                         <td>Date of Occurence</td>
-                                        <td>{ petition.date_of_occurrence }</td>
+                                        <td>{ crime.date_of_occurrence }</td>
                                         <td>Complainant&nbsp;Name</td>
-                                        <td>{petition.complainant_name}</td>
+                                        <td>{crime.complainant_name}</td>
                                     </tr>
                                     <tr>
                                         <td>Gist of FIR</td>
-                                        <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(petition.gist_of_fir)}></span></td>
+                                        <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(crime.gist_of_fir)}></span></td>
                                     </tr>
                                     <tr>
                                         <td>Gist&nbsp;in&nbsp;Local&nbsp;Language</td>
-                                        <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(petition.gist_in_local)}></span></td>
+                                        <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(crime.gist_in_local)}></span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -141,10 +138,10 @@ const ResponseDetails = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        { accused.map((a, index) => (
+                                        { accused.filter(l=>l.litigant_type===1).map((a, index) => (
                                             <tr>
                                                 <td>{ index+1 }</td>
-                                                <td>{ a.petitioner_name }</td>
+                                                <td>{ a.litigant_name }</td>
                                                 <td>{ a.age }</td>
                                                 <td>{ a.rank }</td>
                                                 <td>{ a.relation }</td>
