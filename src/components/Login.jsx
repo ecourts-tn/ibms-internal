@@ -35,12 +35,12 @@ const Login = () => {
 
   useEffect(() => {
     const fetchData = async() => {
-      const response = await api.get("api/base/user-type/")
+      const response = await api.get("api/base/user-type/", {skipInterceptor:true})
       if(response.status === 200){
         setUserTypes(response.data)
       }
     }
-    // fetchData()
+    fetchData()
   },[])
 
   const handleSubmit = async (e) => {
@@ -107,19 +107,19 @@ const Login = () => {
                               onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                             >
                               <option value="">Select user type</option>
-                              {/* { usertypes.filter((usertype) => {
+                              { usertypes.filter((usertype) => {
                                   return usertype.department_user
                                 }).map((type, index) => (
                                   <option value={type.id} key={index}>{type.user_type}</option>
                                 ))
-                              } */}
-                              <option value="6">Judicial Officer</option>
+                              }
+                              {/* <option value="6">Judicial Officer</option>
                               <option value="3">Public Prosecutor/APP</option>
                               <option value="4">Prison Department</option>
                               <option value="5">Police Department</option>
                               <option value="7">Administrator</option>
                               <option value="8">Court User</option>
-                              <option value="9">Legal Aid</option>
+                              <option value="9">Legal Aid</option> */}
                             </select>
                             <div className="invalid-feedback">
                               { errors.usertype }

@@ -44,6 +44,7 @@ export default function MenuBar() {
               </div>
             </div>
             <nav className="mt-2">
+              { user && (
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 {/* Start - Court user menu */}
                 { parseInt(user.user.user_type) === 8 && (
@@ -216,7 +217,7 @@ export default function MenuBar() {
                 )}
                 { /* End - Police user menu */}
                 { /* Start - Prison user menu */}
-                { parseInt(user.user.user_type) === 4 && (
+                { parseInt(user.user_type) === 4 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prison/dashboard" className="nav-link active">
@@ -238,7 +239,7 @@ export default function MenuBar() {
                   </>
                 )}
                 {/** End - Prison user menu */}
-                { parseInt(user.user.user_type) === 3 && (
+                { parseInt(user.user_type) === 3 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prosecution/dashboard" className="nav-link active">
@@ -272,6 +273,7 @@ export default function MenuBar() {
                   </Link>
                 </li>    
               </ul>
+              )}
             </nav>
           </div>
         </aside>

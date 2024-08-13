@@ -1,17 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react'
 import Button from '@mui/material/Button'
 import Form from 'react-bootstrap/Form'
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux'
 import { getStates, getStatesStatus } from '../../redux/features/StateSlice'
 import { getDistrictByStateCode } from '../../redux/features/DistrictSlice'
 import { getTalukByDistrictCode } from '../../redux/features/TalukSlice'
 import { getPoliceSationByDistrict } from '../../redux/features/PoliceStationSlice'
 import { getEstablishmentByDistrict } from '../../redux/features/EstablishmentSlice';
-import { nanoid } from '@reduxjs/toolkit';
 import { getRelations } from '../../redux/features/RelationSlice';
-import Select from 'react-select'
 import api from '../../api';
+
 
 const BailCancellation = () => {
 
@@ -23,8 +22,6 @@ const BailCancellation = () => {
     const relations = useSelector(state => state.relations.relations)
     const policeStations = useSelector((state) => state.police_stations.police_stations)
     const establishments    = useSelector((state) => state.establishments.establishments)
-
-
     const stateStatus = useSelector(getStatesStatus)
 
     const[searchForm, setSearchForm] = useState({
@@ -41,16 +38,24 @@ const BailCancellation = () => {
     const[search, setSearch] = useState(1)
     const[searchErrors, setSearchErrors] = useState([])
     const[form, setForm] = useState({
+        efile_no:'',
+        litigant_name:'',
+        litigant_type:2,
+        designation:'',
+        gender:'',
+        age:'',
+        relation:'',
+        relation_name:'',
         state:'',
         district:'',
-        police_station:'',
-        crime_number:'',
-        crime_year:'',
-        establishment:'',
-        case_type:'',
-        case_number:'',
-        case_year:''
+        taluk:'',
+        address:'',
+        post_office:'',
+        pincode:'',
+        mobile_number:'',
+        email_address:'',
     })
+    const[grounds, setGrounds] = useState('')
     const[errors, setErrors] = useState([])
 
     useEffect(() => {
@@ -86,15 +91,20 @@ const BailCancellation = () => {
             dispatch(getPoliceSationByDistrict(searchForm.district))
         }
     }, [searchForm.district, dispatch])
+
     const[accused, setAccused] = useState([])
-    
+
     const handleSearch = async(e) => {
         e.preventDefault()
         if(search === 1){
             // crime number search
             const response = await api.post('api/police/search/crime/', searchForm)
             if(response.status === 200){
-                setAccused(response.data)
+                const accused = response.data.litigant.filter((accused) => {
+                    return accused.litigant_type === 1
+                })
+                setAccused(accused)
+                // setForm({...form, efile_no:response.data.crime.petition})
             }
         }else{
             //case number search
@@ -103,27 +113,37 @@ const BailCancellation = () => {
                 setAccused(response.data)
             }
         }
-        
-
     }
 
-    const handleSubmit = () => {
+    const [checkedItems, setCheckedItems] = useState({});
+    const handleCheckboxChange = (event) => {
+        const { id, checked } = event.target;
+        setCheckedItems((prevCheckedItems) => ({
+        ...prevCheckedItems,
+        [id]: checked
+        }));
+    };
 
-    }
-
-    const accusedOptions =  [
-        {
-            value : "1",
-            label : "Accused One"
-        },
-        {
-            value : "2",
-            label : "Accused Two"
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        try{
+            const post_data = {
+                form: form,
+                accused: accused,
+                grounds:grounds
+            }
+            const response = await api.post("api/police/filing/cancellation/bail/", post_data)
+            if(response.status === 201){
+                toast.success("Bail cancellation petition submitted successfully", {theme:"colored"})
+            }
+        }catch(error){
+            console.error(error)
         }
-    ]
+    }
 
     return (
         <>
+            <ToastContainer />
             <div className="content-wrapper">
                 <div className="container-fluid">
                     <div className="row">
@@ -396,7 +416,7 @@ const BailCancellation = () => {
                                         </div>
                                     </div>
 
-                                    <div className="row mt-3">
+                                    {/* <div className="row mt-3">
                                         <div className="col-md-12">
                                             <div className="form-group row">
                                                 <label htmlFor="" className="col-sm-1">Select Accused</label>
@@ -406,7 +426,7 @@ const BailCancellation = () => {
                                                         name="district"
                                                         options={accusedOptions}
                                                         className={`${errors.district ? 'is-invalid' : null}`}
-                                                        onChange={(e) => {}}
+                                                        onChange={(e) => {handleSelect(e.target.value)}}
                                                     />
                                                     <div className="invalid-feedback">
                                                         { errors.district }
@@ -414,18 +434,51 @@ const BailCancellation = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div> */}
+                                    <div className="row my-3">
+                                        <div className="col-md-12">
+                                            { Object.keys(accused).length > 0 && (
+                                                <table className="table table-bordered">
+                                                    <thead className="bg-secondary">
+                                                        <tr>
+                                                            <th>Select</th>
+                                                            <th>Accused Name</th>
+                                                            <th>Age</th>
+                                                            <th>Address</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {accused.filter(a=>a.litigant_type===1).map((a, index)=>(
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={a.litigant_id}
+                                                                        checked={checkedItems[a.litigant_id] || false}
+                                                                        onChange={handleCheckboxChange}
+                                                                    />
+                                                                </td>
+                                                                <td>{a.litigant_name}</td>
+                                                                <td>{a.age}</td>
+                                                                <td>{a.address}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="row">  
                                         <div className="col-md-3">
                                             <Form.Group className="mb-3">
-                                                <Form.Label>Name of the searchFormer</Form.Label>
+                                                <Form.Label>Name of the Petitioner</Form.Label>
                                                 <Form.Control
-                                                    name="searchFormer_name" 
-                                                    className={`${errors.searchFormer_name ? 'is-invalid' : ''}`}
-                                                    value={form.searchFormer_name} 
+                                                    name="litigant_name" 
+                                                    className={`${errors.litigant_name ? 'is-invalid' : ''}`}
+                                                    value={form.litigant_name} 
                                                     onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                                 ></Form.Control>
-                                                <div className="invalid-feedback">{ errors.searchFormer_name }</div>
+                                                <div className="invalid-feedback">{ errors.litigant_name }</div>
                                             </Form.Group>
                                         </div>
                                         <div className="col-md-3">
@@ -609,10 +662,17 @@ const BailCancellation = () => {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-12">
                                             <div className="form-group">
                                                 <label htmlFor="">Grounds</label>
-                                                <textarea name="" id="" cols="30" rows="5" className="form-control"></textarea>
+                                                <textarea 
+                                                    name="grounds" 
+                                                    cols="30" 
+                                                    rows="10" 
+                                                    className="form-control"
+                                                    value={grounds}
+                                                    onChange={(e) => setGrounds(e.taget.value)}
+                                                ></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -621,6 +681,7 @@ const BailCancellation = () => {
                                             <Button
                                                 variant='contained'
                                                 color='success'
+                                                onClick={handleSubmit}
                                             >Submit</Button>
                                         </div>
                                     </div>
