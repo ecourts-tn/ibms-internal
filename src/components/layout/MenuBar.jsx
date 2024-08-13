@@ -217,7 +217,7 @@ export default function MenuBar() {
                 )}
                 { /* End - Police user menu */}
                 { /* Start - Prison user menu */}
-                { parseInt(user.user_type) === 4 && (
+                { parseInt(user.user.user_type) === 4 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prison/dashboard" className="nav-link active">
@@ -239,7 +239,7 @@ export default function MenuBar() {
                   </>
                 )}
                 {/** End - Prison user menu */}
-                { parseInt(user.user_type) === 3 && (
+                { parseInt(user.user.user_type) === 3 && (
                   <>
                     <li className="nav-item menu-open">
                       <Link to="/prosecution/dashboard" className="nav-link active">

@@ -13,6 +13,7 @@ const ResponseCreate = () => {
         filing_type: {}
     })
     const[accused, setAccused] = useState([])
+    const[crime, setCrime] = useState({})
     const initialState = {
         cino               : '',
         response_type      : '',
@@ -28,19 +29,19 @@ const ResponseCreate = () => {
 
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/bail/petition/detail/`, {params:{cino:state.cino}})
+            const response = await api.get(`api/prosecution/filing/detail/`, {params:{efile_no:state.efile_no}})
             if(response.status === 200){
                 setForm({
                     ...form,
                     cino: response.data.petition.cino
                 })
                 setPetition(response.data.petition)
-                setAccused(response.data.petitioner)
+                setAccused(response.data.litigant)
+                setCrime(response.data.crime)
             }
         }
         fetchData()
     }, [])
-
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -76,28 +77,28 @@ const ResponseCreate = () => {
                                         <tr>
                                             <td>Petition&nbsp;Number</td>
                                             <td>
-                                                {`${petition.filing_type.type_name}/${petition.filing_number}/${petition.filing_year}`}
+                                                {`${petition.filing_type}/${petition.filing_number}/${petition.filing_year}`}
                                             </td>
                                             <td>Crime&nbsp;Number</td>
-                                            <td>{`${petition.crime_number }/${ petition.crime_year }`}</td>
+                                            <td>{`${crime.fir_number }/${ crime.fir_year }`}</td>
                                             <td>Date of FIR</td>
-                                            <td>{ petition.fir_date_time }</td>
+                                            <td>{ crime.fir_date_time }</td>
                                         </tr>
                                         <tr>
                                             <td>Police&nbsp;Station</td>
-                                            <td>{ petition.police_station ? petition.police_station.station_name : null }</td>
+                                            <td>{ crime.police_station ? crime.police_station : null }</td>
                                             <td>Date of Occurence</td>
-                                            <td>{ petition.date_of_occurrence }</td>
+                                            <td>{ crime.date_of_occurrence }</td>
                                             <td>Complainant&nbsp;Name</td>
-                                            <td>{petition.complainant_name}</td>
+                                            <td>{crime.complainant_name}</td>
                                         </tr>
                                         <tr>
                                             <td>Gist of FIR</td>
-                                            <td colSpan={5}>{ petition.gist_of_fir }</td>
+                                            <td colSpan={5}>{ crime.gist_of_fir }</td>
                                         </tr>
                                         <tr>
                                             <td>Gist&nbsp;in&nbsp;Local&nbsp;Language</td>
-                                            <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(petition.gist_in_local)}></span></td>
+                                            <td colSpan={5}><span dangerouslySetInnerHTML={CreateMarkup(crime.gist_in_local)}></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -122,10 +123,10 @@ const ResponseCreate = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                { accused.map((a, index) => (
+                                                { accused.filter(l=>l.litigant_type===1).map((a, index) => (
                                                     <tr>
                                                         <td>{ index+1 }</td>
-                                                        <td>{ a.petitioner_name }</td>
+                                                        <td>{ a.litigant_name }</td>
                                                         <td>{ a.age }</td>
                                                         <td>{ a.rank }</td>
                                                         <td>{ a.relation }</td>
@@ -172,38 +173,33 @@ const ResponseCreate = () => {
                                                     <label className="col-sm-3"></label>
                                                     <div className="col-sm-5">
                                                         <label htmlFor="">Accused Name</label>
-                                                        <input 
-                                                            type="text" 
-                                                            className="form-control mb-3" 
-                                                            name="accused_name"
-                                                            value={form.accused_name}
-                                                            onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                        />
-                                                        <input type="text" className="form-control mb-3" />
-                                                        <input type="text" className="form-control mb-3" />
+                                                        {accused.filter(l=>l.litigant_type===1).map((a, index)=>(
+                                                            <input 
+                                                                type="text" 
+                                                                className="form-control mb-3" 
+                                                                name="accused_name"
+                                                                value={a.litigant_name}
+                                                                readOnly={true}
+                                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                                            />
+                                                        ))}
                                                     </div>
-                                                    <div className="col-sm-3">
+                                                    <div className="col-sm-4">
                                                         <label htmlFor="">Accused Type</label>
-                                                        <select 
-                                                            name="accused_type" 
-                                                            className="form-control mb-3"
-                                                            value={form.accused_type}
-                                                            onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                        >
-                                                            <option value="">Select type</option>
-                                                            <option value="First time offender">First time offender</option>
-                                                            <option value="Habitual offender">Habitual offender</option>
-                                                        </select>
-                                                        <select name="petitioner_name" id="" className="form-control mb-3">
-                                                            <option value="">Select type</option>
-                                                            <option value="">First time offender</option>
-                                                            <option value="">Habitual offender</option>
-                                                        </select>
-                                                        <select name="petitioner_name" id="" className="form-control mb-3">
-                                                            <option value="">Select type</option>
-                                                            <option value="">First time offender</option>
-                                                            <option value="">Habitual offender</option>
-                                                        </select>
+                                                        {accused.filter(l=>l.litigant_type===1).map((a, index)=>(
+                                                            <select 
+                                                                name={`accused_type_${index+1}`}
+                                                                className="form-control mb-3"
+                                                                value={form.accused_type}
+                                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                                            >
+                                                                <option value="">Select type</option>
+                                                                <option value="First time offender">First time offender</option>
+                                                                <option value="Habitual offender">Habitual offender</option>
+                                                            </select>
+                                                            
+
+                                                        ))}
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">

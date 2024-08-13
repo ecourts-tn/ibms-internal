@@ -14,7 +14,7 @@ const ResponseSubmitted = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-            const response = await api.get("api/bail/filing/");
+            const response = await api.get("api/prosecution/response/submitted/list/");
             setPetitions(response.data)
         }
         fetchPetitions();
@@ -45,8 +45,7 @@ const ResponseSubmitted = () => {
                                     <thead className="bg-secondary">
                                         <tr>
                                             <th>S.No</th>
-                                            <th>CNR Number</th>
-                                            <th>Date of Occurrence</th>
+                                            <th>eFile Number Number</th>
                                             <th>Crime Number/Year</th>
                                             <th>Complainant Name</th>
                                             <th>Investigation Officer</th>
@@ -57,11 +56,23 @@ const ResponseSubmitted = () => {
                                     { petitions.map((petition, index) => (
                                         <tr key={index}>
                                             <td>{ index + 1 }</td>
-                                            <td>{ petition.cino }</td>
-                                            <td>{ petition.date_of_occurrence }</td>
-                                            <td>{ petition.crime_number }/{ petition.crime_year }</td>
-                                            <td>{ petition.complainant_guardian }</td>
-                                            <td>{ petition.investigation_officer }</td>
+                                            <td>{ petition.petition.efile_number }</td>
+                                            <td className="text-center" width="400">
+                                                {petition.litigant.filter(l=>l.litigant_type===1).map((l, index)=>(
+                                                    <>
+                                                        <span key={index}>{index+1}. {l.litigant_name}</span><br/>
+                                                    </>
+                                                ))}
+                                                <span className="text-danger">Vs</span><br/>
+                                                {petition.litigant.filter(l=>l.litigant_type===2).map((l, index)=>(
+                                                    <>
+                                                        <span key={index} className="text-center">{index+1}. {l.litigant_name} {l.designation}</span><br/>
+                                                    </>
+                                                ))}
+                                            </td>
+                                            <td>{ petition.crime.fir_number }/{ petition.crime.fir_year }</td>
+                                            <td>{ petition.crime.complainant_name }</td>
+                                            <td>{ petition.crime.investigation_officer }</td>
                                             <td>
                                                 <Link to='#/' state={{ cino: petition.cino }}>
                                                     <Button
