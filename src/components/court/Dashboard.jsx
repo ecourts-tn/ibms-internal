@@ -10,7 +10,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fecthCases = async() =>{
-            const response = await api.get("api/bail/dashboard/")
+            const response = await api.get("api/case/dashboard/")
             if(response.status === 200){
                 setCases(response.data.petitions)
                 setCount({
@@ -26,7 +26,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fecthCases = async() =>{
-            const response = await api.get("api/bail/petition/list/")
+            const response = await api.get("api/case/filing/submitted-list/")
             if(response.status === 200){
                 setCases(response.data)
             }
@@ -162,14 +162,14 @@ const Dashboard = () => {
                                                         </div>
                                                         
                                                         <span className="text mr-3">
-                                                            <Link to={`/court/petition/scrutiny/details`} state={{cino: c.petition.cino}}>{ c.petition.cino }</Link>
+                                                            <Link to={`/court/petition/scrutiny/details`} state={{efile_no: c.petition.efile_number}}>{ c.petition.efile_number }</Link>
                                                         </span>
-                                                        { c.petitioner.map((p, index) => (
-                                                            <span className="text ml-2">{index+1}. {p.petitioner_name}</span>
+                                                        { c.litigant.filter(l=>l.litigant_type===1).map((p, index) => (
+                                                            <span className="text ml-2">{index+1}. {p.litigant_name}</span>
                                                         ))} 
                                                         <span className="text text-danger">Vs</span>
-                                                        { c.respondent.map((res, index) => (
-                                                            <span className="text ml-2">{res.respondent_name} rep by {res.designation}</span>
+                                                        { c.litigant.filter(l=>l.litigant_type===2).map((res, index) => (
+                                                            <span className="text ml-2">{res.litigant_name} {res.designation}</span>
                                                         ))} 
                                                         <div className="float-right">
                                                             <small className="badge badge-success"><i className="far fa-clock" /><ReactTimeAgo date={c.petition.created_at} locale="en-US"/></small>

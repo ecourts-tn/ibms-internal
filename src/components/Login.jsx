@@ -93,7 +93,7 @@ const Login = () => {
                     <div className="card">
                       <div className="card-header pt-2" style={{display: 'block', textAlign: 'center', padding: '0px 10px'}}>
                         <p><img src={highcourtlogo} width={70} height={70}/></p>
-                        <h3 className="text-center" style={{fontWeight: 'bold'}}>IBMS - Madrash High Court</h3>
+                        <h3 className="text-center" style={{fontWeight: 'bold'}}>IBMS - Madras High Court</h3>
                       </div>
                       <div className="card-body login-card-body">
                         <p>Please login with your username and password below.</p>

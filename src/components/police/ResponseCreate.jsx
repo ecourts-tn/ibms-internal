@@ -53,13 +53,13 @@ const ResponseCreate = () => {
         specific_allegations: Yup.string().required(),
         materials_used: Yup.string().required(),
         discharged: Yup.string().required(),
-        investigation_stage: Yup.string().required(),
+        // investigation_stage: Yup.string().required(),
         previous_case: Yup.string().required(),
         previous_bail: Yup.string().required(),
         other_accused_status: Yup.string().required(),
         reason_not_given: Yup.string().required(),
         other_information: Yup.string().required(),
-        court_details: Yup.string().required(),
+        // court_details: Yup.string().required(),
     })
     
     const[form, setForm] = useState(initialState)
