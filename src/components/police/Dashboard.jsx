@@ -11,7 +11,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = async() =>{
-            const response = await api.get("api/police/dashboard/")
+            const response = await api.get("police/dashboard/")
             if(response.status === 200){
                 setCount({
                     'total': response.data.total,

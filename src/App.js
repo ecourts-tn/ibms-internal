@@ -17,7 +17,6 @@ import ResponseDetails from './components/police/ResponseDetails'
 import ConditionList from './components/police/ConditionList'
 import ConditionForm from './components/police/ConditionForm'
 
-
 import PrisonDashboard from "./components/prison/Dashboard"
 import PrisonResponsePending from "./components/prison/ResponsePending"
 import PrisonResponseSubmitted from "./components/prison/ResponseSubmitted"
@@ -44,8 +43,9 @@ import DailyProceedingsList from './components/court/DailyProceedingsList'
 import BailOrder from './components/court/BailOrder'
 import GenerateOrders from './components/court/GenerateOrders'
 import BailBondForm from './components/court/BailBondForm'
+import Profile from './components/police/Profile'
 
-
+import config from './config';
 const appendScript = (scriptToAppend) => {
   const script = document.createElement("script");
   script.src = scriptToAppend;
@@ -54,6 +54,9 @@ const appendScript = (scriptToAppend) => {
 }
 
 function App() {
+
+  console.log(`API URL: ${config.apiUrl}`);
+  console.log(`Feature Flag: ${config.featureFlag ? 'Enabled' : 'Disabled'}`);
 
   useEffect(() => {
     appendScript(`${process.env.PUBLIC_URL}/plugins/select2/js/select2.full.min.js`);
@@ -178,6 +181,10 @@ function App() {
                 />
               </Route>
               <Route path="police">
+                <Route
+                  path="profile"
+                  element={<Profile />}
+                />
                 <Route 
                   path="dashboard" 
                   element={
