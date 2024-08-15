@@ -5,6 +5,7 @@ import { CreateMarkup } from '../../utils';
 
 import Button from '@mui/material/Button'
 import api from '../../api'
+import Document from './Document';
 
 const ResponseCreate = () => {
 
@@ -241,10 +242,10 @@ const ResponseCreate = () => {
                             <div className="card card-outline card-danger">
                                 <div className="card-header"><strong>Remarks</strong></div>
                                 <div className="card-body">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <form method="POST" onSubmit={handleSubmit}>
-                                                <div className="form-group row">
+                                    <form method="POST" onSubmit={handleSubmit}>
+                                        <div className="row">
+                                            <div className="col-md-8">
+                                                {/* <div className="form-group row">
                                                     <label className="col-sm-3">Response Type</label>
                                                     <div className="col-sm-8">
                                                         <div className="icheck-success d-inline mx-2">
@@ -267,10 +268,10 @@ const ResponseCreate = () => {
                                                             <label htmlFor="radioResponseType2">Uncontested</label>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group row">
-                                                    <label className="col-sm-3"></label>
-                                                    <div className="col-sm-5">
+                                                    <label className="col-sm-4"></label>
+                                                    <div className="col-sm-4">
                                                         <label htmlFor="">Accused Name</label>
                                                         {accused.filter(l=>l.litigant_type===1).map((a, index)=>(
                                                             <input 
@@ -302,7 +303,7 @@ const ResponseCreate = () => {
                                                     </div>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label className="col-sm-3">Injured discharged</label>
+                                                    <label className="col-sm-4">Injured discharged</label>
                                                     <div className="col-sm-8">
                                                         <div className="icheck-success d-inline mx-2">
                                                             <input 
@@ -325,37 +326,37 @@ const ResponseCreate = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                { !form.discharged && (
+                                                {/* { !form.discharged && (
                                                     <>
                                                         <div className="form-group row">
-                                                    <label htmlFor="" className="col-sm-3">Hospital Name</label>
-                                                    <div className="col-sm-9">
-                                                        <input 
-                                                            type="text" 
-                                                            className="form-control" 
-                                                            name="hospital_name"
-                                                            value={form.hospital_name}
-                                                            onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                        />
-                                                    </div>
-                                                </div>
+                                                            <label htmlFor="" className="col-sm-3">Hospital Name</label>
+                                                            <div className="col-sm-9">
+                                                                <input 
+                                                                    type="text" 
+                                                                    className="form-control" 
+                                                                    name="hospital_name"
+                                                                    value={form.hospital_name}
+                                                                    onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="form-group row">
+                                                            <label htmlFor="" className="col-sm-3">Condition of Victim</label>
+                                                            <div className="col-sm-9">
+                                                                <input 
+                                                                    type="text" 
+                                                                    className="form-control" 
+                                                                    name="victim_condition"
+                                                                    value={form.victim_condition}
+                                                                    onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                )} */}
                                                 <div className="form-group row">
-                                                    <label htmlFor="" className="col-sm-3">Condition of Victim</label>
-                                                    <div className="col-sm-9">
-                                                        <input 
-                                                            type="text" 
-                                                            className="form-control" 
-                                                            name="victim_condition"
-                                                            value={form.victim_condition}
-                                                            onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </>
-                                                )}
-                                                <div className="form-group row">
-                                                    <label htmlFor="" className="col-sm-3">Remarks</label>
-                                                    <div className="col-sm-9">
+                                                    <label htmlFor="" className="col-sm-4">Remarks</label>
+                                                    <div className="col-sm-8">
                                                         <textarea 
                                                             name="remarks" 
                                                             rows="5" 
@@ -365,19 +366,19 @@ const ResponseCreate = () => {
                                                         ></textarea>
                                                     </div>
                                                 </div>
-                                                <div className="form-group row">
-                                                    <div className="col-sm-3"></div>
-                                                    <div className="col-sm-9 d-flex justify-content-center">
-                                                        <Button
-                                                            variant='contained'
-                                                            color="success"
-                                                            type="submit"
-                                                        >Submit</Button>
-                                                    </div>
+                                            </div>
+                                            <div className="col-md-12">
+                                                <Document />
+                                                <div className="pb-2">
+                                                    <Button
+                                                        variant='contained'
+                                                        color="success"
+                                                        type="submit"
+                                                    >Submit</Button>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

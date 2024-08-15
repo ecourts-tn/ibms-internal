@@ -9,6 +9,7 @@ import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
 import { CreateMarkup } from '../../utils';
 import * as Yup from 'yup'
+import Document from './Document';
 
 const ResponseCreate = () => {
     const {state} = useLocation()
@@ -67,7 +68,7 @@ const ResponseCreate = () => {
 
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/police/filing/detail/`, {params:{efile_no:state.efile_no}})
+            const response = await api.get(`police/filing/detail/`, {params:{efile_no:state.efile_no}})
             if(response.status === 200){
                 setForm({
                     ...form,
@@ -83,13 +84,13 @@ const ResponseCreate = () => {
         fetchData()
     }, [])
 
-    console.log(crime)
+    console.log(petition)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
             await validationSchema.validate(form, {abortEarly:false})
-            const response = await api.post("api/police/response/create/", form)
+            const response = await api.post("police/response/create/", form)
             if(response.status === 201){
                 toast.success("Response added successfully", {
                     theme: "colored"
@@ -128,7 +129,7 @@ const ResponseCreate = () => {
                                     <tr>
                                         <td>Petition&nbsp;Number</td>
                                         <td>
-                                            {`${petition.filing_type.type_name}/${petition.filing_number}/${petition.filing_year}`}
+                                            {`${petition.filing_type}/${petition.filing_number}/${petition.filing_year}`}
                                         </td>
                                         <td>Crime&nbsp;Number</td>
                                         <td>{`${crime.fir_number }/${ crime.fir_year }`}</td>
@@ -549,6 +550,9 @@ const ResponseCreate = () => {
                                                 { errors.court_details }
                                             </div>
                                         </FormGroup>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <Document />
                                     </div>
                                     <div className="col-md-12">
                                         <Button 

@@ -212,7 +212,13 @@ export default function MenuBar() {
                         </Link>
                       </li>
                     </ul>
-                  </li>       
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/police/profile" className="nav-link">
+                      <i className="nav-icon far fa-circle text-info" />
+                      <p>Profile</p>
+                    </Link>
+                  </li>         
                 </>
                 )}
                 { /* End - Police user menu */}

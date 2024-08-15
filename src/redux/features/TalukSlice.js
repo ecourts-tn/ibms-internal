@@ -11,7 +11,7 @@ const initialState = {
 export const getTaluks = createAsyncThunk(
     'taluks/getTaluks',
     async () => {
-        const response = await api.get("api/base/taluk/")
+        const response = await api.get("base/taluk/")
         return response.data
     }
 )
@@ -19,7 +19,7 @@ export const getTaluks = createAsyncThunk(
 export const getTalukByDistrictCode = createAsyncThunk(
     'taluk/getTalukByDistrictCode',
     async(district) => {
-        const response = await api.get(`api/base/district/${district}/taluk/`)
+        const response = await api.get(`base/district/${district}/taluk/`)
         return response.data
     }
 )

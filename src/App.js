@@ -66,22 +66,19 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-      <Route
-                path="/auth/user/registration"
-                element={
-                  // <PrivateRoute>
-                    <Registration />
-                  // </PrivateRoute>
-                }
-              />
-      </Routes>
       <AuthProvider>
         <Routes>
             <Route path="/auth/login" element={<Login />} />
             <Route index element={<Login />} />
             <Route element={<AdminLayout />} >
-            
+              <Route
+                path="/auth/user/registration"
+                element={
+                  <PrivateRoute>
+                    <Registration />
+                  </PrivateRoute>
+                }
+              />
               <Route path="court">
                 <Route 
                   path="dashboard" 

@@ -41,7 +41,7 @@ const Registration = () => {
 
     const handleSubmit = async() => {
         try{
-            const response = await api.post("/api/auth/user/register/", form)
+            const response = await api.post("auth/user/register/", form)
             if(response.status === 201){
                 toast.success("User registered successfully", {
                     theme:"colored"
@@ -104,7 +104,7 @@ const Registration = () => {
 
     useEffect(() => {
         const fetchData = async() => {
-          const response = await api.get("api/base/user-type/")
+          const response = await api.get("base/user-type/")
           if(response.status === 200){
             setUserTypes(response.data)
           }

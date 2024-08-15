@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
+import Document from './Document';
 
 const ResponseCreate = () => {
     const {state} = useLocation()
@@ -24,7 +25,7 @@ const ResponseCreate = () => {
 
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/prison/filing/detail/`, {params:{efile_no:state.efile_no}})
+            const response = await api.get(`prison/filing/detail/`, {params:{efile_no:state.efile_no}})
             if(response.status === 200){
                 setForm({
                     ...form,
@@ -72,7 +73,7 @@ const ResponseCreate = () => {
                     <div id="accordion">
                         <div className="card m-1">
                             <div className="card-header" id="headingOne">
-                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">Court Proceedings</a>
+                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">Petition</a>
                             </div>
                             <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                 ...
@@ -80,9 +81,7 @@ const ResponseCreate = () => {
                         </div>
                         <div className="card m-1">
                             <div className="card-header" id="headingTwo">
-                                <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="/#">
-                                    Orders
-                                </a>
+                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">Court Proceedings</a>
                             </div>
                             <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                 ...
@@ -90,8 +89,8 @@ const ResponseCreate = () => {
                         </div>
                         <div className="card m-1">
                             <div className="card-header" id="headingThree">
-                                <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseTwo" href="/#">
-                                    Bail Bond
+                                <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" href="/#">
+                                    Orders
                                 </a>
                             </div>
                             <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordion">
@@ -100,15 +99,25 @@ const ResponseCreate = () => {
                         </div>
                         <div className="card m-1">
                             <div className="card-header" id="headingFour">
+                                <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseTwo" href="/#">
+                                    Bail Bond
+                                </a>
+                            </div>
+                            <div id="collapseFour" className="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                                ...
+                            </div>
+                        </div>
+                        <div className="card m-1">
+                            <div className="card-header" id="headingFive">
                                 <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree" href="/#">
                                     Prison Remarks
                                 </a>
                             </div>
-                            <div id="collapseFour" className="collapse show" aria-labelledby="headingFour" data-parent="#accordion">
-                                <div className="col-md-6 my-3">
+                            <div id="collapseFive" className="collapse show" aria-labelledby="headingFive" data-parent="#accordion">
+                                <div className="col-md-8 my-3">
                                     <div className="form-group row">
-                                        <label htmlFor="" className="col-sm-3">Accused Released?</label>
-                                        <div className="col-sm-9">
+                                        <label htmlFor="" className="col-sm-4">Accused Released?</label>
+                                        <div className="col-sm-8">
                                             <div className="icheck-success d-inline mx-2">
                                                 <input 
                                                     type="radio" 
@@ -132,18 +141,21 @@ const ResponseCreate = () => {
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label htmlFor="" className="col-sm-3">Date & Time of Release</label>
-                                        <div className="col-sm-9">
+                                        <label htmlFor="" className="col-sm-4">Date & Time of Release</label>
+                                        <div className="col-sm-8">
                                             <input type="text" className="form-control" />
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label htmlFor="" className="col-sm-3">Remarks</label>
-                                        <div className="col-sm-9">
+                                        <label htmlFor="" className="col-sm-4">Remarks</label>
+                                        <div className="col-sm-8">
                                             <textarea name="remarks"cols="30" rows="5" className="form-control"></textarea>
                                         </div>
                                     </div>
-                                    <div className="form-group row d-flex justify-content-center">
+                                </div>
+                                <div className="col-md-12">
+                                    <Document />
+                                    <div className="pb-3">
                                         <Button
                                             variant='contained'
                                             color='success'

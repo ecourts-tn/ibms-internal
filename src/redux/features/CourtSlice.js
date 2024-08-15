@@ -4,7 +4,7 @@ import api from "../../api";
 export const getCourts = createAsyncThunk(
     'court/getCourts',
     async () => {
-      const response = await api.get('api/base/court/');
+      const response = await api.get('base/court/');
       return response.data;
     }
 );
@@ -12,7 +12,7 @@ export const getCourts = createAsyncThunk(
 export const getCourtsByEstablishmentCode = createAsyncThunk(
   'courts/getCourtsByEstablishmentCode',
   async (establishment) => {
-    const response = await api.get(`api/base/establishment/${establishment}/court/`)
+    const response = await api.get(`base/establishment/${establishment}/court/`)
     return response.data
   }
 )

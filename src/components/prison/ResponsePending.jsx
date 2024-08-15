@@ -14,22 +14,11 @@ const ResponsePending = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-          const response = await api.get("api/prosecution/response/pending/list/");
+          const response = await api.get("prison/response/pending/list/");
           setPetitions(response.data)
         }
         fetchPetitions();
       }, []); 
-
-
-    const getPetition = async (cino) => {
-        try{
-            const response = await api.get(`api/bail/${cino}/filing/`)
-            navigate("/police-response/create/", { state: { petition: response.data } });
-        }catch(err){
-            console.log(err)
-        }
-    }
-    console.log(petitions)
 
     return (
         <>
