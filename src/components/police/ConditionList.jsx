@@ -13,22 +13,11 @@ const ConditionList = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-            const response = await api.get("api/police/response/pending/list/");
+            const response = await api.get("police/response/pending/list/");
             setPetitions(response.data)
         }
         fetchPetitions();
         }, []); 
-
-
-    const getPetition = async (cino) => {
-        try{
-            const response = await api.get(`api/bail/${cino}/filing/`)
-            navigate("/police-response/create/", { state: { petition: response.data } });
-        }catch(err){
-            console.log(err)
-        }
-    }
-    console.log(petitions)
 
     return (
         <>

@@ -42,7 +42,7 @@ const ResponseDetails = () => {
 
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/police/response/detail/`, {params:{efile_no:state.efile_no}})
+            const response = await api.get(`police/response/detail/`, {params:{efile_no:state.efile_no}})
             if(response.status === 200){
                 setForm({
                     ...form,
@@ -60,7 +60,7 @@ const ResponseDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
-            const response = await api.post("api/bail/police/response/create/", form)
+            const response = await api.post("police/response/create/", form)
             if(response.status === 201){
                 toast.success("Response added successfully", {
                     theme: "colored"

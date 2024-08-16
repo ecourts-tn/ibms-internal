@@ -43,7 +43,7 @@ const ResponseCreate = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
-            const response = await api.post("api/bail/police/response/create/", form)
+            const response = await api.post("bail/prison/response/create/", form)
             if(response.status === 201){
                 toast.success("Response added successfully", {
                     theme: "colored"
@@ -109,7 +109,7 @@ const ResponseCreate = () => {
                         </div>
                         <div className="card m-1">
                             <div className="card-header" id="headingFive">
-                                <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree" href="/#">
+                                <a data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree" href="/#">
                                     Prison Remarks
                                 </a>
                             </div>

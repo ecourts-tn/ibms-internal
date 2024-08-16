@@ -129,7 +129,7 @@ const ResponseCreate = () => {
                                     <tr>
                                         <td>Petition&nbsp;Number</td>
                                         <td>
-                                            {`${petition.filing_type}/${petition.filing_number}/${petition.filing_year}`}
+                                            {`${petition.filing_type.type_name}/${petition.filing_number}/${petition.filing_year}`}
                                         </td>
                                         <td>Crime&nbsp;Number</td>
                                         <td>{`${crime.fir_number }/${ crime.fir_year }`}</td>
@@ -145,12 +145,20 @@ const ResponseCreate = () => {
                                         <td>{crime.complainant_name}</td>
                                     </tr>
                                     <tr>
-                                        <td>Gist of FIR</td>
-                                        <td colSpan={5} dangerouslySetInnerHTML={CreateMarkup(crime.gist_of_fir)}></td>
+                                        <td colSpan={6}>
+                                            <p>
+                                                <strong>Gist of FIR</strong><br/><br/>
+                                                <span colSpan={5} dangerouslySetInnerHTML={CreateMarkup(crime.gist_of_fir)}></span>
+                                            </p>
+                                        </td>    
                                     </tr>
                                     <tr>
-                                        <td>Gist&nbsp;in&nbsp;Local&nbsp;Language</td>
-                                        <td colSpan={5} dangerouslySetInnerHTML={CreateMarkup(crime.gist_in_local)}></td>
+                                        <td colSpan={6}>
+                                            <p>
+                                                <strong>Gist in Local Language</strong><br/><br/>
+                                                <span colSpan={5} dangerouslySetInnerHTML={CreateMarkup(crime.gist_in_local)}></span>
+                                            </p>
+                                        </td>    
                                     </tr>
                                 </tbody>
                             </table>
@@ -172,6 +180,7 @@ const ResponseCreate = () => {
                                             <th>Relative</th>
                                             <th>Relative Name</th>
                                             <th>Address</th>
+                                            <th>Photo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -184,6 +193,9 @@ const ResponseCreate = () => {
                                                 <td>{ a.relation }</td>
                                                 <td>{ a.relation_name }</td>
                                                 <td>{ a.address }</td>
+                                                <td>
+                                                    
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>

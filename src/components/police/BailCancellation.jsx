@@ -123,7 +123,7 @@ const BailCancellation = () => {
         e.preventDefault()
         if(search === 1){
             // crime number search
-            const response = await api.post('api/police/search/crime/', searchForm)
+            const response = await api.post('police/search/crime/', searchForm)
             if(response.status === 200){
                 const accused = response.data.litigant.filter((accused) => {
                     return accused.litigant_type === 1
@@ -133,7 +133,7 @@ const BailCancellation = () => {
             }
         }else{
             //case number search
-            const response = await api.post('api/police/search/case/', searchForm)
+            const response = await api.post('police/search/case/', searchForm)
             if(response.status === 200){
                 setAccused(response.data)
             }
@@ -159,7 +159,7 @@ const BailCancellation = () => {
             }
             const merged = {...form,...grounds}
             await validationSchema.validate(form, {abortEarly:false})
-            const response = await api.post("api/police/filing/cancellation/bail/", post_data)
+            const response = await api.post("police/filing/cancellation/bail/", post_data)
             if(response.status === 201){
                 toast.success("Bail cancellation petition submitted successfully", {theme:"colored"})
             }

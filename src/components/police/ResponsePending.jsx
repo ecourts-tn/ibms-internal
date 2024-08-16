@@ -49,7 +49,7 @@ const ResponsePending = () => {
                                             <td>{ petition.petition.efile_number }</td>
                                             <td>{ petition.crime.date_of_occurrence }</td>
                                             <td>{ petition.crime.fir_number }/{ petition.crime.fir_year }</td>
-                                            <td>{ petition.crime.complainant_guardian }</td>
+                                            <td>{ petition.crime.complainant_guardian_name }</td>
                                             <td>{ petition.crime.investigation_officer }</td>
                                             <td>
                                                 <Link to='/police/response/create/' state={{ efile_no: petition.petition.efile_number }}>

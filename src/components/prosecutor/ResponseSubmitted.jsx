@@ -14,7 +14,7 @@ const ResponseSubmitted = () => {
 
     useEffect(() => {
         async function fetchPetitions() {
-            const response = await api.get("api/prosecution/response/submitted/list/");
+            const response = await api.get("prosecution/response/submitted/list/");
             setPetitions(response.data)
         }
         fetchPetitions();

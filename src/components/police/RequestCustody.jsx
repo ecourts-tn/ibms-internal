@@ -109,7 +109,7 @@ const RequestCustody = () => {
         e.preventDefault()
         if(search === 1){
             // crime number search
-            const response = await api.post('api/police/search/crime/', searchForm)
+            const response = await api.post('police/search/crime/', searchForm)
             if(response.status === 200){
                 const accused = response.data.litigant.filter((accused) => {
                     return accused.litigant_type === 1
@@ -119,7 +119,7 @@ const RequestCustody = () => {
             }
         }else{
             //case number search
-            const response = await api.post('api/police/search/case/', searchForm)
+            const response = await api.post('police/search/case/', searchForm)
             if(response.status === 200){
                 setAccused(response.data)
             }
