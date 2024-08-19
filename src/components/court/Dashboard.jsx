@@ -10,14 +10,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fecthCases = async() =>{
-            const response = await api.get("api/case/dashboard/")
+            const response = await api.get("court/dashboard/")
             if(response.status === 200){
                 setCases(response.data.petitions)
                 setCount({
-                    'draft': response.data.draft,
-                    'submitted': response.data.submitted,
+                    'total': response.data.total,
                     'approved': response.data.approved,
                     'returned': response.data.returned,
+                    'rejected': response.data.rejected
                 })
             }
         }
@@ -52,8 +52,8 @@ const Dashboard = () => {
                                     <div className="col-lg-3 col-6">
                                         <div className="small-box bg-info">
                                             <div className="inner">
-                                                <h3>{ count.draft }</h3>
-                                                <p>Pending Petitions</p>
+                                                <h3>{ count.total }</h3>
+                                                <p>Total Petitions</p>
                                             </div>
                                             <div className="icon">
                                                 <i className="ion ion-bag" />
@@ -64,8 +64,8 @@ const Dashboard = () => {
                                     <div className="col-lg-3 col-6">
                                         <div className="small-box bg-success">
                                             <div className="inner">
-                                                <h3>{ count.submitted }</h3>
-                                                <p>Completed Petitions</p>
+                                                <h3>{ count.approved }</h3>
+                                                <p>Approved Petitions</p>
                                             </div>
                                             <div className="icon">
                                             <i className="ion ion-stats-bars" />
@@ -76,8 +76,8 @@ const Dashboard = () => {
                                     <div className="col-lg-3 col-6">
                                         <div className="small-box bg-warning">
                                             <div className="inner">
-                                                <h3>{ count.approved }</h3>
-                                                <p>Approved Petitions</p>
+                                                <h3>{ count.returned }</h3>
+                                                <p>Returned Petitions</p>
                                             </div>
                                             <div className="icon">
                                                 <i className="ion ion-person-add" />
@@ -88,8 +88,8 @@ const Dashboard = () => {
                                     <div className="col-lg-3 col-6">
                                         <div className="small-box bg-danger">
                                             <div className="inner">
-                                                <h3>{ count.returned}</h3>
-                                                <p>Returned Petitions</p>
+                                                <h3>{ count.rejected }</h3>
+                                                <p>Rejected Petitions</p>
                                             </div>
                                             <div className="icon">
                                                 <i className="ion ion-pie-graph" />

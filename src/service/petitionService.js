@@ -10,12 +10,10 @@ export const fetchCases = async () => {
     }
 };
 
-export const fetchCaseBycino = async (cino) => {
+export const fetchCaseBycino = async (efile_no) => {
     try{
-        const response = await api.get('api/bail/petition/detail/', {
-            params:{
-                cino: cino
-            }
+        const response = await api.get('api/court/petition/detail/', {
+            params:{efile_no}
         });
         return response.data;
     }catch(error){

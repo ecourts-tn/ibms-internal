@@ -4,50 +4,21 @@ import UploadIcon from '@mui/icons-material/UploadRounded'
 import Button from '@mui/material/Button'
 import api from '../../api';
 import config from '../../config'
+import { nanoid } from '@reduxjs/toolkit';
 
 
-const Document = () => {
+const Document = ({documents, setDocuments, addDocument, deleteDocument}) => {
 
     const initialState = {
+        id: nanoid(),
         title: '',
         document: ''
     }
     const[form, setForm] = useState(initialState)
-    const[documents, setDocuments] = useState([])
 
-    useEffect(() => {
-        const fetchDocuments = async() => {
-            try{
-                const efile_no = localStorage.getItem("efile_no")
-                const response = await api.get("case/document/list/", {params:{efile_no}})
-                if(response.status === 200){
-                    setDocuments(response.data)
-                }
-            }catch(error){
-                console.error(error)
-            }
-        }
-        fetchDocuments()
-    }, [])
-
-
-    const deleteDocument = async(document) => {
-        try{
-            const newDocuments = documents.filter((g) => {
-                return g.id !== document.id
-            })
-            const response = await api.delete("case/document/delete/", {params:{id:document.id}})
-            if(response.status === 204){
-                setDocuments(newDocuments)
-                toast.error("Documents deleted successfully", {
-                    theme: "colored"
-                })
-            }
-        }catch(error){
-            console.log(error)
-        }
+    const validationSchema = {
+        
     }
-
 
     const handleSubmit = async () => {
         try{
@@ -92,7 +63,7 @@ const Document = () => {
                             <td>{ document.title }</td>
                             <td>
                                 <a href={`${config.apiUrl}${document.document}`} target="_blank" className="btn btn-info btn-sm">View</a>
-                                <button className="btn btn-danger btn-sm ml-2" onClick={() => deleteDocument(document)}>Delete</button>
+                                <button className="btn btn-danger btn-sm ml-2" onClick={() => {deleteDocument(index)}}>Delete</button>
                             </td>
                         </tr>    
                         ))}
@@ -127,17 +98,17 @@ const Document = () => {
                         </div>
                     </div>
                     <div className="col-md-1 mt-4 pt-2">
-                            <div className="">
-                                <Button
-                                    variant="contained"
-                                    color="info"
-                                    onClick={handleSubmit}
-                                    startIcon={<UploadIcon/>}
-                                >
-                                    Upload
-                                </Button>
-                            </div>
+                        <div className="">
+                            <Button
+                                variant="contained"
+                                color="info"
+                                onClick={() => addDocument(form)}
+                                startIcon={<UploadIcon/>}
+                            >
+                                Upload
+                            </Button>
                         </div>
+                    </div>
                 </div>
             </form>
         </>

@@ -54,12 +54,11 @@ const CaseScrutiny = () => {
         fetchState()
     },[])
 
-    console.log(states)
 
     useEffect(() => {
         async function fetchData(){
             try{
-                const data = await fetchCaseBycino(state.cino)
+                const data = await fetchCaseBycino(state.efile_no)
                 const { petition, petitioner, grounds, respondent, advocate, fees} = data
                 setPetition(petition)
                 setPetitioner(petitioner)

@@ -10,6 +10,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { CreateMarkup } from '../../utils';
 import * as Yup from 'yup'
 import Document from './Document';
+import { DocumentScanner } from '@mui/icons-material';
 
 const ResponseCreate = () => {
     const {state} = useLocation()
@@ -45,6 +46,16 @@ const ResponseCreate = () => {
         reason_not_given    : '',
         other_information   : '',
         court_details       : '',
+    }
+    const[documents, setDocuments] = useState([])
+
+    const addDocument = (document) => {
+        setDocuments(prevDocuments => [...prevDocuments, document])
+    }
+
+    const deleteDocument = (indexToDelete) => {
+        const newDocuments = documents.filter((_, index) => index !== indexToDelete)
+        setDocuments(newDocuments)
     }
 
     const validationSchema = Yup.object({
@@ -564,7 +575,12 @@ const ResponseCreate = () => {
                                         </FormGroup>
                                     </div>
                                     <div className="col-md-12">
-                                        <Document />
+                                        <Document 
+                                            documents={documents}
+                                            setDocuments={setDocuments}
+                                            addDocument={addDocument}
+                                            deleteDocument={deleteDocument}
+                                        />
                                     </div>
                                     <div className="col-md-12">
                                         <Button 
