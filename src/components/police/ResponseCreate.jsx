@@ -30,7 +30,7 @@ const ResponseCreate = () => {
         accused_name        : '',
         specific_allegations: '',
         materials_used      : '',
-        discharged          : false,
+        discharged          : '',
         hospital_name       : '',
         victim_condition    : '',
         injury_particulars  : '',
@@ -221,6 +221,13 @@ const ResponseCreate = () => {
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
+                                    
+                                    <div className="col-md-2">
+                                        <div className="form-group">
+                                            <label htmlFor="csr_number">CSR Number</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
                                     <div className="col-md-2">
                                         <div className="form-group">
                                             <label htmlFor="">Crime Number</label>
@@ -341,8 +348,8 @@ const ResponseCreate = () => {
                                                         type="radio" 
                                                         id="radioDischarged1" 
                                                         name="discharged" 
-                                                        onChange={(e) => setForm({...form, [e.target.name] : true})} 
-                                                        checked={form.discharged ? true : false}
+                                                        onChange={(e) => setForm({...form, [e.target.name] : 1})} 
+                                                        checked={parseInt(form.discharged) === 1 ? true : false}
                                                     />
                                                     <label htmlFor="radioDischarged1">Yes</label>
                                                 </div>
@@ -351,13 +358,22 @@ const ResponseCreate = () => {
                                                         type="radio" 
                                                         id="radioDischarged2" 
                                                         name="discharged" 
-                                                        onChange={(e) => setForm({...form, [e.target.name] : false})} 
-                                                        checked={!form.discharged ? true : false}/>
+                                                        onChange={(e) => setForm({...form, [e.target.name] : 2})} 
+                                                        checked={parseInt(form.discharged) === 2 ? true : false}/>
                                                     <label htmlFor="radioDischarged2">No</label>
+                                                </div>
+                                                <div className="icheck-primary d-inline mx-2">
+                                                    <input 
+                                                        type="radio" 
+                                                        id="radioDischarged3" 
+                                                        name="discharged" 
+                                                        onChange={(e) => setForm({...form, [e.target.name] : 3})} 
+                                                        checked={parseInt(form.discharged) === 3 ? true : false}/>
+                                                    <label htmlFor="radioDischarged3">Not Applicable</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        { !form.discharged && (
+                                        { parseInt(form.discharged) === 2 && (
                                         <>
                                             <div className="form-group row">
                                                 <label htmlFor="" className="col-sm-3">Hospital Name</label>
@@ -398,6 +414,154 @@ const ResponseCreate = () => {
                                         </>
                                         )}
                                     </div>
+                                    </div>
+                                <div className="form-group row">
+                                    <label className="col-sm-3">Material seized?</label>
+                                    <div className="col-sm-8">
+                                        <div className="icheck-success d-inline mx-2">
+                                            <input 
+                                                type="radio" 
+                                                id="radioseized1" 
+                                                name="seized" 
+                                                onChange={(e) => setForm({...form, [e.target.name] : 1})} 
+                                                checked={parseInt(form.seized) === 1 ? true : false}
+                                            />
+                                            <label htmlFor="radioseized1">Yes</label>
+                                        </div>
+                                        <div className="icheck-danger d-inline mx-2">
+                                            <input 
+                                                type="radio" 
+                                                id="radioseized2" 
+                                                name="seized" 
+                                                onChange={(e) => setForm({...form, [e.target.name] : 2})} 
+                                                checked={parseInt(form.seized) === 2 ? true : false}/>
+                                            <label htmlFor="radioseized2">No</label>
+                                        </div>
+                                        <div className="icheck-primary d-inline mx-2">
+                                            <input 
+                                                type="radio" 
+                                                id="radioseized3" 
+                                                name="seized" 
+                                                onChange={(e) => setForm({...form, [e.target.name] : 3})} 
+                                                checked={parseInt(form.seized) === 3 ? true : false}/>
+                                            <label htmlFor="radioseized3">Not Applicable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <div className="form-group">
+                                            <label htmlFor="">Name of the material</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <div className="form-group">
+                                            <label htmlFor="">Quantity of the material</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Nature of Quantity(Small/Commercial)</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Whether material produced before competent court</label>
+                                            <select name="" id="" className="form-control">
+                                                <option value="">Yes</option>
+                                                <option value="">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Produced date</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="">Reason</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-1 mt-4 pt-2">
+                                        <button className="btn btn-primary">Add</button>
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <label className="col-sm-3">Vechicle seized?</label>
+                                    <div className="col-sm-8">
+                                        <div className="icheck-success d-inline mx-2">
+                                            <input 
+                                                type="radio" 
+                                                id="radiovehicleseized1" 
+                                                name="vehicleseized" 
+                                                onChange={(e) => setForm({...form, [e.target.name] : 1})} 
+                                                checked={parseInt(form.vehicleseized) === 1 ? true : false}
+                                            />
+                                            <label htmlFor="radiovehicleseized1">Yes</label>
+                                        </div>
+                                        <div className="icheck-danger d-inline mx-2">
+                                            <input 
+                                                type="radio" 
+                                                id="radiovehicleseized2" 
+                                                name="vehicleseized" 
+                                                onChange={(e) => setForm({...form, [e.target.name] : 2})} 
+                                                checked={parseInt(form.vehicleseized) === 2 ? true : false}/>
+                                            <label htmlFor="radiovehicleseized2">No</label>
+                                        </div>
+                                        <div className="icheck-primary d-inline mx-2">
+                                            <input 
+                                                type="radio" 
+                                                id="radiovehicleseized3" 
+                                                name="vehicleseized" 
+                                                onChange={(e) => setForm({...form, [e.target.name] : 3})} 
+                                                checked={parseInt(form.vehicleseized) === 3 ? true : false}/>
+                                            <label htmlFor="radioseized3">Not Applicable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <div className="form-group">
+                                            <label htmlFor="">Name of the Vehicle</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <div className="form-group">
+                                            <label htmlFor="">Owner details with address</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Vehicle Number</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Fastag Details</label>
+                                            <input type="text" className="form-control" />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Whether owner of the vehicle is the accused</label>
+                                            <select name="" id="" className="form-control">
+                                                <option value="">Yes</option>
+                                                <option value="">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-1 mt-4 pt-2">
+                                        <button className="btn btn-primary">Add</button>
+                                    </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-md-12">
@@ -416,6 +580,12 @@ const ResponseCreate = () => {
                                         </select>
                                         <div className="invalid-feedback">
                                             { errors.investigation_stage }
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Limitation date for filing Charge Sheet(As per Act)</label>
+                                            <input type="date" className="form-control" />
                                         </div>
                                     </div>
                                 </div>

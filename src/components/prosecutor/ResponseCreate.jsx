@@ -21,7 +21,7 @@ const ResponseCreate = () => {
         response_type      : '',
         accused_name       : '',
         accused_type       : '',
-        discharged         : false,
+        discharged         : '',
         hospital_name      : '',
         victim_condition   : '',
         remarks            : ''
@@ -245,30 +245,6 @@ const ResponseCreate = () => {
                                     <form method="POST" onSubmit={handleSubmit}>
                                         <div className="row">
                                             <div className="col-md-8">
-                                                {/* <div className="form-group row">
-                                                    <label className="col-sm-3">Response Type</label>
-                                                    <div className="col-sm-8">
-                                                        <div className="icheck-success d-inline mx-2">
-                                                            <input 
-                                                                type="radio" 
-                                                                id="radioResponseType1" 
-                                                                name="response_type" 
-                                                                onChange={(e) => setForm({...form, [e.target.name] : 'c'})} 
-                                                                checked={form.response_type === 'c' ? true : false}
-                                                            />
-                                                            <label htmlFor="radioResponseType1">Contested</label>
-                                                        </div>
-                                                        <div className="icheck-danger d-inline mx-2">
-                                                            <input 
-                                                                type="radio" 
-                                                                id="radioResponseType2" 
-                                                                name="response_type" 
-                                                                onChange={(e) => setForm({...form, [e.target.name] : 'u'})} 
-                                                                checked={ form.response_type === 'u' ? true : false}/>
-                                                            <label htmlFor="radioResponseType2">Uncontested</label>
-                                                        </div>
-                                                    </div>
-                                                </div> */}
                                                 <div className="form-group row">
                                                     <label className="col-sm-4"></label>
                                                     <div className="col-sm-4">
@@ -310,8 +286,8 @@ const ResponseCreate = () => {
                                                                 type="radio" 
                                                                 id="radioDischarged1" 
                                                                 name="discharged" 
-                                                                onChange={(e) => setForm({...form, [e.target.name] : true})} 
-                                                                checked={form.discharged ? true : false}
+                                                                onChange={(e) => setForm({...form, [e.target.name] : 1})} 
+                                                                checked={parseInt(form.discharged) === 1 ? true : false}
                                                             />
                                                             <label htmlFor="radioDischarged1">Yes</label>
                                                         </div>
@@ -320,9 +296,18 @@ const ResponseCreate = () => {
                                                                 type="radio" 
                                                                 id="radioDischarged2" 
                                                                 name="discharged" 
-                                                                onChange={(e) => setForm({...form, [e.target.name] : false})} 
-                                                                checked={!form.discharged ? true : false}/>
+                                                                onChange={(e) => setForm({...form, [e.target.name] : 2})} 
+                                                                checked={parseInt(form.discharged) === 2 ? true : false}/>
                                                             <label htmlFor="radioDischarged2">No</label>
+                                                        </div>
+                                                        <div className="icheck-primary d-inline mx-2">
+                                                            <input 
+                                                                type="radio" 
+                                                                id="radioDischarged3" 
+                                                                name="discharged" 
+                                                                onChange={(e) => setForm({...form, [e.target.name] : 3})} 
+                                                                checked={parseInt(form.discharged) === 3 ? true : false}/>
+                                                            <label htmlFor="radioDischarged3">Not Applicable</label>
                                                         </div>
                                                     </div>
                                                 </div>
