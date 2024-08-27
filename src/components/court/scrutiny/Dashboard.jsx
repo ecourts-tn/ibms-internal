@@ -26,8 +26,7 @@ const CaseScrutiny = () => {
         bail_type: '',
         complaint_type: ''
     })
-    const[petitioner, setPetitioner] = useState([])
-    const[respondent, setRespondent] = useState([])
+    const[litigant, setLitigant] = useState([])
     const[grounds, setGrounds] = useState([])
     const[advocates, setAdvocates] = useState([])
     const[fees, setFees] = useState([])
@@ -58,11 +57,10 @@ const CaseScrutiny = () => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const data = await fetchCaseBycino(state.efile_no)
-                const { petition, petitioner, grounds, respondent, advocate, fees} = data
+                const data = await api.get("court/petition/detai")
+                const { petition, litigant, grounds, advocate, fees} = data
                 setPetition(petition)
-                setPetitioner(petitioner)
-                setRespondent(respondent)
+                setLitigant(litigant)
                 setGrounds(grounds)
                 setAdvocates(advocate)
                 setFees(fees)
@@ -167,7 +165,7 @@ const CaseScrutiny = () => {
                                                     <strong>Petitioner Details</strong>
                                                 </div>
                                                 <div className="card-body p-2">
-                                                    <Petitioner petitioner={petitioner} />
+                                                    <Petitioner litigant={litigant} />
                                                 </div>
                                             </div>
                                             <div className="card">
@@ -175,7 +173,7 @@ const CaseScrutiny = () => {
                                                     <strong>Respondent Details</strong>
                                                 </div>
                                                 <div className="card-body p-2">
-                                                    <Respondent respondent={respondent} />
+                                                    <Respondent litigant={litigant} />
                                                 </div>
                                             </div>
                                         </div>
