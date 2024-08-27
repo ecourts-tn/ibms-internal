@@ -7,7 +7,7 @@ const FeesDetails = ({fees}) => {
                 <table className="table table-striped table-bordered table-sm">
                     <thead className="bg-secondary">
                         <tr>
-                            <th>Petitioner Name</th>
+                            <th>Payer Name</th>
                             <th>Mobile Number</th>
                             <th>Transcation Date</th>
                             <th>Reference Number</th>
@@ -18,12 +18,12 @@ const FeesDetails = ({fees}) => {
                     <tbody>
                         { fees.map((fee, index) => (
                         <tr key={index}>
-                            <td>{ fee.petitioner_name }</td>
+                            <td>{ fee.payer_name }</td>
                             <td>{ fee.mobile_number }</td>
-                            <td>{ fee.transcation_date }</td>
-                            <td></td>
+                            <td>{ fee.transaction_date }</td>
+                            <td>{ fee.reference_number}</td>
                             <td>{ fee.amount }</td>
-                            <td></td>
+                            <td><span className={`badge ${fee.status === 'completed' ? 'bg-success' : 'bg-default'}`}>{ fee.status }</span></td>
                         </tr>
                         ))}
                     </tbody>

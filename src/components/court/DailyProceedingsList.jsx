@@ -10,7 +10,7 @@ const DailyProceedingsList = ({}) => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await api.get("api/bail/petition/list/")
+                const response = await api.get("court/registration/pending/list/")
                 setCases(response.data)
             }catch(err){
                 console.log(err)
@@ -29,7 +29,34 @@ const DailyProceedingsList = ({}) => {
                     <div className="card-body">
                         <div className="row">
                             <div className="col-md-12">
-                                <div className="table-responsive">
+                            <ul className="todo-list" data-widget="todo-list">
+                                        { cases.map((c, index) => (
+                                            <li key={index}>
+                                                <span className="handle">
+                                                    <i className="fas fa-ellipsis-v" />
+                                                    <i className="fas fa-ellipsis-v" />
+                                                </span>
+                                                <div className="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" name={`todo${index}`} id={`todoCheck${index}`} />
+                                                    <label htmlFor="todoCheck1" />
+                                                </div>
+                                                
+                                                <span className="text mr-3">
+                                                    <Link to={`/court/petition/case/proceedings`} state={{efile_no: c.petition.efile_number}}>{ c.petition.efile_number }</Link>
+                                                </span>
+                                                { c.litigant.filter((l) => l.litigant_type ===1 ).map((l, index) => (
+                                                    <span className="text ml-2">{index+1}. {l.litigant_name}</span>
+                                                ))
+                                                }
+                                                <span className="text text-danger">Vs</span>
+                                                { c.litigant.filter((l) => l.litigant_type ===2 ).map((l, index) => (
+                                                    <span className="text ml-2">{index+1}. {l.litigant_name} {l.designation}</span>
+                                                ))
+                                                }
+                                            </li>
+                                        ))}
+                                    </ul>
+                                {/* <div className="table-responsive">
                                     <table className="table table-bordered table-striped">
                                         <thead className="bg-secondary">
                                             <tr>
@@ -91,7 +118,7 @@ const DailyProceedingsList = ({}) => {
                                             )}
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

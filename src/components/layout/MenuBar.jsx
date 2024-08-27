@@ -30,7 +30,7 @@ export default function MenuBar() {
                 <img src={highcourtlogo} className="img-circle elevation-2" alt="User Image" />
               </div>
               <div className="info">
-                <a href="#" className="d-block">{ user.username }</a>
+                <a href="#" className="d-block">{ user.user.username }</a>
               </div>
             </div>
             <div className="form-inline">
@@ -68,7 +68,7 @@ export default function MenuBar() {
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link to="/court/petition/registration" className="nav-link">
+                        <Link to="/court/petition/registration/list/" className="nav-link">
                           <i className="far fa-circle nav-icon" />
                           <p>Case Registration</p>
                         </Link>

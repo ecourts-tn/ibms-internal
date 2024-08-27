@@ -1,26 +1,31 @@
 import React from 'react'
 
-const Respondent = ({respondent}) => {
+const Respondent = ({litigant}) => {
   return (
         <>
-            <table className="table table-sm table-bordered table-striped mb-2">
-                <thead>
+            { litigant.filter(l=>l.litigant_type===2).map((res, index) => (
+            <table className="table table-bordered table-striped mb-2" key={index}>
+                <thead className="bg-olive">
                     <tr>
-                        <th width="600">Respondent Name</th>
-                        <th>Address</th>
-                        <th>District</th>
+                        <td colSpan={4}><strong>Respondent - {index+1}</strong></td>
                     </tr>
                 </thead>
                 <tbody>
-                    { respondent.map((res, index) => (
-                    <tr key={index}>
-                        <td>{ res.respondent_name } rep by { res.designation }</td>
+                    <tr>
+                        <td>Respondent Name</td>
+                        <td>{ res.litigant_name } { res.designation }</td>
+                        <td>Address</td>
                         <td>{ res.address }</td>
-                        <td>{ res.district }</td>
                     </tr>
-                    ))}
+                    <tr>
+                        <td>District</td>
+                        <td>{ res.district.district_name }</td>
+                        <td>Police Station</td>
+                        <td>{ res.police_station.station_name }</td>
+                    </tr>
                 </tbody>
             </table>
+            ))}
         </>
     )
 }   

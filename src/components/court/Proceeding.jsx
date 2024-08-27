@@ -2,9 +2,13 @@ import React, {useState, useEffect} from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import api from '../../api'
 
-const Proceeding = ({cino}) => {
+
+
+
+const Proceeding = ({efile_no}) => {
 
     const[petition, setPetition] = useState({})
+    const[litigant, setLitigant] = useState([])
     const initialState = {
         petition: '',
         case_number: '',
@@ -33,19 +37,17 @@ const Proceeding = ({cino}) => {
     }
     const[form, setForm] = useState(initialState)
 
-    console.log(cino)
-
     useEffect(() => {
         async function fetchData(){
-            if(cino){
+            if(efile_no){
                 try{
-                    const response = await api.get(`api/bail/petition/detail/`, { data: {cino:cino}})
-                    console.log(response.data)
+                    const response = await api.get(`court/petition/detail/`, { params: {efile_no}})
                     if(response.status === 200){
-                        setPetition(response.data)
+                        setPetition(response.data.petition)
+                        setLitigant(response.data.litigant)
                         setForm({
                             ...form, 
-                            petition: response.data.petition.cino,
+                            petition: response.data.petition.efile_number,
                             case_number: response.data.petition.case_no,
                             district: response.data.petition.district.district_code,
                             establishment: response.data.petition.establishment.establishment_code,
@@ -168,8 +170,9 @@ const Proceeding = ({cino}) => {
                                     onChange={(e) => setForm({...form, [e.target.name]:e.target.value})}
                                 >
                                     <option value="">Select Accused</option>
-                                    <option value="1">Test 1</option>
-                                    <option value="2">Test 2</option>
+                                    {litigant.filter(l=>l.litigant_type===1).map((l, index) => (
+                                        <option key={index} value={l.litigant_number}>{l.litigant_name}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -426,7 +429,7 @@ const Proceeding = ({cino}) => {
                                 ></textarea>                
                             </div>
                         </div>
-                        { cino && (
+                        { efile_no && (
                         <div className="col-md-12">
                             <div className="form-group text-center">
                                 <button 

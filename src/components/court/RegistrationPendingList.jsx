@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import api from '../../../api'
+import api from '../../api'
 import ReactTimeAgo from 'react-time-ago'
 import { Link } from 'react-router-dom'
 
-const PendingList = () => {
+const RegistrationPendingList = () => {
     const[cases, setCases] = useState([])
     useEffect(() => {
         const fecthCases = async() =>{
-            const response = await api.get("court/scrutiny/pending/list/")
+            const response = await api.get("court/registration/pending/list/")
             if(response.status === 200){
                 setCases(response.data)
             }
@@ -26,7 +26,7 @@ const PendingList = () => {
                                 <li className="breadcrumb-item active">Dashboard</li>
                             </ol>
                             <div className="card card-outline card-primary" style={{minHeight:'600px'}}>
-                                <div className="card-header"><strong>Scrutiny List</strong></div>
+                                <div className="card-header"><strong>Case Registration - Pending List</strong></div>
                                 <div className="card-body">
                                     <ul className="todo-list" data-widget="todo-list">
                                         { cases.map((c, index) => (
@@ -41,7 +41,7 @@ const PendingList = () => {
                                                 </div>
                                                 
                                                 <span className="text mr-3">
-                                                    <Link to={`/court/petition/scrutiny/details`} state={{efile_no: c.petition.efile_number}}>{ c.petition.efile_number }</Link>
+                                                    <Link to={`/court/petition/registration`} state={{efile_no: c.petition.efile_number}}>{ c.petition.efile_number }</Link>
                                                 </span>
                                                 { c.litigant.filter((l) => l.litigant_type ===1 ).map((l, index) => (
                                                     <span className="text ml-2">{index+1}. {l.litigant_name}</span>
@@ -68,4 +68,4 @@ const PendingList = () => {
     )
 }
 
-export default PendingList
+export default RegistrationPendingList

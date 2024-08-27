@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Proceeding from './Proceeding'
 import { CreateMarkup } from '../../utils'
 import api from '../../api'
@@ -10,9 +10,10 @@ import PPRemarks from './PPRemarks'
 const DailyProceedings = () => {
 
     const {state} = useLocation();
-
-    const[regNumber, setRegNumber] = useState('')
-    const[numbers, setNumbers] = useState([])
+    const navigate = useNavigate()
+    if(!state){
+        navigate("/petition/proceedings")
+    }
 
     const[petition, setPetition]        = useState({
         court_type: '',
@@ -20,8 +21,9 @@ const DailyProceedings = () => {
         bail_type: '',
         complaint_type: ''
     })
-    const[petitioner, setPetitioner]    = useState([])
-    const[respondent, setRespondent]    = useState([])
+
+    const[litigant, setLitigant]    = useState([])
+    const[crime, setCrime] = useState({})
     const[grounds, setGrounds] = useState([])
     const[advocates, setAdvocates] = useState([])
     const[policeResponse, setPoliceResponse] = useState([])
@@ -31,15 +33,16 @@ const DailyProceedings = () => {
         async function fetchData(){
             // if(regNumber !== ''){
                 try{
-                    const response = await api.get(`api/bail/petition/detail/`, {params:{cino:state.cino}})
-                    const { petition, petitioner, grounds, respondent,advocate, police_response, ppremarks } = response.data
-                    setPetition(petition)
-                    setPetitioner(petitioner)
-                    setRespondent(respondent)
-                    setAdvocates(advocate)
-                    setGrounds(grounds)
-                    setPoliceResponse(police_response)
-                    setProsecutionRemarks(ppremarks)
+                    const response = await api.get(`court/petition/detail/`, {params:{efile_no:state.efile_no}})
+                    if(response.status === 200){
+                        const { petition, grounds, advocate, police_response, ppremarks, crime, litigant } = response.data
+                        setPetition(petition)
+                        setLitigant(litigant)
+                        setAdvocates(advocate)
+                        setGrounds(grounds)
+                        setCrime(crime)
+                        setProsecutionRemarks(ppremarks)
+                    }
                 }catch(err){
                     console.log(err)
                 }
@@ -116,7 +119,54 @@ const DailyProceedings = () => {
                                                             )}
                                                         </table>
                                                     )}
-                                                   
+                                                    {/* <table className="table table-bordered table-striped table-sm">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colSpan={4} className="bg-secondary"><strong>FIR Details</strong></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tr>
+                                                            <td>Date&nbsp;of&nbsp;Occurrence</td>
+                                                            <td>{ crime.date_of_occurrence }</td>
+                                                            <td>FIR Date & Time</td>
+                                                            <td>{ crime.fir_date_time }</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Place of Occurence</td>
+                                                            <td colSpan={3}>{ crime.place_of_occurrence }</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Investigation Officer</td>
+                                                            <td>{ crime.investigation_officer }</td>
+                                                            <td>Investigation Officer Rank</td>
+                                                            <td>{ crime.investigation_officer_rank }</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Complaintant&nbsp;Name</td>
+                                                            <td>{ crime.complainant_name }</td>
+                                                            <td>Complaintant&nbsp;Age</td>
+                                                            <td>{ crime.complainant_age }</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Complaintant&nbsp;Guardian</td>
+                                                            <td>{ crime.complainant_guardian }</td>
+                                                            <td>Complaintant&nbsp;Guardian Name</td>
+                                                            <td>{ crime.complainant_guardian_name }</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={4}>
+                                                                <p><strong>Gist of FIR / Allegations</strong></p>
+                                                                <span dangerouslySetInnerHTML={CreateMarkup(crime.gist_of_fir)}></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={4}>
+                                                                <p><strong>Gist of FIR / Allegations (In Local Language)</strong></p>
+                                                                <span dangerouslySetInnerHTML={CreateMarkup(crime.gist_in_local)}></span>
+                                                            </td>
+                                                        </tr>
+                                                    </table> */}
+
                                                     <table className="table table-bordered table-striped table-sm">
                                                         <thead className="bg-secondary">
                                                             <tr>
@@ -157,60 +207,68 @@ const DailyProceedings = () => {
                                         <div className="card-body p-2">
                                             <div className="row">
                                                 <div className="col-md-12">
-                                                    <table className="table table-bordered table-striped table-sm">
-                                                        <thead className="bg-secondary">
+                                                { litigant.filter(l=>l.litigant_type===1).map((p, index) => (
+                                                    <table className="table table-bordered table-striped table-sm mb-2" key={index}>
+                                                        <thead className="bg-info">
                                                             <tr>
-                                                                <th colSpan={7} style={{textAlign:'center'}}>Petitioners</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>S.&nbsp;No.</th>
-                                                                <th>Petitioner&nbsp;Name</th>
-                                                                <th>Gender</th>
-                                                                <th>Age</th>
-                                                                <th width="500">Address</th>
-                                                                <th>Act</th>
-                                                                <th>Section</th>
+                                                                <th colSpan={4}><strong>Petitioner - { index+1 }. {p.litigant_name}</strong></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            { petitioner.map((petitioner, index) => (
-                                                                <tr key={index}>
-                                                                    <td>{ index+1 }</td>
-                                                                    <td>{ petitioner.petitioner_name }</td>
-                                                                    <td>{ petitioner.gender }</td>
-                                                                    <td>{ petitioner.age }</td>
-                                                                    <td>{ petitioner.address }</td>
-                                                                    <td>{ petitioner.act }</td>
-                                                                    <td>{ petitioner.section }</td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                    <table className="table table-bordered table-striped table-sm">
-                                                        <thead className="bg-secondary">
                                                             <tr>
-                                                                <th colSpan={5} style={{ textAlign:'center'}}>Respondents</th>
+                                                                <td>Petitioner&nbsp;Name</td>
+                                                                <td>{ p.litigant_name }</td>
+                                                                <td>Age</td>
+                                                                <td>{ p.age }</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>S. No.</th>
-                                                                <th>Respondent&nbsp;Name</th>
-                                                                <th>Designation</th>
-                                                                <th>Address</th>
-                                                                <th>District</th>
+                                                                <td>Gender</td>
+                                                                <td>{ p.gender }</td>
+                                                                <td>Rank</td>
+                                                                <td>{ p.rank }</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Relation</td>
+                                                                <td>{p.relation}</td>
+                                                                <td>Relation Name</td>
+                                                                <td>{p.relation_name}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Mobile Number</td>
+                                                                <td>{p.mobile_number}</td>
+                                                                <td>Email Address</td>
+                                                                <td>{p.email_address}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Address</td>
+                                                                <td colSpan="7">{p.address}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    ))}
+                                                    { litigant.filter(l=>l.litigant_type===2).map((res, index) => (
+                                                    <table className="table table-bordered table-striped mb-2 table-sm" key={index}>
+                                                        <thead className="bg-olive">
+                                                            <tr>
+                                                                <td colSpan={4}><strong>Respondent - {index+1}</strong></td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            { respondent.map((respondent, index) => (
-                                                                <tr key={index}>
-                                                                    <td>{ index+1 }</td>
-                                                                    <td>{ respondent.respondent_name }</td>
-                                                                    <td>{ respondent.designation }</td>
-                                                                    <td>{ respondent.address }</td>
-                                                                    <td>{ respondent.district }</td>
-                                                                </tr>
-                                                            ))}
+                                                            <tr>
+                                                                <td>Respondent Name</td>
+                                                                <td>{ res.litigant_name } { res.designation }</td>
+                                                                <td>Address</td>
+                                                                <td>{ res.address }</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>District</td>
+                                                                <td>{ res.district.district_name }</td>
+                                                                <td>Police Station</td>
+                                                                <td>{ res.police_station.station_name }</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
@@ -318,7 +376,7 @@ const DailyProceedings = () => {
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     {prosecutionRemarks.length < 1 ?(
-                                                        <PPRemarks accused={petitioner}/>
+                                                        <PPRemarks accused={litigant}/>
                                                     ): (
                                                         <>
                                                             {/* { prosecutionRemarks.map((p, index) => (
@@ -365,7 +423,7 @@ const DailyProceedings = () => {
                             </div>
                                 </div>
                                 <div className="col-md-5">
-                                    <Proceeding cino={regNumber}/>
+                                    <Proceeding efile_no={state.efile_no}/>
                                 </div>
                             </div>
                         </div>

@@ -26,6 +26,7 @@ const CaseScrutiny = () => {
         bail_type: '',
         complaint_type: ''
     })
+    const[crime, setCrime] = useState({})
     const[litigant, setLitigant] = useState([])
     const[grounds, setGrounds] = useState([])
     const[advocates, setAdvocates] = useState([])
@@ -39,31 +40,19 @@ const CaseScrutiny = () => {
     }
     const[form, setForm] = useState(initialState)
 
-    const[states, setStates] = useState([])
-    useEffect(() => {
-        const fetchState = async () =>{
-            try{
-                const data = await fetchCases()
-                console.log(fetchStates)
-                setStates(data)
-            }catch(error){
-                console.log(error)
-            }
-        }
-        fetchState()
-    },[])
-
-
     useEffect(() => {
         async function fetchData(){
             try{
-                const data = await api.get("court/petition/detai")
-                const { petition, litigant, grounds, advocate, fees} = data
-                setPetition(petition)
-                setLitigant(litigant)
-                setGrounds(grounds)
-                setAdvocates(advocate)
-                setFees(fees)
+                const response = await api.get("court/petition/detail/", {params:{efile_no:state.efile_no}})
+                if(response.status === 200){
+                    const { petition, litigant, grounds, advocate, fees, crime} = response.data
+                    setPetition(petition)
+                    setLitigant(litigant)
+                    setGrounds(grounds)
+                    setAdvocates(advocate)
+                    setFees(fees)
+                    setCrime(crime)
+                }
             }catch(err){
                 console.log(err)
             }
@@ -71,6 +60,8 @@ const CaseScrutiny = () => {
         fetchData();
     },[])
 
+    console.log(crime)
+    
     const handleSubmit = async () => {
         if(form.status === 1){
             // update main table only
@@ -127,18 +118,21 @@ const CaseScrutiny = () => {
                 </div>
             </div>
         )
+    }else{
+        console.log(state)
     }
+    
 
     return (
         <>
             <ToastContainer/>
             <div className="content-wrapper">
                 <div className="container-fluid">
-                    <div className="card card-outline card-primary">
+                    <div className="card card-outline card-primary mt-3">
                         <div className="card-header">
-                            <h3 className="card-title"><i className="fas fa-edit mr-2"></i><strong>Petition Details</strong></h3>
+                            <h3 className="card-title"><i className="fas fa-edit mr-2"></i><strong>Case Scrutiny - {state.efile_no} </strong></h3>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body p-2">
                             <div id="accordion">
                                 <div className="card m-1">
                                     <div className="card-header" id="headingOne">
@@ -148,7 +142,7 @@ const CaseScrutiny = () => {
                                     </div>
                                     <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                                         <div className="card-body">
-                                            <BasicDetails petition={petition}/>
+                                            <BasicDetails petition={petition} crime={crime}/>
                                         </div>
                                     </div>
                                 </div>
@@ -160,23 +154,9 @@ const CaseScrutiny = () => {
                                     </div>
                                     <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                         <div className="card-body p-2">
-                                            <div className="card">
-                                                <div className="card-header bg-secondary">
-                                                    <strong>Petitioner Details</strong>
-                                                </div>
-                                                <div className="card-body p-2">
-                                                    <Petitioner litigant={litigant} />
-                                                </div>
-                                            </div>
-                                            <div className="card">
-                                                <div className="card-header bg-secondary">
-                                                    <strong>Respondent Details</strong>
-                                                </div>
-                                                <div className="card-body p-2">
-                                                    <Respondent litigant={litigant} />
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <Petitioner litigant={litigant} />
+                                            <Respondent litigant={litigant} />
+                                         </div>
                                     </div>
                                 </div>
                                 <div className="card m-1">

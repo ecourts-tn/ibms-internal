@@ -1,19 +1,23 @@
 import React from 'react'
 
-const Petitioner = ({petitioner}) => {
+const Petitioner = ({litigant}) => {
   return (
         <>
-            { petitioner.map((p, index) => (
-            <table className="table table-sm table-bordered table-striped mb-2" key={index}>
+            { litigant.filter(l=>l.litigant_type===1).map((p, index) => (
+            <table className="table table-bordered table-striped mb-2" key={index}>
+                <thead className="bg-info">
+                    <tr>
+                        <th colSpan={4}><strong>Petitioner - { index+1 }. {p.litigant_name}</strong></th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
-                        <td colSpan="8"><strong>Petitioner { index+1 }</strong></td>
-                    </tr>
-                    <tr>
                         <td>Petitioner Name</td>
-                        <td>{ p.petitioner_name }</td>
+                        <td>{ p.litigant_name }</td>
                         <td>Age</td>
                         <td>{ p.age }</td>
+                    </tr>
+                    <tr>
                         <td>Gender</td>
                         <td>{ p.gender }</td>
                         <td>Rank</td>
@@ -24,6 +28,8 @@ const Petitioner = ({petitioner}) => {
                         <td>{p.relation}</td>
                         <td>Relation Name</td>
                         <td>{p.relation_name}</td>
+                    </tr>
+                    <tr>
                         <td>Mobile Number</td>
                         <td>{p.mobile_number}</td>
                         <td>Email Address</td>
