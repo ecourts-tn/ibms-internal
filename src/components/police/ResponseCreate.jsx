@@ -46,6 +46,8 @@ const ResponseCreate = () => {
         reason_not_given    : '',
         other_information   : '',
         court_details       : '',
+        is_material_seized  : '',
+        is_vehicle_seized   : '',
     }
     const[documents, setDocuments] = useState([])
 
@@ -422,9 +424,9 @@ const ResponseCreate = () => {
                                             <input 
                                                 type="radio" 
                                                 id="radioseized1" 
-                                                name="seized" 
+                                                name="is_material_seized" 
                                                 onChange={(e) => setForm({...form, [e.target.name] : 1})} 
-                                                checked={parseInt(form.seized) === 1 ? true : false}
+                                                checked={parseInt(form.is_material_seized) === 1 ? true : false}
                                             />
                                             <label htmlFor="radioseized1">Yes</label>
                                         </div>
@@ -432,22 +434,23 @@ const ResponseCreate = () => {
                                             <input 
                                                 type="radio" 
                                                 id="radioseized2" 
-                                                name="seized" 
+                                                name="is_material_seized" 
                                                 onChange={(e) => setForm({...form, [e.target.name] : 2})} 
-                                                checked={parseInt(form.seized) === 2 ? true : false}/>
+                                                checked={parseInt(form.is_material_seized) === 2 ? true : false}/>
                                             <label htmlFor="radioseized2">No</label>
                                         </div>
                                         <div className="icheck-primary d-inline mx-2">
                                             <input 
                                                 type="radio" 
                                                 id="radioseized3" 
-                                                name="seized" 
+                                                name="is_material_seized" 
                                                 onChange={(e) => setForm({...form, [e.target.name] : 3})} 
-                                                checked={parseInt(form.seized) === 3 ? true : false}/>
+                                                checked={parseInt(form.is_material_seized) === 3 ? true : false}/>
                                             <label htmlFor="radioseized3">Not Applicable</label>
                                         </div>
                                     </div>
                                 </div>
+                                { parseInt(form.is_material_seized) === 1 && (
                                 <div className="row">
                                     <div className="col-md-4">
                                         <div className="form-group">
@@ -492,6 +495,7 @@ const ResponseCreate = () => {
                                         <button className="btn btn-primary">Add</button>
                                     </div>
                                 </div>
+                                )}
                                 <div className="form-group row">
                                     <label className="col-sm-3">Vechicle seized?</label>
                                     <div className="col-sm-8">
@@ -499,9 +503,9 @@ const ResponseCreate = () => {
                                             <input 
                                                 type="radio" 
                                                 id="radiovehicleseized1" 
-                                                name="vehicleseized" 
+                                                name="is_vehicle_seized" 
                                                 onChange={(e) => setForm({...form, [e.target.name] : 1})} 
-                                                checked={parseInt(form.vehicleseized) === 1 ? true : false}
+                                                checked={parseInt(form.is_vehicle_seized) === 1 ? true : false}
                                             />
                                             <label htmlFor="radiovehicleseized1">Yes</label>
                                         </div>
@@ -509,22 +513,23 @@ const ResponseCreate = () => {
                                             <input 
                                                 type="radio" 
                                                 id="radiovehicleseized2" 
-                                                name="vehicleseized" 
+                                                name="is_vehicle_seized" 
                                                 onChange={(e) => setForm({...form, [e.target.name] : 2})} 
-                                                checked={parseInt(form.vehicleseized) === 2 ? true : false}/>
+                                                checked={parseInt(form.is_vehicle_seized) === 2 ? true : false}/>
                                             <label htmlFor="radiovehicleseized2">No</label>
                                         </div>
                                         <div className="icheck-primary d-inline mx-2">
                                             <input 
                                                 type="radio" 
                                                 id="radiovehicleseized3" 
-                                                name="vehicleseized" 
+                                                name="is_vehicle_seized" 
                                                 onChange={(e) => setForm({...form, [e.target.name] : 3})} 
-                                                checked={parseInt(form.vehicleseized) === 3 ? true : false}/>
+                                                checked={parseInt(form.is_vehicle_seized) === 3 ? true : false}/>
                                             <label htmlFor="radioseized3">Not Applicable</label>
                                         </div>
                                     </div>
                                 </div>
+                                { parseInt(form.is_vehicle_seized) === 1 && (
                                 <div className="row">
                                     <div className="col-md-4">
                                         <div className="form-group">
@@ -563,23 +568,24 @@ const ResponseCreate = () => {
                                         <button className="btn btn-primary">Add</button>
                                     </div>
                                 </div>
+                                )}
                                 <div className="row">
-                                    <div className="col-md-12">
-                                        <p><strong>Stage of Investigation / Trial</strong></p>
-                                    </div>
-                                    <div className="col-md-3 mb-3">
-                                        <select 
-                                            name="investigation_stage"
-                                            value={form.investigation_stage}
-                                            className={`form-control ${errors.investigation_stage ? 'is-invalid' : null}`}
-                                            onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
-                                        >
-                                            <option value="">Select</option>
-                                            <option value="1">Pending Investigation</option>
-                                            <option value="2">Chargesheet filed</option>
-                                        </select>
-                                        <div className="invalid-feedback">
-                                            { errors.investigation_stage }
+                                    <div className="col-md-3">
+                                        <div className="form-group">
+                                            <label htmlFor="">Stage of Investigation / Trial</label>
+                                            <select 
+                                                name="investigation_stage"
+                                                value={form.investigation_stage}
+                                                className={`form-control ${errors.investigation_stage ? 'is-invalid' : null}`}
+                                                onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
+                                            >
+                                                <option value="">Select</option>
+                                                <option value="1">Pending Investigation</option>
+                                                <option value="2">Chargesheet filed</option>
+                                            </select>
+                                            <div className="invalid-feedback">
+                                                { errors.investigation_stage }
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-md-3">

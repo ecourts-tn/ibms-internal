@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import api from '../../api'
 import { toast, ToastContainer } from 'react-toastify';
 import Document from './Document';
+import BasicDetails from '../court/scrutiny/BasicDetails';
 
 const ResponseCreate = () => {
     const {state} = useLocation()
@@ -14,6 +15,7 @@ const ResponseCreate = () => {
     })
     const[accused, setAccused] = useState([])
     const[proceeding, setProceeding] = useState({})
+    const[crime, setCrime] = useState({})
     const[order, setOrder] = useState({})
     const initialState = {
         is_released: false,
@@ -35,6 +37,7 @@ const ResponseCreate = () => {
                 setAccused(response.data.litigant)
                 setProceeding(response.data.proceeding)
                 setOrder(response.data.order)
+                setCrime(response.data.crime)
             }
         }
         fetchData()
@@ -73,10 +76,12 @@ const ResponseCreate = () => {
                     <div id="accordion">
                         <div className="card m-1">
                             <div className="card-header" id="headingOne">
-                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">Petition</a>
+                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/#">Petition Details</a>
                             </div>
                             <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                                ...
+                                <div className="container-fluid my-2">
+                                    {/* <BasicDetails petition={petition} crime={crime}/> */}
+                                </div>
                             </div>
                         </div>
                         <div className="card m-1">

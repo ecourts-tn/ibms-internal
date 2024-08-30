@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import api from '../../../api'
 import '../style.css'
 import Button from '@mui/material/Button'
@@ -19,6 +19,7 @@ import { fetchStates } from '../../../service/stateService'
 const CaseScrutiny = () => {
 
     const {state} = useLocation();
+    const navigate = useNavigate()
 
     const[petition, setPetition] = useState({
         court_type: '',
@@ -30,6 +31,7 @@ const CaseScrutiny = () => {
     const[litigant, setLitigant] = useState([])
     const[grounds, setGrounds] = useState([])
     const[advocates, setAdvocates] = useState([])
+    const[documents, setDocuments] = useState([])
     const[fees, setFees] = useState([])
 
     const initialState = {
@@ -45,11 +47,13 @@ const CaseScrutiny = () => {
             try{
                 const response = await api.get("court/petition/detail/", {params:{efile_no:state.efile_no}})
                 if(response.status === 200){
-                    const { petition, litigant, grounds, advocate, fees, crime} = response.data
+                    console.log(response.data.document)
+                    const { petition, litigant, grounds, advocate, fees, crime, documents} = response.data
                     setPetition(petition)
                     setLitigant(litigant)
                     setGrounds(grounds)
                     setAdvocates(advocate)
+                    setDocuments(documents)
                     setFees(fees)
                     setCrime(crime)
                 }
@@ -60,13 +64,13 @@ const CaseScrutiny = () => {
         fetchData();
     },[])
 
-    console.log(crime)
-    
+    console.log(litigant)
+  
     const handleSubmit = async () => {
         if(form.status === 1){
             // update main table only
             try{
-                const response = await api.put(`api/bail/filing/${state.cino}/update/`, {
+                const response = await api.post(`case/filing/${state.efile_no}/scrutiny/`, {
                     verification_date: form.complaince_date,
                     status:form.status,
                     is_verified:true
@@ -76,6 +80,9 @@ const CaseScrutiny = () => {
                         theme:"colored"
                     })
                     setForm(initialState)
+                    setTimeout(() => {
+                        navigate("/court/petition/scrutiny")
+                    }, 2000)
                 }
             }catch(error){
                 console.log(error)
@@ -84,13 +91,13 @@ const CaseScrutiny = () => {
         else if(form.status === 2){
             // update main table and add objection history
             try{
-                const response = await api.put(`api/bail/filing/${state.cino}/update/`, {
+                const response = await api.put(`case/filing/${state.efile_no}/update/`, {
                     verification_date: form.complaince_date,
                     status:form.status,
                     is_verified:true
                 })
                 if(response.status === 200){
-                    const response = await api.post(`api/bail/filing/${state.cino}/objection/create/`, {
+                    const response = await api.post(`case/filing/${state.efile_no}/objection/create/`, {
                         objection_date: form.verification_date,
                         complaince_date: form.complaince_date,
                         remarks: form.remarks
@@ -182,6 +189,7 @@ const CaseScrutiny = () => {
                                             <AdvocateDetails 
                                                 advocates={advocates} 
                                                 petition={petition}
+                                                documents={documents}
                                             />
                                         </div>
                                     </div>

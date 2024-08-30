@@ -24,7 +24,8 @@
 
 const config = {
     development: {
-      apiUrl: "http://localhost:8000/api/",
+      apiUrl: "http://192.168.100.135:8000/api/",
+      docUrl: "http://192.168.100.135:8000/",
       featureFlag: true,
     },
     staging: {

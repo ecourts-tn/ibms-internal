@@ -21,6 +21,7 @@ const CaseRegistration = () => {
     const[litigant, setLitigant] = useState([])
     const[advocates, setAdvocates] = useState([])
     const[grounds, setGrounds] = useState([])
+    const[documents, setDocuments] = useState([])
 
     const initialState = {
         date_of_registration: '',
@@ -39,12 +40,13 @@ const CaseRegistration = () => {
             try{
                 const response = await api.get(`court/petition/detail/`, {params:{efile_no:state.efile_no}})
                 if(response.status === 200){
-                    const { petition, litigant, grounds, advocate, crime} = response.data
+                    const { petition, litigant, grounds, advocate, crime, documents} = response.data
                     setPetition(petition)
                     setLitigant(litigant)
                     setCrime(crime)
                     setGrounds(grounds)
                     setAdvocates(advocate)
+                    setDocuments(documents)
                 }
             }catch(err){
                 console.log(err)
@@ -157,6 +159,7 @@ const CaseRegistration = () => {
                                                 <AdvocateDetails 
                                                     advocates={advocates} 
                                                     petition={petition}
+                                                    documents={documents}
                                                 />
                                             </div>
                                             <div className="tab-pane fade" id="registration" role="tabpanel" aria-labelledby="registration-tab">

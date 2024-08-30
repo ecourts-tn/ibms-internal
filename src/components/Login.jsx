@@ -53,16 +53,15 @@ const Login = () => {
       const response = await api.post('auth/department/login/', { usertype, username, password }, {
         skipInterceptor: true // Custom configuration to skip the interceptor
       })
-      localStorage.clear()
-            localStorage.setItem(ACCESS_TOKEN, response.data.access);
-            localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
-            await login(response.data)
-            toast.success('logged in successfully', {
-                theme: "colored"
-            })
+      sessionStorage.clear()
+      sessionStorage.setItem(ACCESS_TOKEN, response.data.access);
+      sessionStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+      await login(response.data)
+      toast.success('logged in successfully', {
+          theme: "colored"
+      })
     }catch(error){
-      console.log(error)
       if(error.inner){
         setLoading(false)
         const newErrors = {};

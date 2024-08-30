@@ -1,7 +1,10 @@
 import React from 'react'
 import Button from '@mui/material/Button'
+import config from '../../../config'
 
-const AdvocateDetails = ({advocates, petition}) => {
+const AdvocateDetails = ({advocates, petition, documents}) => {
+
+    console.log(documents)
     return (
         <>
             { Object.keys(advocates).length > 0 && (
@@ -29,35 +32,21 @@ const AdvocateDetails = ({advocates, petition}) => {
             <table className="table table-striped table-bordered table-sm mt-3">
                     <thead className="bg-secondary">
                         <tr>
-                            <th>Document Name</th>
+                            <th>Document Title</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        { documents.map((d, index) => (
                         <tr>
-                            <td>Vakalath</td>
-                            <td>
-                                <a href={`http://localhost:8000${petition.supporting_document}`} target="_blank">
-                                    <Button 
+                            <td>{ d.title }</td>
+                            <td><a href={`${config.docUrl}${d.document}`} target='_blank'><Button 
                                         variant="contained"
                                         color="primary"
                                         size="small"
-                                    >View</Button>
-                                </a>
-                            </td>
+                                    >View</Button></a></td>
                         </tr>
-                        <tr>
-                            <td>Supporting Document</td>
-                            <td>
-                                <a href={`http://localhost:8000${petition.supporting_document}`} target="_blank">
-                                    <Button 
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                    >View</Button>
-                                </a>
-                            </td>
-                        </tr>
+                        ))}
                     </tbody>
                 </table>
         </>
