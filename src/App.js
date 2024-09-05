@@ -50,6 +50,7 @@ import RegistrationPendingList from './components/court/RegistrationPendingList'
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OrderPendingList from './components/court/OrderPendingList'
 
 function App() {
 
@@ -62,7 +63,7 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-              <Route path="/auth/login" element={<Login />} />
+              <Route path="/" element={<Login />} />
               <Route index element={<Login />} />
               <Route element={<AdminLayout />} >
                 <Route
@@ -166,7 +167,15 @@ function App() {
                     path="orders/generate/" 
                     element={
                       <PrivateRoute>
-                        <BailBondForm />
+                        <OrderPendingList />
+                      </PrivateRoute>
+                    } 
+                  />
+                  <Route 
+                    path="bail/generate/order" 
+                    element={
+                      <PrivateRoute>
+                        <BailOrder />
                       </PrivateRoute>
                     } 
                   />

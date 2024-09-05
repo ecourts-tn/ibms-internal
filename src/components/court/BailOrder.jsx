@@ -22,139 +22,129 @@ const downloadPdf = () => generatePDF(getTargetElement, options);
 const BailOrder = () => {
     
     const[petition, setPetition] = useState({})
+    const[litigant, setLitigant]    = useState([])
+    const[crime, setCrime] = useState({})
+    const[grounds, setGrounds] = useState([])
+    const[advocates, setAdvocates] = useState([])
     const {state} = useLocation()
-    console.log(state.cino)
+
     useEffect(() => {
         async function fetchData(){
-            const response = await api.get(`api/bail/petition/detail/`, {params:{cino:state.cino}})
+            const response = await api.get(`court/petition/detail/`, {params:{efile_no:state.efile_no}})
             if(response.status === 200){
-                setPetition(response.data)
+                const { petition, grounds, advocate, crime, litigant } = response.data
+                setPetition(petition)
+                setLitigant(litigant)
+                setAdvocates(advocate)
+                setGrounds(grounds)
+                setCrime(crime)
             }
         }
         fetchData()
     }, [])
 
-
-    console.log(petition)
-
     if(Object.keys(petition).length > 0){
         return (
             <div className="container-fluid" style={{backgroundColor:'lightgray'}}>
-                <div className="container my-5" style={{backgroundColor:"#FAFAFA", padding:'100px', fontSize:'20px', fontFamily:'sans-serif'}}>
+                <div className="container" style={{backgroundColor:"#FAFAFA", padding:'100px', fontSize:'20px', fontFamily:'sans-serif'}}>
                 <div id="pdf-content">
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="text-center">
-                                <h4 className="mb-3">
-                                    <strong>IN THE COURT OF THE HONOURABLE {petition.petition.court.court_name}<br/>
-                                        {petition.petition.establishment.establishment_name}
-                                    </strong> 
-                                </h4>
-                                <h4 className="text-center">
-                                    { parseInt(petition.petition.court_type.id) === 1 ? (
-                                        <strong>HC/MS/CRLOP/1/2024</strong>
-                                    ) : (
-                                        <strong>DJ/{petition.petition.district.district_sname}/CRLMP/{petition.petition.reg_number}/{ petition.petition.reg_year }</strong>
-                                    )}
-                                    
-                                </h4>
-                                <p><strong>{ petition.petition.cino }</strong></p>
+                            <div>
+                                <p style={{textAlign: 'left'}}>QR CODE</p>
+                                <p style={{textAlign: 'right'}}>UNIQUE ORDER CODE</p>
+                                <p style={{textAlign: 'center'}}>In the Court of <strong>{petition.court.court_name}</strong><br />Before the [JUDGE DESIGNATION], [DISTRICT].<br /><strong>Present:[JUDGE NAME],</strong><br />[JUDGE DESIGNATION], {petition.court.court_name}, {petition.district.district_name}<br />[DAY] [DATE] [MONTH IN WORDS] [YEAR]<br /><span style={{textDecoration: 'underline'}}><strong>{`${petition.filing_type.type_name}/${petition.filing_number}/${petition.filing_year}`}</strong></span></p>
+                                <p style={{textAlign: 'left'}}>{litigant.filter(l=>l.litigant_type===1).map((l, index)=>(<span><strong>{l.litigant_name}, {l.age}, {l.gender}</strong><br />{l.relation} Name: {l.relation_name}</span>))},</p>
+                                <p style={{textAlign: 'right'}}><br /> ... Petitioner / Accused.</p>
+                                <p style={{textAlign: 'center'}}><br />// Versus //</p>
+                                <p style={{textAlign: 'left'}}><br />State of Tamilnadu Rep by {litigant.filter(l=>l.litigant_type===2).map((l, index)=>(<span>{l.designation},<br />{l.police_station.station_name}, {l.district.district_name}</span>))}</p>
+                                <p style={{textAlign: 'right'}}><br /> ... Respondent/Complainant.</p>
+                                <p style={{textAlign: 'center'}}>Petition in [CASE NO], [FILING DATE] filed [BAIL TYPE] Cr. P.C. prays to grant [CASE TYPE] to the petitioner in [FIR NO][FIR YEAR] in the file of [Police Station].</p>
+                                <p>&nbsp;This petition is coming on this day for hearing before me, in the presence of [PRESENT PETITIONER ADVOCATE NAME(s)], Advocate(s) for the petitioner and [PROCECUTOR NAME], [PROCECUTOR DESIGNATION] for the respondent and upon hearing both side arguments, this Court passed the following:</p>
+                                <p style={{textAlign: 'center'}}><br />ORDER</p>
+                                <p style={{textAlign: 'justify'}}><br /> The petitioner/accused {'{'}Bail [was arrested and remanded to judicial custody on [Arrest Date]]{'}'} for the alleged offences [SECTION] [ACT], registered by respondent police, and seeks bail. <br /> The learned counsel for the petitioner/accused would submit that, <br />[GROUND 1]<br />[GROUND 2]</p>
+                                <p style={{textAlign: 'justify'}}>The learned Public Prosecutor would submit that <br />[PP REMARKS]</p>
+                                <p style={{textAlign: 'justify'}}>Heard both sides. [JUDGE REMARK]</p>
+                                <p><strong>In the result, this [CASE TYPE] is </strong><strong>Allowed {'{'}if condition true{'}'} (with following conditions</strong>)</p>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>The petitioner is ordered to be released on bail on executing a bond for&nbsp; [AMOUNT][AMOUNT IN WORDS] {'{'}if surety required{'}'} (with two sureties for a like sum each to the satisfaction of the learned [Juridictional Court]</p>
+                                        <p>&nbsp;</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>The sureties shall affix their photographs and Left Thumb Impression in the surety bond and the Magistrate may obtain a copy of their Aadhaar card or Bank passbook to ensure their identity{'}'}</p>
+                                        <p>&nbsp;</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>{'{'}The petitioner shall report and sign before the [Police station Name ] / learned [COURT NAME] daily at [TIMING]., for {'{'} [] days/ until further orders{'}'}</p>
+                                        <p>&nbsp;</p>
+                                        <p>the shall make available himself for interrogation as and when required by the investigation Officer</p>
+                                        <p>&nbsp;</p>
+                                        <p>&nbsp;</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>That the petitioner shall not tamper with evidence or witness either during investigation or trial;</p>
+                                        <p>&nbsp;</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>That the petitioner shall not abscond either during investigation or trial ;</p>
+                                        <p>&nbsp;</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>That on breach of any of the aforesaid conditions, the learned Magistrate / Trial Court is entitled to take appropriate action against the petitioner in accordance with law as if the conditions have been imposed and the petitioner released on bail by the learned Magistrate/trial Court himself.</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign: 'justify'}} width={66}>
+                                        <p>[S.NO]</p>
+                                        </td>
+                                        <td style={{textAlign: 'justify'}} width={567}>
+                                        <p>If the accused thereafter absconds, a fresh FIR can be registered U/S.229 A IPC.</p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>&nbsp;&nbsp; Pronounced by me in open court, this is the [DATE].</strong></p>
+                                <p style={{textAlign: 'right'}}><strong>[JUDGE DESIGNATION], [DISTRICT]</strong></p>
+                                <p style={{textAlign: 'left'}}><strong>[DATE TIME]</strong></p>
+                                <p style={{textAlign: 'left'}}><strong>[COURT SEAL]</strong></p>
+                                <p style={{textAlign: 'left'}}>Copy to :</p>
+                                <p style={{textAlign: 'left'}}>1. [JURIDICTIONAL COURT]</p>
+                                <p style={{textAlign: 'left'}}>2. [PUBLIC PROCECUTOR]</p>
+                                <p style={{textAlign: 'left'}}>3. [RESPONDENTS]</p>
+                                <p style={{textAlign: 'left'}}>4.[JAIL]</p>
+                                <p style={{textAlign: 'left'}}>5.[PETITIONER COUNCEL]</p>
                             </div>
-                            <p className="mb-4">
-                                (In the matter of Crime number: {petition.petition.crime_number} / {petition.petition.crime_year} of {petition.petition.police_station.station_name} &nbsp;
-                                Police Station U/s. {petition.petitioner[0].section } of {petition.petitioner[0].act } pending before the {petition.petition.court.court_name},&nbsp;
-                                {petition.petition.establishment.establishment_name},&nbsp;{petition.petition.district.district_name},&nbsp;{petition.petition.state.state_name}
-                            </p>
-                        </div>
-                        <div className="col-md-6">
-                            { petition.petitioner.map((p, index) => (
-                            <>
-                                <p><strong>{index+1}. {p.petitioner_name}, {p.age}, {p.gender}, {p.rank}</strong><br/>
-                                {p.relation} Name: {p.relation_name}<br/>
-                                { p.address }<br></br>
-                                Mobile Number: {p.mobile_number}<br/>
-                                eMail Address: {p.email_address}
-                                </p>
-                            </>
-                            ))}
-                        </div>
-                        <div className="col-md-6 d-flex justify-content-end mt-5">
-                            <p>Petitioner / Accused</p>
-                        </div>
-                        <div className="col-md-12 d-flex justify-content-center">
-                            <p><strong>-Vs-</strong></p>
-                        </div>
-                        <div className="col-md-6">
-                            { petition.respondent.map((res, index) => (
-                                <>
-                                    <p><strong>{index+1}. {res.respondent_name} rep by {res.designation}</strong><br/>
-                                        { res.address}, { res.address }
-                                    </p>
-                                </>
-                            ))}
-                        </div>
-                        <div className="col-md-6 d-flex justify-content-end mt-5">
-                            <p>Respondent / Complainant.</p>
-                        </div>
-                        <div className="col-md-12 mt-5">
-                            <p className="text-center my-3" style={{textTransform:'uppercase'}}><strong>Bail Petition filed by 
-                                { petition.advocate.map((adv, index) => (
-                                    <span>&nbsp;{`${adv.advocate_name} - [${adv.enrolment_number}]`}, &nbsp;</span>
-                                ))}
-                                 for and on behalf of the Petitioner/Accused&nbsp;[{ petition.petitioner.map((p, index) => (
-                            <>
-                                <span><strong>&nbsp;{index+1}.{p.petitioner_name}&nbsp;&nbsp;</strong></span>
-                            </>
-                            ))}] U/s {petition.petition.bail_type.name}:-</strong></p>
-                            <ol style={{lineHeight:'2'}}>
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    It is most respectfully submitted that the respondent&nbsp;
-                                    <strong>{petition.respondent[0].respondent_name}&nbsp;rep by&nbsp;{petition.respondent[0].designation},&nbsp;{petition.petition.police_station.station_name}</strong> on&nbsp;
-                                    <strong>{petition.petition.fir_date_time }</strong>&nbsp;has registered a case for the alleged offenses punishable&nbsp;
-                                    U/s&nbsp;<strong>{petition.petitioner[0].section }&nbsp;{petition.petitioner[0].act}</strong>&nbsp;
-                                    in Crime Number:&nbsp;<strong>{petition.petition.crime_number}/ {petition.petition.crime_year}</strong>&nbsp;of&nbsp;
-                                    <strong>{petition.petition.police_station.station_name}</strong>&nbsp;police station against the petitioner(s) 
-                                    { petition.petitioner.map((p, index) => (
-                                        <><strong>&nbsp;{index+1}.{p.petitioner_name}&nbsp;&nbsp;</strong></>
-                                        ))
-                                    }and 2 other(s) based on a petition given by one&nbsp;<strong>{petition.petition.complaintant_name}</strong>.
-                                </li>
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    It is most humbly submitted that the alleged facts stated in the F.I.R. are<br></br>
-                                    <span dangerouslySetInnerHTML={CreateMarkup(petition.petition.gist_in_local)}></span>
-                                </li>
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    It is most humbly submitted that the petitioner was arrested by the respondent police in connection with this case and was remanded to judicial custody on <strong>[Date of Arrest]</strong> and he/she is languishing at District Jail/Central Prison at <strong>{ petition.petitioner[0].prison ? petition.petitioner[0].prison.name : ''}</strong></li>
-                                { petition.grounds.map((ground, index) => (
-                                    <li key={index}  style={{marginTop:'20px', textAlign:'justify'}} >
-                                        <span dangerouslySetInnerHTML={CreateMarkup(ground.description)}></span>
-                                    </li>
-                                    ))
-                                }
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    It is most humbly submitted that the petitioner has solvent sureties to secure his/her presence before this Honourable Court as and when required and he/she will not evade the process of law.
-                                </li>
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    It is most humbly submitted that the petitioner is ready to abide with any condition imposed on him/her by this Honourable Court.
-                                </li>
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    I humbly submit that this is the first petition filed by me seeking {petition.petition.case_type.type_full_form } before this Honourable Court and no such petition is filed or pending before any courts
-                                </li>
-                                <li style={{marginTop:'20px', textAlign:'justify'}}>
-                                    Hence it is most humbly prayed that this Honourable Court may be pleased to accept this petition and pass orders to release the petitioner on bail and thus render justice.
-                                </li>
-                            </ol>
-                        </div>
-                        <div className="col-md-6 mt-5">
-                            <p>Place: <strong>{petition.petition.district.district_name}</strong></p>
-                            <p>Submitted on: {petition.petition.created_at}</p>
-                        </div>
-                        <div className="col-md-6 mt-5" style={{textAlign:'right'}}>
-                            <p>Advocates<br></br>
-                            { petition.advocate.map((adv, index) => (
-                                <span><strong>&nbsp;{`${adv.advocate_name} - [${adv.enrolment_number}]`}, &nbsp;</strong></span>
-                            ))}</p>
-                            <p></p>
                         </div>
                     </div>
                 </div>

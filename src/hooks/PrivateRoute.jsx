@@ -6,7 +6,7 @@ export const PrivateRoute = ({ children }) => {
 
   if (!user) {
     // user is not authenticated
-    return <Navigate to="/auth/login" />;
+    return <Navigate to="/" />;
   }
   return children;
 };

@@ -29,11 +29,11 @@ const config = {
       featureFlag: true,
     },
     staging: {
-      apiUrl: "http://192.168.100.155:8000/api/",
+      apiUrl: "http://192.168.100.135:8000/api/",
       featureFlag: false,
     },
     production: {
-      apiUrl: "http://117.193.76.243:8000/api/",
+      apiUrl: "http://192.168.100.135:8000/api/",
       featureFlag: false,
     },
   };

@@ -34,7 +34,7 @@ const ResponsePending = () => {
                                     <thead className="bg-secondary">
                                         <tr>
                                             <th>S.No</th>
-                                            <th>CNR Number</th>
+                                            <th>eFile Number</th>
                                             <th>Date of Occurrence</th>
                                             <th>Crime Number/Year</th>
                                             <th>Complainant Name</th>
@@ -46,7 +46,10 @@ const ResponsePending = () => {
                                     { petitions.map((petition, index) => (
                                         <tr key={index}>
                                             <td>{ index + 1 }</td>
-                                            <td>{ petition.petition.efile_number }</td>
+                                            <td>
+                                                <span className="text-primary"><strong>{ petition.petition.efile_number }</strong></span><br></br>
+                                                {petition.petition.court_type.id === 2 ? `${petition.petition.court.court_name}, ${petition.petition.district.district_name}` : null}
+                                            </td>
                                             <td>{ petition.crime.date_of_occurrence }</td>
                                             <td>{ petition.crime.fir_number }/{ petition.crime.fir_year }</td>
                                             <td>{ petition.crime.complainant_guardian_name }</td>

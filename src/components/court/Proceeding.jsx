@@ -1,14 +1,23 @@
 import React, {useState, useEffect} from 'react'
 import { ToastContainer, toast } from 'react-toastify'
+import { formatDBDate } from '../../utils'
 import api from '../../api'
+import { useAuth } from '../../hooks/useAuth'
 
 
 
 
 const Proceeding = ({efile_no}) => {
+    const {user} = useAuth()
 
     const[petition, setPetition] = useState({})
     const[litigant, setLitigant] = useState([])
+    const[states, setStates] = useState([])
+    const[districts, setDistricts] = useState([])
+    const[establishments, setEstablishments] = useState([])
+    const[courts, setCourts] = useState([])
+    const[policeDistricts, setPoliceDistricts] = useState([])
+    const[policeStations, setPoliceStations] = useState([])
     const initialState = {
         petition: '',
         case_number: '',
@@ -19,10 +28,12 @@ const Proceeding = ({efile_no}) => {
         bond_type: 1,
         bond_amount:'',
         appear_location: '',
-        state:'',
-        district: '',
+        condition_state:'',
+        condition_district: '',
+        condition_establishment: '',
+        condition_court: '',
         establishment: '',
-        court_no:'',
+        court:'',
         condition_time:'',
         condition_duration:'',
         is_bond:false,
@@ -30,12 +41,98 @@ const Proceeding = ({efile_no}) => {
         no_of_surety: 2,
         surety_amount:'',
         other_condition: '',
-        todays_date: '',
+        todays_date: '2024-09-03',
         next_date:null,
-        order_date: '',
+        order_date: '2024-09-03',
         order_remarks: '',
     }
     const[form, setForm] = useState(initialState)
+
+    useEffect(() => {
+        const fetchStates = async() => {
+            try{
+                const response = await api.get("base/state/")
+                if(response.status === 200){
+                    setStates(response.data)
+                }
+            }catch(error){
+                console.error(error)
+            }
+        }
+        fetchStates();
+    },[])
+
+    useEffect(() => {
+        const fetchDistricts = async() => {
+            try{
+                const response = await api.get("base/district/")
+                if(response.status === 200){
+                    setDistricts(response.data)
+                }
+            }catch(error){
+                console.error(error)
+            }
+        }
+        fetchDistricts();
+    },[])
+
+
+    useEffect(() => {
+        const fetchEstablishments = async() => {
+            try{
+                const response = await api.get("base/establishment/")
+                if(response.status === 200){
+                    setEstablishments(response.data)
+                }
+            }catch(error){
+                console.error(error)
+            }
+        }
+        fetchEstablishments();
+    },[])
+
+    useEffect(() => {
+        const fetchCourts = async() => {
+            try{
+                const response = await api.get("base/court/")
+                if(response.status === 200){
+                    setCourts(response.data)
+                }
+            }catch(error){
+                console.error(error)
+            }
+        }
+        fetchCourts();
+    },[])
+
+
+    useEffect(() => {
+        const fetchPoliceStations = async() => {
+            try{
+                const response = await api.get("base/police-station/")
+                if(response.status === 200){
+                    setPoliceStations(response.data)
+                }
+            }catch(error){
+                console.error(error)
+            }
+        }
+        fetchPoliceStations();
+    },[])
+
+    useEffect(() => {
+        const fetchPoliceDistricts = async() => {
+            try{
+                const response = await api.get("base/police-district/")
+                if(response.status === 200){
+                    setPoliceDistricts(response.data)
+                }
+            }catch(error){
+                console.error(error)
+            }
+        }
+        fetchPoliceDistricts();
+    },[])
 
     useEffect(() => {
         async function fetchData(){
@@ -51,7 +148,7 @@ const Proceeding = ({efile_no}) => {
                             case_number: response.data.petition.case_no,
                             district: response.data.petition.district.district_code,
                             establishment: response.data.petition.establishment.establishment_code,
-                            court_no: response.data.petition.court.court_code
+                            court: response.data.petition.court.court_code
                         })
                     }
                 }catch(error){
@@ -65,9 +162,8 @@ const Proceeding = ({efile_no}) => {
     // console.log(petition)
 
     const handleSubmit = async () => {
-        console.log(form)
         try{
-            const response = await api.post("api/bail/daily-proceeding/create/", form)
+            const response = await api.post("court/proceeding/create/", form)
             if(response.status === 201){
                 toast.success("Proceedings details added successfully", {
                     theme: "colored"
@@ -227,7 +323,8 @@ const Proceeding = ({efile_no}) => {
                                     <input 
                                         type="text" 
                                         className="form-control" 
-                                        value={form.bond_amount}
+                                        name="surety_amount"
+                                        value={form.surety_amount}
                                         onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                     />
                                 </div>
@@ -285,12 +382,15 @@ const Proceeding = ({efile_no}) => {
                                 <div className="form-group">
                                     <label htmlFor="">State</label>
                                     <select 
-                                        name="state"
+                                        name="condition_state"
                                         className="form-control"
-                                        value={form.state}
+                                        value={form.condition_state}
                                         onChange={(e) => setForm({...form, [e.target.name] : e.target.value})}
                                     >
                                         <option value="">Select State</option>
+                                        {states.map((state, index) => (
+                                        <option key={index} value={state.state_code}>{state.state_name}</option>   
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -298,12 +398,15 @@ const Proceeding = ({efile_no}) => {
                                 <div className="form-group">
                                     <label htmlFor="">District</label>
                                     <select 
-                                        name="district" 
+                                        name="condition_district" 
                                         className="form-control"
-                                        value={form.district}
+                                        value={form.condition_district}
                                         onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
                                     >
                                         <option value="">Select District</option>
+                                        {districts.filter(d => parseInt(d.state) === parseInt(form.condition_state)).map((district, index) => (
+                                        <option key={index} value={district.district_code}>{district.district_name}</option>    
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -313,12 +416,15 @@ const Proceeding = ({efile_no}) => {
                                 <div className="form-group">
                                     <label htmlFor="">Establishment</label>
                                     <select 
-                                        name="establishment"
+                                        name="condition_establishment"
                                         className="form-control"
-                                        value={form.establishment}
-                                        onChange={(e) => setForm({...form, [e.target.name] : e.target.name })}
+                                        value={form.condition_establishment}
+                                        onChange={(e) => setForm({...form, [e.target.name] : e.target.value })}
                                     >
                                         <option value="">Select establishment</option>
+                                        { establishments.filter(e=>parseInt(e.district) === parseInt(form.condition_district)).map((est, index)=>(
+                                        <option key={index} value={est.establishment_code}>{est.establishment_name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -326,12 +432,15 @@ const Proceeding = ({efile_no}) => {
                                 <div className="form-group">
                                     <label htmlFor="">Court</label>
                                     <select 
-                                        name="court"
+                                        name="condition_court"
                                         className="form-control"
-                                        value={form.court}
-                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.name})}
+                                        value={form.condition_court}
+                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value})}
                                     >
                                         <option value="">Select court</option>
+                                        {courts.filter(c=>c.establishment === form.condition_establishment).map((court, index) => (
+                                        <option key={index} value={court.court_code} >{court.court_name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -346,9 +455,12 @@ const Proceeding = ({efile_no}) => {
                                         name="police_station" 
                                         className="form-control"
                                         value={form.police_station}
-                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.name })}
+                                        onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
                                     >
                                         <option value="">Select station</option>
+                                        {policeStations.filter(p=>parseInt(p.revenue_district) === parseInt(form.district)).map((station, index) => (
+                                        <option key={index} value={station.cctns_code}>{station.station_name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
