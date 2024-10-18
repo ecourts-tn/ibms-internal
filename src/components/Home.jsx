@@ -5,15 +5,16 @@ import Col from 'react-bootstrap/Col';
 import { ToastContainer } from 'react-toastify';
 import './header.css'
 import Login from './Login';
-
-
-const imgLink = "";
+import { useTranslation } from 'react-i18next';
+import Header from './Header';
+import Footer from './Footer';
 
 
 const Home = () => {
 
     const[isAuth, setIsAuth] = useState(false)
     const[user, setUser] = useState({})
+    const {t} = useTranslation()
 
     useEffect(() => {
         if(localStorage.getItem("access") !== null){
@@ -24,26 +25,53 @@ const Home = () => {
 
     return (
         <>
-            <Row className='py-2 mt-5'>
-                <Col md={8}>
-                    <div className="ml-md-5">
-                        <h2 className="section-heading">Integrated Bail Management System (IBMS)</h2>
-                        <p className="text-justify" style={{lineHeight: '1.5rem'}}>Integrated Bail Management System is a complete end to end solution developed for online filing of various applications such as Bail Applications, Anticipatory Bail Applications, Condition Relaxation, Intervene Petition, Modification Petition, Discharge of Surety, Return of Passport, Extension of Time and Cancellation of Bail. All the applications can be filed before Madras High Court or District Courts of Tamil Nadu. It is designed in Bilingual (English and local language) to reach wider group covering advocates/litigants.<br /><br />
-                        <strong>IBMS system provides several benefits;</strong> 
-                        </p><ul style={{lineHeight: '1.5rem'}}>
-                            <li>Save time, money, travel of advocates, litigants and government officials </li>
-                            <li>Obviate the need to physically visit the court</li>
-                            {/* <li>Reduce the need of meetings between clients and advocates</li> */}
-                            <li>Automatic digitization of case records</li>
-                            <li>Positive impact on environment by reducing paper footprint</li> 
-                        </ul>
-                    </div>
-                </Col>
-                <Col md={3}>
-                    <ToastContainer />
-                    { !isAuth ? <Login /> : <Login />}  
-                </Col>
-            </Row>
+            <Header/>
+                <Container fluid className="px-5" style={{minHeight:'600px'}}>
+                    <Row className='py-2 mt-5'>
+                        <Col md={3} className="">
+                            <ToastContainer />
+                            { !isAuth ? <Login /> : <Login />}  
+                        </Col>
+                        {/* <Col md={6} className="mt-5">
+                            <Feed />
+                        </Col>
+                        <Col md={3} className="mt-5">
+                            <Notification />
+                        </Col> */}
+                        <Col md={8}>
+                            <div className="ml-md-5">
+                                <h2 className="section-heading">{t('title')}</h2>
+                                <p className="text-justify">{t('description')}</p>
+                                {/* <p className="text-justify" style={{lineHeight: '1.5rem'}}>The <strong>Integrated Bail Management System (IBMS)</strong> is a comprehensive, end-to-end digital platform developed to facilitate the online filing and management of various bail related legal applications. 
+                                This system supports the filing of <strong>Bail Applications</strong>, <strong>Anticipatory Bail Applications</strong>, <strong>Condition Relaxation Requests</strong>, <strong>Intervene Petitions</strong>, <strong>Modification Petitions</strong>, <strong>Discharge of Surety</strong>, <strong>Return of Passport Requests</strong>, <strong>Extension of Time Applications</strong>, and <strong>Cancellation of Bail</strong>. 
+                                These applications can be submitted to the Madras High Court or any District Court in Tamil Nadu. The platform is bilingual, supporting both English and the local language, to cater to a wider audience, including advocates, litigants, and court officials.
+                                </p><br/> */}
+                                <strong>{t('benefits')}</strong> 
+                                <ol style={{lineHeight: '1.5rem'}}>
+                                    <li><strong>{t('benefit_1')}</strong>
+                                        <ul>
+                                            <li><strong>{t('benefit_1_sub_1')}</strong>{t('benefit_1_sub_1_desc')}</li>
+                                            <li><strong>{t('benefit_1_sub_2')}</strong>{t('benefit_1_sub_2_desc')}</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>{t('benefit_2')}</strong>
+                                        <ul>
+                                            <li><strong>{t('benefit_2_sub_1')}</strong>{t('benefit_2_sub_1_desc')}</li>
+                                            <li><strong>{t('benefit_2_sub_2')}</strong>{t('benefit_2_sub_2_desc')}</li>
+                                            <li><strong>{t('benefit_2_sub_3')}</strong>{t('benefit_2_sub_3_desc')}</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>{t('benefit_3')}</strong>
+                                        <ul>
+                                            <li><strong>{t('benefit_3_sub_1')}</strong>{t('benefit_3_sub_1_desc')}</li>
+                                        </ul>
+                                    </li>
+                                </ol>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            <Footer />
         </>
     )
 }
