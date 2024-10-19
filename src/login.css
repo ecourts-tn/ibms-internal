@@ -1,33 +1,12 @@
-/* body {
-    background: #1f618d;
-}
+@font-face {
+    font-family: 'Marutham';
+    src: url('./marutham.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
-.login-container .row {
-    justify-content: center;
-    align-items: center;
-}
-
-.login-container .card-header {
-    display: flex;
-    padding: 25px;
-    justify-content: center;
-    align-items: center;
-}
-
-.login-box-msg {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.asteriskField {
-    margin-left: 5px;
-    color: red;
-}
-#help-link {
-    text-align: center;
-}
-
-#help-link p {
-    font-size: 16px;
-    line-height: 1rem;
-} */
+  :lang(ta), 
+  :lang(ta) .nav-link, 
+  :lang(ta) .dropdown-menu li a {
+    font-family: 'Marutham', serif; 
+  }

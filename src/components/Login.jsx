@@ -170,6 +170,9 @@ const Login = () => {
                     <Spinner animation="border" variant="primary" style={{ height:50, width:50}}/>
                 </div>
                 )}
+                <div className="mt-1">
+                    <p className="d-flex justify-content-end"><a href="#">{t('forgot_password')}</a></p>
+                </div>
             </form>
         </>
     )
