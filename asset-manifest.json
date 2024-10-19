@@ -1,14 +1,18 @@
 {
   "files": {
-    "main.css": "/ibms-internal/static/css/main.6e672d63.css",
-    "main.js": "/ibms-internal/static/js/main.35df2792.js",
+    "main.css": "/ibms-internal/static/css/main.7241b046.css",
+    "main.js": "/ibms-internal/static/js/main.60a02e17.js",
+    "static/js/213.d33dcce2.chunk.js": "/ibms-internal/static/js/213.d33dcce2.chunk.js",
+    "static/js/455.685c6e8c.chunk.js": "/ibms-internal/static/js/455.685c6e8c.chunk.js",
     "static/media/highcourtlogo.png": "/ibms-internal/static/media/highcourtlogo.b6e7dd4b8e534d18e257.png",
     "index.html": "/ibms-internal/index.html",
-    "main.6e672d63.css.map": "/ibms-internal/static/css/main.6e672d63.css.map",
-    "main.35df2792.js.map": "/ibms-internal/static/js/main.35df2792.js.map"
+    "main.7241b046.css.map": "/ibms-internal/static/css/main.7241b046.css.map",
+    "main.60a02e17.js.map": "/ibms-internal/static/js/main.60a02e17.js.map",
+    "213.d33dcce2.chunk.js.map": "/ibms-internal/static/js/213.d33dcce2.chunk.js.map",
+    "455.685c6e8c.chunk.js.map": "/ibms-internal/static/js/455.685c6e8c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6e672d63.css",
-    "static/js/main.35df2792.js"
+    "static/css/main.7241b046.css",
+    "static/js/main.60a02e17.js"
   ]
 }
