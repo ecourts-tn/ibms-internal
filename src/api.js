@@ -2,7 +2,7 @@ import config from './config'
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 
-export const apiUrl = "http://192.168.100.135:8000/"
+export const apiUrl = "http://127.0.0.1:8000/"
 
 const api = axios.create({
     baseURL: config.apiUrl

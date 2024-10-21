@@ -339,7 +339,8 @@
         "email_otp_sent": "உங்கள் மின்னஞ்சல் முகவரிக்கு OTP அனுப்பப்பட்டுள்ளது",
         "email_otp_verified": "மின்னஞ்சல் OTP வெற்றிகரமாக சரிபார்க்கப்பட்டது",
         "invalid_otp": "தவறான OTP. சரியான OTPஐ உள்ளிடவும்",
-        "petitioner_added_successfully": ""
+        "petitioner_added_successfully": "",
+        "captcha_failed": "CAPTCHA சரிபார்ப்பு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்."
     },
     "errors": {
         "username_required": "பயனர் பெயரை உள்ளிடவும்",

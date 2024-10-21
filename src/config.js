@@ -24,16 +24,16 @@
 
 const config = {
     development: {
-      apiUrl: "http://192.168.100.135:8000/api/v1/",
-      docUrl: "http://192.168.100.135:8000/",
+      apiUrl: "http://127.0.0.1:8000/api/v1/",
+      docUrl: "http://127.0.0.1:8000/",
       featureFlag: true,
     },
     staging: {
-      apiUrl: "http://192.168.100.135:8000/api/",
+      apiUrl: "http://127.0.0.1:8000/api/",
       featureFlag: false,
     },
     production: {
-      apiUrl: "http://192.168.100.135:8000/api/",
+      apiUrl: "http://127.0.0.1:8000/api/",
       featureFlag: false,
     },
   };

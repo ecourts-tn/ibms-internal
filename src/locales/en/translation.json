@@ -339,7 +339,8 @@
         "email_otp_sent": "OTP has been sent to your email address",
         "email_otp_verified": "E-Mail otp verified successfully",
         "invalid_otp": "Invalid OTP. Please enter valid OTP",
-        "petitioner_added_successfully": ""
+        "petitioner_added_successfully": "",
+        "captcha_failed": "CAPTCHA validation failed. Please try again."
     },
     "errors": {
         "username_required": "Username is required",
