@@ -1,17 +1,11 @@
 import React from 'react'
+import DateChange from './DateChange'
 
 const Header = () => {
   return (
     <>
       <nav className="main-header navbar navbar-expand navbar-white navbar-light">
-        <ul className="navbar-nav">
-          <div className="input-group">
-            <input type="date" className="form-control" />
-            <div className="input-group-append">
-              <button className="btn btn-primary" type="button">Change</button>
-            </div>
-          </div>
-        </ul>
+        <DateChange />
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <a className="nav-link" data-widget="fullscreen" href="#" role="button">
